@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Notes du cours LINFO1002
+Notes du cours LSINC1102
 ========================
 
 .. toctree::
@@ -11,6 +11,7 @@ Notes du cours LINFO1002
    :caption: Contents:
 
    introduction   
+   1-logique
    
 Indices et tables
 =================

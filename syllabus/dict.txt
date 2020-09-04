@@ -1,0 +1,11 @@
+not
+and
+or
+Nisan
+Shimon
+Schocken
+Press
+MIT
+NOR
+XOR
+EQ

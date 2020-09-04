@@ -30,7 +30,8 @@ release = '2020'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ 'sphinxcontrib.spelling' 
+extensions = [ 'sphinxcontrib.spelling',
+               'sphinxcontrib.tikz'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -59,6 +60,11 @@ tokenize_lang='fr'
 spelling_ignore_acronyms=True
 spelling_show_suggestions=True
 
+
+# tikz
+
+tikz_tikzlibraries = 'circuits.logic.US'
+tikz_proc_suite = 'ImageMagick'
 
 # -- Options for HTML output -------------------------------------------------
 
