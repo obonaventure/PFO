@@ -14,7 +14,6 @@ Fonctions booléennes
 ====================
 
 La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x`comprend les différentes valeurs possibles de l'entrée `x` et la valeur du résultat.
-
 === ========
 x   identité 
 --- --------
@@ -40,7 +39,7 @@ Il y a encore deux fonctions que l'on peut construire avec une seule entrée bin
 x   Toujours0(x) 
 --- ------------
 0   0 
-1   1 
+1   0 
 === ============
 
 
@@ -48,7 +47,7 @@ x   Toujours0(x)
 === ============
 x   Toujours1(x) 
 --- ------------
-0   0 
+0   1 
 1   1
 === ============
 
@@ -336,56 +335,6 @@ in  sel x y
 Tant le multiplexeur que le démultiplexeur peuvent s'implémenter en utilisant des portes `AND`, `OR` et des inverseurs. Prenons comme exemple le multiplexeur. Sur base de sa table de vérité, il est possible de l'implémenter en utilisant une fonction `OR` à quatre entrées et des fonctions `AND` à trois entrées.
 
 
-La fonction universelle `NAND`
-------------------------------
-
-La fonction `NAND` joue un rôle particulier dans de nombreux circuits électroniques car elle sert d'élément de base à la réalisation d'autres fonctions. Un point particulier est que la fonction `NAND` permet de facilement obtenir un inverseur. Ainsi, :math:`NAND(x,x) \iff NOT(x)`.  
-
-=== =========
-x   NAND(x,x) 
---- ---------
-0     1 
-1     0 
-=== =========
-
-
-Sur base de cette fonction `NAND`, on peut aussi facilement construire la fonction `AND` puisque :math:`AND(x,y) \iff NAND( NAND(x,y), NAND(x,y) )`. On peut s'en convaincre en construisant la table de vérité de cette fonction 
-
-
-=== = ========= ========= ============================
-x   y NAND(x,y) NAND(x,y) NAND( NAND(x,y), NAND(x,y) )
---- - --------- --------- ----------------------------
-0   0     1         1                 0
-0   1     1         1                 0 
-1   0     1         1                 0 
-1   1     0         0                 1 
-=== = ========= ========= ============================
-
-
-
-Exercices
-_________
-
-La fonction `NAND` est une fonction de base qui permet d'implémenter toutes les autres fonctions booléennes.
-
-1. En appliquant les lois de De Morgan, il est aussi possible de construire la fonction `OR` en se basant uniquement sur la fonction `NAND`.
-
-.. En effet, on remarque que  `NAND(x,y) = OR ( NOT(x), NOT(y) )`. Calculons donc la table de vérité de `NAND( NOT(x), NOT(y) )`.
-
-   === = ========= ========= ============================
-   x   y NAND(x,x) NAND(y,y) NAND( NAND(x,x), NAND(y,y) )
-   --- - --------- --------- ----------------------------
-   0   0     1         1                 1
-   0   1     1         0                 1 
-   1   0     0         1                 1 
-   1   1     0         0                 0 
-   === = ========= ========= ============================
-
-   On est presque à celle de la fonction `OR`. Il suffit en effet d'inverser son résultat pour obtenir la fonction `OR`. Donc, :math:`NAND( NAND( NAND(x,x), NAND(y,y) ), NAND( NAND(x,x), NAND(y,y) )) \iff OR(x,y)`.
-   
-2. En utilisant uniquement des fonctions `NAND`, implémentez la fonction `XOR`.
-
-   
 
 Synthèse de fonctions booléennes
 ================================
@@ -719,10 +668,81 @@ Exercices
 
    .. dessiner un circuit
 
+   .. tikz:: Un circuit simple à deux entrées
+             
+      [label distance=2mm, scale=2,
+      connection/.style={draw,circle,fill=black,inner sep=1.5pt}
+      ]
+      \node (x) at (0.5,0) {$x$};
+      \node (y) at (1,0) {$y$};
+      
+      \node[and gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-1)$) (t1) {};
+      \node[or gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-2)$) (t2) {};
+ 
+      \node[not gate US, draw, scale=0.75] at ($(t2.input 1)+(-0.5,0)$) (nx1) {};
+      \node[not gate US, draw, scale=0.75] at ($(t1.input 2)+(-0.5,0)$) (ny1) {};
+
+
+      \node[and gate US, draw, logic gate inputs=nn, scale=1] at ($(t2.output) + (2, 0.5)$) (orTot) {};
+
+      \draw (x) -- ($(x) + (0,-2.5)$);
+      \draw (y) -- ($(y) + (0,-2.5)$);
+ 
+      \draw (nx1) -- (t2.input 1);
+      \draw (ny1) -- (t1.input 2);
+
+      \draw (x) |- (nx1) node[connection,pos=0.5]{};
+      \draw (y) |- (ny1) node[connection,pos=0.5]{};
+
+
+      \draw (x) |- (t1.input 1) node[connection,pos=0.5]{};
+      \draw (y) |- (t2.input 2) node[connection,pos=0.5]{};
+
+
+      \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
+      \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
 2. Quelle est la table de vérité qui correspond au circuit ci-dessous ?
 
-   .. dessiner un circuit
+
+   .. tikz:: Un circuit simple à trois entrées
+             
+      [label distance=2mm, scale=2,
+      connection/.style={draw,circle,fill=black,inner sep=1.5pt}
+      ]
+      \node (x) at (0.5,0) {$x$};
+      \node (y) at (0.75,0) {$y$};
+      \node (z) at (1,0) {$z$};
+      
+      
+      \node[or gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-1)$) (t1) {};
+      \node[and gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-2)$) (t2) {};
+ 
+      \node[not gate US, draw, scale=0.75] at ($(t2.input 1)+(-0.5,0)$) (nx1) {};
+      \node[not gate US, draw, scale=0.75] at ($(t1.input 2)+(-0.5,0)$) (ny1) {};
+      \node[not gate US, draw, scale=0.75] at ($(t2.input 2)+(-0.5,0)$) (nz1) {};
+
+
+      \node[and gate US, draw, logic gate inputs=nn, scale=1] at ($(t2.output) + (2, 0.5)$) (orTot) {};
+
+      \draw (x) -- ($(x) + (0,-2.5)$);
+      \draw (y) -- ($(y) + (0,-2.5)$);
+      \draw (z) -- ($(z) + (0,-2.5)$);
+ 
+      \draw (nx1) -- (t2.input 1);
+      \draw (ny1) -- (t1.input 2);
+      \draw (nz1) -- (t2.input 2);
+
+      \draw (x) |- (nx1) node[connection,pos=0.5]{};
+      \draw (y) |- (ny1) node[connection,pos=0.5]{};
+      \draw (z) |- (nz1) node[connection,pos=0.5]{};
+
+      \draw (x) |- (t1.input 1) node[connection,pos=0.5]{};
+ 
+
+
+      \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
+      \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
       
    
 Un langage de description de circuits logiques
@@ -961,8 +981,6 @@ Exercices
    
 Construisez d'abord la table de vérité de ce circuit et ensuite proposez une suite de test qui permet de valider qu'une implémentation de ce circuit est correcte.   
    
-Premier projet
-==============
 
 
 

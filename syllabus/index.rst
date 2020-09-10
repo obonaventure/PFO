@@ -8,11 +8,13 @@ Notes du cours LSINC1102
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Table des matières
 
    introduction   
    1-logique
-   
+   1b-logique2
+   2-arithmetique
+             
 Indices et tables
 =================
 

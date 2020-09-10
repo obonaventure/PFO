@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'LINFO1002'
+project = 'LSINC1102'
 copyright = '2020, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
@@ -49,6 +49,7 @@ language = 'fr'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '._*.rst']
 
+master_doc = 'index'
 
 # Spelling checker
 
