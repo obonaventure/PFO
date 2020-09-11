@@ -275,8 +275,10 @@ Le plus intéressant est que ces additionneurs peuvent se combiner en cascade po
 
     \draw[->] (d.west) --++(180:0.5cm) node [left] {$r$};
 
+Pour des raisons graphiques, il est compliqué de dessiner un additionneur pour des bytes ou des mots de 16 ou 32 bits, mais le même principe s'applique. On peut donc facilement construire un additionneur qui prend en entrées deux nombres encodés sur `n` et retourne un résultat encodé sur `n` avec un report éventuel.
 
-Cet additionneur prend comme entrées les bits des deux nombres à additionner. Dans ce circuit, le report de l'additionneur qui correspond au bit de poids faible est mis à `0`. Que se passerait-il si cette entrée `r` était mise à la valeur `1` ? Le circuit calculerait le résultat de l'addition :math:`a+b+1`.
+    
+L'additionneur que nous venons de construire prend comme entrées les bits des deux nombres à additionner. Dans ce circuit, le report de l'additionneur qui correspond au bit de poids faible est mis à `0`. Que se passerait-il si cette entrée `r` était mise à la valeur `1` ? Le circuit calculerait le résultat de l'addition :math:`a+b+1`.
 
 En informatique, on doit très souvent incrémenter une valeur entière. Si `a` est la valeur à incrémenter, on peut grâce à nos quatre additionneurs incrémenter cette valeur en forçant les entrées :math:`b_{i}` à 0. Cet "incrémenteur" est représenté dans le schéma ci-dessous:
 
@@ -370,7 +372,7 @@ Nous aurions pu aussi choisir d'utiliser le bit de poids faible pour indiquer le
 Ces deux conventions permettent de représenter les entiers de `-7` à `+7`. Malheureusement, ces deux représentations utilisent deux nombres binaires différents pour représenter la valeur nulle. De plus, il est difficile de construire des circuits électroniques qui permettent de facilement manipuler de telles représentations des nombres entiers.
 
 
-La solution à ce problème est d'utiliser la notation en :math:`complément à deux`. Pour représenter les nombres entiers en notation binaire, nous allons adaptons la représentation utilisée pour les nombres naturels. Le nombre binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre naturel :math:`(-1)*B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. Il est important de noter que la présence du facteur `(-1)`qui est appliqué au bit de poids fort. En appliquant cette règle aux nibbles, on obtient aisément :
+La solution à ce problème est d'utiliser la notation en :math:`complément à deux`. Pour représenter les nombres entiers en notation binaire, nous allons adaptons la représentation utilisée pour les nombres naturels. Le nombre binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre naturel :math:`(-1)*B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. Il est important de noter que la présence du facteur `(-1)` qui est appliqué au bit de poids fort. En appliquant cette règle aux nibbles, on obtient aisément :
 
 
  - `0000` représente le nombre `0`
@@ -421,14 +423,14 @@ On peut maintenant se demander comment calculer l'opposé d'un nombre en représ
 == == == == == == ============================
 a2 a1 a0 b0 b1 b0 Commentaire
 -- -- -- -- -- -- ----------------------------
-0  0  0  0  0  0  :math:`opposé(0)=0`
-0  0  1  1  1  1  :math:`opposé(1)=-1`
-0  1  0  1  1  0  :math:`opposé(2)=-2`
-0  1  1  1  0  1  :math:`opposé(3)=-3`
+0  0  0  0  0  0  `opposé(0)=0`
+0  0  1  1  1  1  `opposé(1)=-1`
+0  1  0  1  1  0  `opposé(2)=-2`
+0  1  1  1  0  1  `opposé(3)=-3`
 1  0  0  -  -  -  `-4` n'a pas d'opposé  
-1  0  1  0  1  1  :math:`opposé(-3)=3`
-1  1  0  0  1  0  :math:`opposé(-2)=2`
-1  1  1  0  0  1  :math:`opposé(-1)=1`
+1  0  1  0  1  1  `opposé(-3)=3`
+1  1  0  0  1  0  `opposé(-2)=2`
+1  1  1  0  0  1  `opposé(-1)=1`
 == == == == == == ============================
 
 Sur base de cette table de vérité, on pourrait facilement construire un circuit qui calcule l'opposé d'un nombre sur n bits en utilisant des fonctions `AND`, `OR` et `NOT` ou uniquement des fonctions `NAND` comme durant la première mission. Cependant, on peut faire beaucoup mieux en réutilisant l'additionneur dont nous disposons déjà. Si on observe la table de vérité, on remarque que l'on peut calculer l'opposé d'un nombre binaire en deux étapes:
@@ -574,9 +576,6 @@ Si on sait facilement calculer l'opposé d'un nombre, et additionner deux nombre
 
 
 
-
-
-
 Exercices
 _________
 
@@ -601,6 +600,113 @@ _________
    - :math:`N < M`
    - :math:`N = M`
 
-Arithmétique avec les nombres entiers
--------------------------------------
+Unité Arithmétique et Logique
+-----------------------------
 
+Avec ce additionneur et les circuits associés que nous venons de voir, il est possible de construire une :index:`Unité Arithmétique et Logique` (`Arithmetic and Logic Unit` (ALU) en anglais). Ce circuit constitue le coeur d'un ordinateur au niveau du calcul. Il a deux entrées, `x` et `y` et peut retourner, à la demande, les résultats suivants: 
+
+ - `0`
+ - `1`
+ - `-1`
+ - `x`
+ - `y`
+ - `NOT(x)`
+ - `NOT(y)`
+ - `(-x)`
+ - `(-y)`
+ - `x+1`
+ - `y+1`
+ - `x-1`
+ - `y-1`
+ - `x+y`
+ - `x-y`
+ - `y-x`
+ - `AND(x,y)`
+ - `OR(x,y)`
+
+Certaines ALUs vont plus loin et supportent d'autres opérations, mais supporter toutes ces opérations va déjà nécessiter un peu de travail. Nous avons déjà vu comment effectuer quasiment chacune de ces opérations en utilisant des fonctions booléennes. Pour les combiner dans un seul circuit, il suffira d'utiliser des multiplexeurs et de choisir des signaux permettant de les contrôler. L'ALU du livre de référence utilise six signaux de contrôle :
+
+ - `zx` : l'entrée `x` est mise à `0`
+ - `zy` : l'entrée `y` est mise à `0`
+ - `nx` : l'entrée `x` est inversée
+ - `ny` : l'entrée `y` est inversée
+ - `f`: permet de choisir entre le résultat de l'additionneur (`1`) et de le fonction `AND` pour la sortie
+ - `no` : permet d'inverser ou non le résultat
+
+Outre le résultat qui est encodé sur 16 bits, l'ALU retourne également deux drapeaux:
+
+ - `zr` qui est mis à `1` si le résultat de l'ALU vaut zéro et `0` sinon
+ - `ng` qui est mis à `1` si le résultat de l'ALU est négatif et `0` sinon
+
+
+Ces deux drapeaux méritent un peu d'explication. Sur base de la représentation des nombres entiers, il est facile de vérifier si un nombre binaire vaut `0`. Il suffit de vérifier que tous ses bits valent `0`.  Pour calculer la valeur de `ng`, c'est encore plus simple, il suffit de retourner la valeur du bit de poids fort du résultat puisqu'en notation complément à 2, celui-ci vaut `1` pour tous les entiers négatifs.  
+   
+La construction complète de cette ALU nécessite de s'appuie sur quelques astuces et propriétés de la représentation binaire des nombres entiers. Le livre suggère d'utiliser les signaux de contrôle d'une façon particulière.
+
+Pour calculer `0`, il faut mettre `zx`, `zy` et `f` à `1`. Cela revient donc à calculer :math:`0+0`.
+
+Pour calculer `1`, il faut mettre tous les signaux de contrôle`(`zx`, `zy`, `nx`, `ny`, `f` et `no` à `1`). Voyez-vous pourquoi cette addition suivie d'une inversion donne bien comme résultat la valeur `1` ?
+
+Pour calculer `-1`, il faut mettre cinq signaux de contrôle (`zx`, `zy`, `nx`, et `f`) à `1`. Les signaux `ny` et `no` sont mis à `0`. En mettant `zx` et `nx` à `1`, l'entrée `x` de l'ALU contient la valeur `-1`. Comme `zy` est mis à `1`, l'ALU calcule :math:`-1+0`. On aurait pu obtenir le même résultat avec d'autres valeurs des signaux de contrôle. Lesquels ?
+
+Pour calculer `x`, il faut mettre `zy` à `1`.
+
+Pour calculer `y`, il faut mettre `zx` à `1`.
+
+Pour calculer `NOT(x)`, il y a deux approches possibles. La première est de mettre `zy` à `1` et `nx` à `1`. La seconde est de mettre uniquement `zy` et `nx` à `1`. Dans le premier cas, on calcule :math:`x+0` et on inverse le résultat. Dans le second cas, on calcule :math:`NOT(x)+0`. On peut raisonner de façon similaire pour le calcul de `NOT(y)`.
+
+Pour calculer `-x`, le livre suggère de mettre quatre signaux à `1`: `zy`, `ny`, `f` et `no`. Cela revient à calculer l'opération :math:`NOT(ADD(x,11..11))`. Regardons avec des nombres de trois bits le résultat de cette opération.
+
+== == == ========== ===============
+x2 x1 x0 ADD(x,111) NOT(ADD(x,111))
+-- -- -- ---------- ---------------
+0  0  0  0 1 1 1      0 0 0        
+0  0  1  1 0 0 0      1 1 1       
+0  1  0  1 0 0 1      1 1 0
+0  1  1  1 0 1 0      1 0 1        
+1  0  0  1 0 1 1      1 0 0         << pas d'opposé
+1  0  1  1 1 0 0      0 1 1
+1  1  0  1 1 0 1      0 1 0
+1  1  1  1 1 1 0      0 0 1
+== == == ========== ===============
+
+On obtient bien le résultat attendu.
+
+
+Pour calculer `x-1`, les signaux `zy` et `ny` et `f` sont mis à `1`. Le circuit calcule donc `ADD(x,11..11)` ce qui correspond bien à `x-1`. De même, on peut calculer `
+
+Pour calculer `x+1`, seul `zx` est mis à zéro, tous les autres signaux de contrôle sont mis à `1`. Le circuit calcule donc `NOT(ADD(NOT(x),11...11))`.  Regardons avec des nombres de trois bits le résultat de cette opération.
+
+== == == ====== ================ ==========  ============
+x2 x1 x0 NOT(x) ADD(NOT(x),111))  NOT(...)   Commentaire
+-- -- -- ------ ---------------- ----------  ------------
+0  0  0  1 1 1  1 1 1 0          0 0 1       << 0+1=1
+0  0  1  1 1 0  1 1 0 1          0 1 0       << 1+1=2
+0  1  0  1 0 1  1 1 0 0          0 1 1       << 2+1=3
+0  1  1  1 0 0  1 0 1 1          1 0 0       << 3+1=4
+1  0  0  0 1 1  1 0 1 0          1 0 1       << -4+1=-3
+1  0  1  0 1 0  1 0 0 1          1 1 0       << -3+1=-2
+1  1  0  0 0 1  1 0 0 0          1 1 1       << -2+1=-1
+1  1  1  0 0 0  0 1 1 1          0 0 0       << -1+1=0
+== == == ====== ================ ==========  ============
+
+Pour la même raison, pour calculer `y+1`, seul `zy` est mis à zéro, tous les autres signaux de contrôle sont mis à `1`.
+
+Pour calculer `x+y`, seul `f` doit être mis à `1`. Pour calculer `x-y`, `nx`, `f` et `no` sont mis à `1`. On doit donc calculer `NOT(ADD(NOT(x),y))`. Vous pouvez vous en convaincre en reconstruisant la table de vérité. De même pour calculer `y-x`, seuls les signaux `no`, `f` et `ny` sont mis à `1`.
+
+Enfin, pour implémenter l'opération `OR` en utilisant l'ALU, on se souviendra des lois de De Morgan et il suffira de mettre les signaux `nx`, `ny` et `no` à `1`. Pour calculer `AND(x,y)`, tous les signaux de contrôle sont mis à `0`.
+
+Deuxième projet
+===============
+
+
+1. Construisez un demi-additionneur
+
+2. Construisez un additionneur complet sur 1 bit
+
+3. Construisez un additionneur sur 16 bits
+
+4. Construisez un incrémenteur sur 16 bits
+
+5. Construisez l'ALU qui a été présentée en détails dans la section précédente.
+   

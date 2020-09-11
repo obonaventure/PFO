@@ -61,10 +61,16 @@ tokenize_lang='fr'
 spelling_ignore_acronyms=True
 spelling_show_suggestions=True
 
+# latex
 
+latex_elements = {
+    'preamble': r'''
+\pgfplotsset{compat=1.16}
+'''
+}
 # tikz
 
-tikz_tikzlibraries = 'circuits.logic.US'
+tikz_tikzlibraries = "circuits.logic.US,positioning"
 tikz_proc_suite = 'ImageMagick'
 
 # -- Options for HTML output -------------------------------------------------
