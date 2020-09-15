@@ -14,6 +14,8 @@ Fonctions booléennes
 ====================
 
 La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x`comprend les différentes valeurs possibles de l'entrée `x` et la valeur du résultat.
+
+
 === ========
 x   identité 
 --- --------
@@ -447,8 +449,9 @@ Représentations graphiques
 ==========================
 
 
-Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les symboles comme `AND`, `OR`, `NOT`, soit utiliser des symboles graphiques. Ceux-ci sont très utilisés pour construire de petits circuits. Les principaux sont repris dans 
+Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les symboles comme `AND`, `OR`, `NOT`, soit utiliser des symboles graphiques. Ceux-ci sont très utilisés pour construire de petits circuits. La figure :numref:`fig-not` représente l'inverseur ou la fonction `NOT`. La fonction `OR` est présentée schématiquement dans la figure :numref:`fig-or` et la fonction `AND` dans la figure :numref:`fig-and`.
 
+.. _fig-not:
 .. tikz:: Représentation graphique d'une fonction NOT 
    :libs:  circuits.logic.US 
 
@@ -458,7 +461,9 @@ Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les
    \node [not gate US, draw] (nx)  at ($(x) +(1,0)$) {$NOT$};
    \draw (x) -- (nx);
    \draw (nx) -- (out);
-   
+
+
+.. _fig-or:   
 .. tikz:: Représentation graphique d'une fonction OR 
    :libs:  circuits.logic.US 
 
@@ -471,7 +476,9 @@ Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les
    \draw (x) -- (or.input 1);
    \draw (y) -- (or.input 2);
    \draw (or) -- (out);
-   
+
+
+.. _fig-and:   
 .. tikz:: Représentation graphique d'une fonction AND 
    :libs:  circuits.logic.US 
 
@@ -483,7 +490,10 @@ Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les
    \draw (x) -- (and.input 1);
    \draw (y) -- (and.input 2);
    \draw (and) -- (out);
-   
+
+La fonction `XOR` a aussi sa représentation graphique. Celle-ci est présentée dans la figure :numref:`fig-xor`.
+
+.. _fig-xor:
 .. tikz:: Représentation graphique d'une fonction XOR 
    :libs:  circuits.logic.US 
 
@@ -498,9 +508,9 @@ Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les
    \draw (xor) -- (out);
 
 
-Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND` est finalement une fonction  `AND` suivie d'un inverseur. Cette inversion est symbolisée par un petit rond. Il en va de même pour la fonction `NOR`.    
+Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND` est finalement une fonction  `AND` suivie d'un inverseur comme représenté sur la figure :numref:`fig-nand`. Cette inversion est symbolisée par un petit rond. Il en va de même pour la fonction `NOR` (:numref:`fig-nor`).    
 
-
+.. _fig-nand:
 .. tikz:: Représentation graphique d'une fonction NAND 
    :libs:  circuits.logic.US 
 
@@ -515,6 +525,7 @@ Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND`
    \draw (xor) -- (out);
    
 
+.. _fig-nor:   
 .. tikz:: Représentation graphique d'une fonction NOR 
    :libs:  circuits.logic.US 
 
@@ -528,6 +539,55 @@ Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND`
    \draw (y) -- (xor.input 2);
    \draw (xor) -- (out);
 
+Les multiplexeurs et démultiplexeurs ont aussi leur représentation graphique. Le livre les représente en utilisant un triangle comme dans la figure :numref:`fig-mux`.
+
+.. _fig-mux:
+.. tikz:: Un multiplexeur à deux entrées
+
+   [label distance=2mm, scale=2,
+   connection/.style={draw,circle,fill=black,inner sep=1.5pt}
+   ]
+   \node (x) at (-0.5,-0.8) {$x$};
+   \node (y) at (-0.5,-1.2) {$y$};
+   \node (sel) at (0.3,0) {$sel$};
+   
+   \node (mux) at (0.2,-1) {$mux$};
+   \node (out) at (1.1,-1) {$out$};
+ 
+   \draw [->] (x) -- (0,-0.8);
+   \draw [->] (y) -- (0,-1.2);
+   
+   \draw (0,-0.6) -- (0, -1.4) -- (0.6, -1) --cycle;
+
+   \draw [->] (sel) -- (0.3,-0.8);
+   \draw [->] (0.6,-1) -- (out);
+
+
+De la même façon, on peut également représenter le démultiplexeur de façon graphique comme représenté dans la figure :numref:`fig-dmux`.
+
+
+.. _fig-dmux:
+.. tikz:: Un démultiplexeur à deux sorties
+
+   [label distance=2mm, scale=2,
+   connection/.style={draw,circle,fill=black,inner sep=1.5pt}
+   ]
+   \node (x) at (1.1,-0.8) {$x$};
+   \node (y) at (1.1,-1.2) {$y$};
+   \node (sel) at (0.3,0) {$sel$};
+   
+   \node (mux) at (0.4,-1) {$Dmux$};
+   \node (in) at (-0.3,-1) {$in$};
+ 
+   \draw [<-] (x) -- (0.8,-0.8);
+   \draw [<-] (y) -- (0.8,-1.2);
+   
+   \draw (0,-1) -- (0.8, -1.4) -- (0.8, -0.6) --cycle;
+
+   \draw [->] (sel) -- (0.3,-0.8);
+   \draw [<-] (0,-1) -- (in);
+
+   
 
 Il est évidemment possible de combiner plusieurs fonctions booléennes pour supporter des fonctions plus avancées. A titre d'exemple, considérons la fonction d'égalité qui vaut `1` lorsque ses deux entrées sont égales et `0` sinon. Voici sa table de vérité.
 
@@ -542,9 +602,11 @@ x y EQ(x,y)
 = = =======
 
 
-Cette fonction peut être réalisée en utilisant deux fonctions `AND`, une fonction `OR` et des inverseurs.
+Cette fonction peut être réalisée en utilisant deux fonctions `AND`, une fonction `OR` et des inverseurs (:numref:`fig-eq`).
 
 .. source de l'exemple https://tex.stackexchange.com/questions/540918/adding-dots-to-a-circuit-latex
+
+.. _fig-eq:   
 .. tikz:: Représentation graphique d'un circuit qui réalise la fonction EQ
 
    [label distance=2mm, scale=2,
@@ -579,8 +641,9 @@ Cette fonction peut être réalisée en utilisant deux fonctions `AND`, une fonc
    \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
    \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
-Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemment. Celle-ci peut s'implémenter en utilisant deux inverseurs, deux fonctions `AND` et une fonction `OR`.
+Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemment. Celle-ci peut s'implémenter en utilisant deux inverseurs, deux fonctions `AND` et une fonction `OR` comme représenté dans la figure :numref:`fig-xor-real`.
 
+.. _fig-xor-real:
 .. tikz:: Représentation graphique d'un circuit qui réalise la fonction XOR
 
    [label distance=2mm, scale=2,
@@ -616,9 +679,9 @@ Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemm
    \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
 
-Avec un multiplexeur, il est possible de construire un circuit "programmable" qui, en fonction de la valeur de son entrée `sel`, calcule soit la fonction `AND`, soit la fonction `OR`.
+Avec un multiplexeur, il est possible de construire un circuit "programmable" qui, en fonction de la valeur de son entrée `sel`, calcule soit la fonction `AND`, soit la fonction `OR`. Ce circuit est représenté dans la figure :numref:`fig-programmable`.
 
-
+.. _fig-programmable:
 .. tikz:: Un circuit programmable
 
    [label distance=2mm, scale=2,
@@ -664,10 +727,11 @@ Avec un multiplexeur, il est possible de construire un circuit "programmable" qu
 Exercices
 ---------
 
-1. Quelle est la table de vérité qui correspond au circuit ci-dessous ?
+1. Quelle est la table de vérité qui correspond au circuit représenté dans la figure :numref:`fig-ex-circuit-simple` ?
 
    .. dessiner un circuit
 
+   .. _fig-ex-circuit-simple:   
    .. tikz:: Un circuit simple à deux entrées
              
       [label distance=2mm, scale=2,
@@ -702,9 +766,9 @@ Exercices
       \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
       \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
-2. Quelle est la table de vérité qui correspond au circuit ci-dessous ?
+2. Quelle est la table de vérité qui correspond au circuit de la figure :numref:`_fig-ex-circuit-simple3` ?
 
-
+   .. _fig-ex-circuit-simple3: 
    .. tikz:: Un circuit simple à trois entrées
              
       [label distance=2mm, scale=2,
@@ -834,8 +898,9 @@ En utilisant l'inverseur, il est possible de construire un circuit électronique
    }
 
 
-Graphiquement, ce circuit peut être représenté comme dans la figure ci-dessous.
+Graphiquement, ce circuit peut être représenté comme dans la figure :numref:`fig-circuit-rien`.
 
+.. _fig-circuit-rien:
 .. tikz:: Représentation graphique du circuit qui ne fait rien
    :libs:  circuits.logic.US
            
@@ -944,9 +1009,10 @@ Vous trouverez de nombreux autres exemples de fichiers de test dans l'archive re
 Exercices
 ---------
       
-1. Avec un multiplexeur, il est possible de construire des circuits "programmables", c'est-à-dire des circuits pour lesquels une des entrées permet de choisir la fonction calculée. Considérons le circuit hypothétique ci-dessous :
+1. Avec un multiplexeur, il est possible de construire des circuits "programmables", c'est-à-dire des circuits pour lesquels une des entrées permet de choisir la fonction calculée. Considérons le circuit hypothétique représenté dans la figure :numref:`fig-ex-programmable` :
 
-.. tikz:: Un circuit programmable
+.. _fig-ex-programmable:   
+.. tikz:: Un exemple de circuit programmable
 
    [label distance=2mm, scale=2,
    connection/.style={draw,circle,fill=black,inner sep=1.5pt}
@@ -966,7 +1032,6 @@ Exercices
 
    \draw (x) |- (t1.input 1) node[connection,pos=0.5]{}; 
    \draw (y) |- (t1.input 2) node[connection,pos=0.5]{}; 
-
 
    \draw (y) |- (t2.input) node[connection,pos=0.5]{}; 
    

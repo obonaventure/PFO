@@ -209,8 +209,9 @@ a b r report somme
 1 1 0    1     0
 = = = ====== =====
 
-Cet additionneur sera important dans le cadre de ce cours. Nous pouvons le représenter schématiquement sous la forme d'un rectangle avec trois entrées et deux sorties.
+Cet additionneur sera important dans le cadre de ce cours. Nous pouvons le représenter schématiquement sous la forme d'un rectangle avec trois entrées et deux sorties (figure :numref:`fig-adder`).
 
+.. _fig-adder:
 .. tikz:: Un additionneur complet
    :libs: positioning 
    
@@ -230,8 +231,9 @@ Cet additionneur sera important dans le cadre de ce cours. Nous pouvons le repr�
     \draw[<-] (a.east) --++(0:0.5cm) node [right] {$r$};
     \draw[->] (a.west) --++(180:0.5cm) node [left] {};
 
-Le plus intéressant est que ces additionneurs peuvent se combiner en cascade pour construire un additionneur qui est capable d'additionner deux nombres binaires sur n bits. La figure ci-dessous présente un additionner qui travaille avec deux nibbles, `a` et `b`.
+Le plus intéressant est que ces additionneurs peuvent se combiner en cascade pour construire un additionneur qui est capable d'additionner deux nombres binaires sur n bits. La figure :numref:`fig-adder-4` présente un additionner qui travaille avec deux nibbles, `a` et `b`.
 
+.. _fig-adder-4:
 .. tikz:: Avec quatre additionneurs, on peut additionner des nibbles 
    :libs: positioning 
    
@@ -256,7 +258,7 @@ Le plus intéressant est que ces additionneurs peuvent se combiner en cascade po
     \draw[<-] (b.115) --++(90:0.5cm) node [above] {$a_0$};
     \draw[<-] (b.65) --++(90:0.5cm) node [above] {$b_0$};
     
-   \draw[<-] (c.115) --++(90:0.5cm) node [above] {$a_2$};
+    \draw[<-] (c.115) --++(90:0.5cm) node [above] {$a_2$};
     \draw[<-] (c.65) --++(90:0.5cm) node [above] {$b_2$};
     \draw[<-] (d.115) --++(90:0.5cm) node [above] {$a_3$};
     \draw[<-] (d.65) --++(90:0.5cm) node [above] {$b_3$};
@@ -280,8 +282,10 @@ Pour des raisons graphiques, il est compliqué de dessiner un additionneur pour 
     
 L'additionneur que nous venons de construire prend comme entrées les bits des deux nombres à additionner. Dans ce circuit, le report de l'additionneur qui correspond au bit de poids faible est mis à `0`. Que se passerait-il si cette entrée `r` était mise à la valeur `1` ? Le circuit calculerait le résultat de l'addition :math:`a+b+1`.
 
-En informatique, on doit très souvent incrémenter une valeur entière. Si `a` est la valeur à incrémenter, on peut grâce à nos quatre additionneurs incrémenter cette valeur en forçant les entrées :math:`b_{i}` à 0. Cet "incrémenteur" est représenté dans le schéma ci-dessous:
+En informatique, on doit très souvent incrémenter une valeur entière. Si `a` est la valeur à incrémenter, on peut grâce à nos quatre additionneurs incrémenter cette valeur en forçant les entrées :math:`b_{i}` à 0. Cet "incrémenteur" est représenté dans le schéma de la figure :numref:`fig-adder-nibble`.
 
+
+.. _fig-adder-nibble:
 .. tikz:: Un incrémenteur de nibble 
    :libs: positioning 
    
@@ -439,8 +443,9 @@ Sur base de cette table de vérité, on pourrait facilement construire un circui
  b. incrémenter d'une unité le nombre binaire obtenu
 
 
-La première opération est facile à réaliser en utilisant la fonction `NOT`. La seconde peut se réaliser en utilisant notre "incrémenteur". Schématiquement, le circuit à construire pour calculer l'opposé du nibble `a` est donc le suivant. 
+La première opération est facile à réaliser en utilisant la fonction `NOT`. La seconde peut se réaliser en utilisant notre "incrémenteur". Schématiquement, le circuit à construire pour calculer l'opposé du nibble `a` est donc celui de la figure :numref:`fig-nibble-oppose`.
 
+.. _fig-nibble-oppose:
 .. tikz:: Calcul de l'opposé d'un nibble 
    :libs: positioning 
    
@@ -470,9 +475,6 @@ La première opération est facile à réaliser en utilisant la fonction `NOT`. 
     \node[] at ($(na0)+(0,0.5)$) (a0) {$a_0$};
     \draw[-] (a0) --(na0);
     \draw[->] (na0) -- (b.115);
-
-
-    
     \draw[<-] (b.65) --++(90:0.5cm) node [above] {$0$};
 
 
@@ -507,8 +509,9 @@ La première opération est facile à réaliser en utilisant la fonction `NOT`. 
     \draw[->] (d.west) --++(180:0.5cm) node [left] {$r$};
     
 
-Si on sait facilement calculer l'opposé d'un nombre, et additionner deux nombres, il devient possible de réaliser la soustraction. Pour calculer :math:`a-b`, il suffit de calculer :math:`a+(-b)`. Le circuit ci-dessous réalise la soustraction :math:`b-a`. Notez que le report du bit de poids faible est mis à `1` et que les bits :math:`a_{i}` sont inversés.
+Si on sait facilement calculer l'opposé d'un nombre, et additionner deux nombres, il devient possible de réaliser la soustraction. Pour calculer :math:`a-b`, il suffit de calculer :math:`a+(-b)`. Le circuit de la figure :numref:`fig-b-a` réalise la soustraction :math:`b-a`. Notez que le report du bit de poids faible est mis à `1` et que les bits :math:`a_{i}` sont inversés.
 
+.. _fig-b-a:
 .. tikz:: Soustraction: b-a
    :libs: positioning 
    

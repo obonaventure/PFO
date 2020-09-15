@@ -12,9 +12,10 @@ L'autre point que nous devons aborder sont les fonctions primitives. Durant la p
 Les fonctions "multi-bits"
 --------------------------
 
-Les fonctions multi-bits sont simplement des fonctions qui sont appliquées de la même façon à plusieurs entrées. Le circuit ci-dessous applique la fonction `NOT` à quatre entrées baptisées `x[0]`, `x[1]`, `x[2]` et `x[3]`. Les sorties sont `out[0]`, `out[1]`, `out[2]` et `out[3]`.
+Les fonctions multi-bits sont simplement des fonctions qui sont appliquées de la même façon à plusieurs entrées. Le circuit de la figure :numref:`fig-not-4` applique la fonction `NOT` à quatre entrées baptisées `x[0]`, `x[1]`, `x[2]` et `x[3]`. Les sorties sont `out[0]`, `out[1]`, `out[2]` et `out[3]`.
 
 
+.. _fig-not-4:
 .. tikz:: Représentation graphique d'un circuit NOT 4-bits
 
    [label distance=2mm, scale=2,
@@ -53,8 +54,9 @@ Les fonctions multi-bits sont simplement des fonctions qui sont appliquées de l
 
 
 Il est aussi possible de construire des versions multi-bits des fonctions
-`AND` et `OR`. Ces deux circuits sont représentés graphiques ci-dessous.
-   
+`AND` et `OR`. Ces deux circuits sont représentés dans les figures :numref:`fig-and-2` et :numref:`fig-or-2`.
+
+.. _fig-and-2:
 .. tikz:: Représentation graphique d'un circuit AND 2-bits
 
    [label distance=2mm, scale=2,
@@ -87,7 +89,7 @@ Il est aussi possible de construire des versions multi-bits des fonctions
    \draw (t1.output) -- (out0);
    \draw (t2.output) -- (out1);
 
-
+.. _fig-or-2:
 .. tikz:: Représentation graphique d'un circuit OR 2-bits
 
    [label distance=2mm, scale=2,
@@ -174,8 +176,5 @@ La fonction `NAND` est une fonction de base qui permet d'implémenter toutes les
 2. En utilisant uniquement des fonctions `NAND`, implémentez la fonction `XOR`.
 
 
-  
-Premier projet
-==============
-
+ 
    
