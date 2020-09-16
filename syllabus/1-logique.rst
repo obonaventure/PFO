@@ -6,14 +6,14 @@ Le fonctionnement des ordinateurs s'appuie sur quelques principes très simples,
  - ``0``
  - ``1``
 
-On peut associer une signification à ces bits. Il est par exemple courant de considéré que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois conduire à des erreurs.
+On peut associer une signification à ces bits. Il est par exemple courant de considéré que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois porter à confusion. 
 
-Avec ces deux valeurs booléennes, il est intéressant de définir des opérations. Une opération booléenne est une fonction qui prend en entrée 0, 1 ou plusieurs bits et retour un résultat.
+Avec ces deux valeurs booléennes, il est intéressant de définir des opérations. Une opération booléenne est une fonction qui prend en entrée 0, 1 ou plusieurs bits et retourne un résultat.
 
 Fonctions booléennes
 ====================
 
-La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x`comprend les différentes valeurs possibles de l'entrée `x` et la valeur du résultat.
+La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x` contient les différentes valeurs possibles de l'entrée `x` et la valeur du résultat pour chacune des valeurs possibles de `x`.
 
 
 === ========
@@ -26,7 +26,7 @@ x   identité
 
 Cette fonction n'est pas très utile en pratique. Elle nous permet d'illustrer une table de vérité simple dans laquelle il y a une valeur binaire en entrée et une valeur binaire également en sortie.
 
-Une fonction plus intéressant est l'inverseur, aussi appelée avec la notation `NOT` en anglais. Cette fonction prend comme entrée un bit. Si le bit d'entrée vaut ``1``, elle retourne ``0``. Tandis que si le bit d'entrée vaut ``0``, elle retourne ``0``. Cette fonction sera très fréquemment utilisée pour construire des circuits électroniques utilisés dans les ordinateurs. 
+Une fonction plus intéressante est l'inverseur, aussi dénommée `NOT` en anglais. Cette fonction prend comme entrée un bit. Si le bit d'entrée vaut `1`, elle retourne `0`. Tandis que si le bit d'entrée vaut `0`, elle retourne `1`. Cette fonction sera très fréquemment utilisée pour construire des circuits électroniques utilisés dans les ordinateurs. 
 
 === ======
 x   NOT(x)
@@ -62,7 +62,7 @@ Fonctions booléennes à deux entrées
 ------------------------------------
 
 Plusieurs fonctions booléennes classiques existent. Les premières correspondent
-à la conjonction (`et`) et la disjonction (`ou`) en logique. Commençons par
+à la conjonction (`et`) et à la disjonction (`ou`) en logique. Commençons par
 la fonction `AND`. Celle-ci correspond à la table de vérité suivante:
 
 === = ========
@@ -93,7 +93,7 @@ x   y OR(x,y)
 
 On remarque aisément que la fonction `OR(x,y)` correspond bien à la disjonction logique lorsque `1` représente la valeur `Vrai`. Cette fonction `OR(x,y)` ne retourne la valeur ``0`` que si ses deux entrées valent ``0``. Dans tous les autres cas, elle retourne la valeur ``1``.
 
-Ces fonctions peuvent être combinées entre elles. Un premier exemple est d'appliquer un inverseur (opération `NOT` au résultat de la fonction `AND`). Cette fonction booléenne s'appelle généralement `NAND` (`NOT AND`) et sa table de vérité est la suivante. On pourra dire que :math:`NAND(x,y) \iff NOT(AND(x,y)`. 
+Ces fonctions peuvent être combinées entre elles. Un premier exemple est d'appliquer un inverseur (opération `NOT` au résultat de la fonction `AND`). Cette fonction booléenne s'appelle généralement `NAND` (`NOT AND`) et sa table de vérité est la suivante. On pourra dire que :math:`NAND(x,y) \iff NOT(AND(x,y))`. 
 
 === = =========
 x   y NAND(x,y) 
@@ -105,7 +105,7 @@ x   y NAND(x,y)
 === = =========
 
 
-De même, la fonction `NOR` s'obtient en inversant le résultat de la fonction `OR`. On pourra dire que :math:`NOR(x,y) \iff NOT(OR(x,y)`. 
+De même, la fonction `NOR` s'obtient en inversant le résultat de la fonction `OR`. On pourra dire que :math:`NOR(x,y) \iff NOT(OR(x,y))`. 
 
 
 === = ========
@@ -117,7 +117,7 @@ x   y NOR(x,y)
 1   1 0 
 === = ========
 
-Il est important de noter que `NOR(x,y)` n'est pas équivalent à la fonction `OR(NOT(x),NOT(y))`. La deux table de vérité de cette dernière fonction est reprise ci-dessous.
+Il est important de noter que `NOR(x,y)` n'est pas équivalent à la fonction `OR(NOT(x),NOT(y))`. La table de vérité de cette dernière fonction est reprise ci-dessous.
 
 = = ======  ====== =================
 x y NOT(x)  NOT(y) OR(NOT(x),NOT(y)) 
@@ -149,11 +149,11 @@ _________
 
 .. TODO Exercices inginious sur les fonctions booléennes 
 
-1. Construisez la table de vérité de la fonction booléenne : :math:`AND(x,OR(y,AND(z,a)))`
+1. Construisez la table de vérité de la fonction booléenne à quatre entrées :math:`AND(x,OR(y,AND(z,a)))`
 
-2. Construisez la table de vérité de la fonction booléenne : :math:`OR(AND(NOT(x),y,NOT(z)), AND(x,NOT(y),z) )`
+2. Construisez la table de vérité de la fonction booléenne à trois entrées :math:`OR(AND(NOT(x),y,NOT(z)), AND(x,NOT(y),z) )`
 
-3. Construisez la table de vérité de la fonction booléenne : :math:`AND(x,OR(y,AND(z,a)) )`
+3. Construisez la table de vérité de la fonction booléenne à quatre entrées :math:`AND(x,OR(y,AND(z,a)) )`
 
 .. trouver la table de vérité de
    .. AND(x,OR(y,AND(z,a)))
@@ -201,7 +201,7 @@ x NOT(x) OR(NOT(x),x)
 1   0    1
 = ====== ============
 
-
+Les opérations `AND` et `OR` sont commutatives et associatives comme les opérations arithmétiques d'addition et de multiplication.
 
  - :math:`AND(x,y) \iff AND(y,x)` (commutativité)
  - :math:`OR(x,y) \iff OR(y,x)` (commutativité)
@@ -210,8 +210,13 @@ x NOT(x) OR(NOT(x),x)
 
 Ces lois d'associativité sont importantes car elles vont nous permettre de facilement construire des fonctions booléennes qui prennent un nombre quelconque d'entrées en utilisant des fonctions à deux entrées comme briques de base.
 
+La distributivité est une autre propriété qui relie les fonctions `AND` et `OR`.
+
  - :math:`AND(x,OR(y,z)) \iff OR( AND(x,y), AND(x,z) )` (distributivité)
- - :math:`OR(x,AND(y,z)) \iff AND( OR(x,y), OR(x,z) )` (distributivité)    
+ - :math:`OR(x,AND(y,z)) \iff AND( OR(x,y), OR(x,z) )` (distributivité)
+
+Lorsque l'on ajoute la fonction `NOT`, on obtient deux autres propriétés utiles en pratique.
+ 
  - :math:`AND(x,OR(NOT(x),y) \iff AND(x,y)`
  - :math:`OR(x,AND(NOT(x),y) \iff OR(x,y)`  
 
@@ -227,9 +232,9 @@ Ce lois sont très utiles lorsque l'on doit manipuler des fonctions booléennes.
 Exercices
 _________
 
-1. En utilisant une table de vérité, démontrez que :math:`AND(x,OR(NOT(x),y) \iff AND(x,y)`
+1. En utilisant une table de vérité, démontrez que :math:`AND(x,OR(NOT(x),y)) \iff AND(x,y)`
 
-2. En utilisant une table de vérité, démontrez que :math:`OR(x,AND(NOT(x),y) \iff OR(x,y)` 
+2. En utilisant une table de vérité, démontrez que :math:`OR(x,AND(NOT(x),y)) \iff OR(x,y)` 
 
 .. todo: exercices de simplification d'expressions
 
@@ -334,7 +339,7 @@ in  sel x y
  1   1  0 1
 === === = =
 
-Tant le multiplexeur que le démultiplexeur peuvent s'implémenter en utilisant des portes `AND`, `OR` et des inverseurs. Prenons comme exemple le multiplexeur. Sur base de sa table de vérité, il est possible de l'implémenter en utilisant une fonction `OR` à quatre entrées et des fonctions `AND` à trois entrées.
+Tant le multiplexeur que le démultiplexeur peuvent s'implémenter en utilisant des portes `AND`, `OR` et des inverseurs. Prenons comme exemple le multiplexeur. Nous verrons dans la section suivante qu'il est possible de l'implémenter en utilisant une fonction `OR` à quatre entrées et des fonctions `AND` à trois entrées.
 
 
 
@@ -391,7 +396,7 @@ x y AND(NOT(x),NOT(y))
 = = ==================
 
 
-Deux de ces fonctions  `AND` peuvent être combinées avec un fonction `OR`. Un premier exemple est de combiner les deux premières fonction,  `AND(x,y)` et `AND(NOT(x),y)` pour construire la fonction `OR(AND(x,y),AND(NOT(x),y)`. Sa table de vérité est la suivante.
+Deux de ces fonctions  `AND` peuvent être combinées avec un fonction `OR`. Un premier exemple est de combiner les deux premières fonctions,  `AND(x,y)` et `AND(NOT(x),y)` pour construire la fonction `OR(AND(x,y),AND(NOT(x),y)`. Sa table de vérité est la suivante.
 
 = = =========================
 x y OR(AND(x,y),AND(NOT(x),y) 
@@ -404,7 +409,7 @@ x y OR(AND(x,y),AND(NOT(x),y)
 
 On remarque aisément que la fonction combinée vaut `1` uniquement lorsque `x` vaut `1` et `y` vaut `1` ou lorsque `x` vaut `0` et `y` vaut `1`.
 
-En revenant à notre fonction `DIFF`, on se rend aisément compte qu'elle doit valoir `1` dans uniquement deux cas:
+En revenant à notre fonction `DIFF`, on se rend aisément compte qu'elle doit valoir `1` dans uniquement deux cas :
  - `x` vaut `1` et `y` vaut `0`
  - `x` vaut `0` et `y` vaut `1`
    
@@ -447,7 +452,6 @@ Exercices
 
 Représentations graphiques
 ==========================
-
 
 Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les symboles comme `AND`, `OR`, `NOT`, soit utiliser des symboles graphiques. Ceux-ci sont très utilisés pour construire de petits circuits. La figure :numref:`fig-not` représente l'inverseur ou la fonction `NOT`. La fonction `OR` est présentée schématiquement dans la figure :numref:`fig-or` et la fonction `AND` dans la figure :numref:`fig-and`.
 
@@ -731,8 +735,8 @@ Exercices
 
    .. dessiner un circuit
 
-   .. _fig-ex-circuit-simple:   
-   .. tikz:: Un circuit simple à deux entrées
+.. _fig-ex-circuit-simple:   
+.. tikz:: Un circuit simple à deux entrées
              
       [label distance=2mm, scale=2,
       connection/.style={draw,circle,fill=black,inner sep=1.5pt}
@@ -766,9 +770,9 @@ Exercices
       \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
       \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
-2. Quelle est la table de vérité qui correspond au circuit de la figure :numref:`_fig-ex-circuit-simple3` ?
+2. Quelle est la table de vérité qui correspond au circuit de la figure :numref:`fig-ex-circuitsimple3` ?
 
-   .. _fig-ex-circuit-simple3: 
+   .. _fig-ex-circuitsimple3: 
    .. tikz:: Un circuit simple à trois entrées
              
       [label distance=2mm, scale=2,
@@ -813,12 +817,12 @@ Un langage de description de circuits logiques
 ==============================================
 
 
-Les représentations graphiques sont très utiles pour permettre à des électroniciens de discuter de circuits électroniques, mais de nos jours ils travaillent généralement en utilisant des langages informatiques qui permettent de décrire ces circuits électroniques sous la forme de commande. L'avantage de ces langages est qu'ils peuvent facilement être utilisés dans des logiciels de simulations ou d'analyse de circuits. C'est ce que nous ferons dans le cadre de ce cours avec le langage HDL proposé par les auteurs du livre `Building a Modern Computer from First Principles <https://nand2tetris.org>`_.
+Les représentations graphiques sont très utiles pour permettre à des électroniciens de discuter de circuits électroniques, mais de nos jours ils travaillent généralement en utilisant des langages informatiques qui permettent de décrire ces circuits électroniques sous la forme de commandes. L'avantage de ces langages est qu'ils peuvent facilement être utilisés dans des logiciels de simulation ou d'analyse de circuits. C'est ce que nous ferons dans le cadre de ce cours avec le langage HDL proposé par les auteurs du livre `Building a Modern Computer from First Principles <https://nand2tetris.org>`_.
 
 
 Il existe de nombreux langages qui permettent de décrire de façon précise des fonctions booléennes et des circuits électroniques de façon générale [#hdl]_ . Une description détaillée de ces langages sort du cadre de ce cours. Nous nous contenterons de voir celui qui est utilisé par les simulateurs du livre de référence. 
 
-Quatre types de fichiers sont utilisés par le simulateur:
+Quatre types de fichiers sont utilisés par le simulateur :
  - les fichiers de description de circuits (nom de fichier se terminant par `.hdl`)
  - les fichiers qui définissent les tests à réaliser sur les circuits (nom de fichier se terminant par `.tst`)
  - les fichiers contenant les sorties d'un circuit obtenues lors de l'exécution d'un fichier de test (nom de fichier se terminant par `.out`)
@@ -836,7 +840,7 @@ Comme dans tout langage de programmation, HDL permet d'inclure des commentaires.
      * un commentaire sur plusieurs lignes
      */
 
-Le langage HDL comprend différents mots-clés que l'on retrouve dans toute description de circuits. Le premier est le mot clé `CHIP` qui permet donner un nom au circuit électronique que l'on décrit dans le fichier. Il est préférable d'utiliser comment nom du circuit le même nom que celui du fichier. Le livre recommande d'utiliser un nom commençant par une majuscule pour les circuits que l'on crée. La définition d'un circuit commencent après l'accolade ouvrante (`{`)  et se termine à l'accolade fermante (`}`).
+Le langage HDL comprend différents mots-clés que l'on retrouve dans toute description de circuits. Le premier est le mot clé `CHIP` qui permet donner un nom au circuit électronique que l'on décrit dans le fichier. Il est préférable d'utiliser comme nom du circuit le même nom que celui du fichier. Le livre recommande d'utiliser un nom commençant par une majuscule pour les circuits que l'on crée. La définition d'un circuit commence après l'accolade ouvrante (`{`)  et se termine à l'accolade fermante (`}`).
 
 .. code-block:: console
                 
@@ -853,7 +857,7 @@ A l'intérieur de la définition d'un circuit, on peut utiliser différents mots
  - `IN` permet de lister un ensemble d'entrées
  - `OUT` permet de lister un ensemble de sorties
 
-Ces deux mots-clés sont utilisés au début de la description d'un circuit. Chaque entrée et chaque sortie doit avoir un nom différent. Par convention, on utilisera un nom écrit en minuscules et commençant par une lettre pour les entrées et les sorties. Les noms des entrées/sorties doivent être séparées par des virgules et la liste des entrées/sorties doit se terminer par le caractère `;`. 
+Ces deux mots-clés sont utilisés au début de la description d'un circuit. Chaque entrée et chaque sortie doit avoir un nom différent. Par convention, on utilisera un nom écrit en minuscules et commençant par une lettre pour les entrées et les sorties. Les noms des entrées/sorties doivent être séparés par des virgules et la liste des entrées/sorties doit se terminer par un point-virgule (`;`). 
 
 .. code-block:: console
 
@@ -872,11 +876,11 @@ Après avoir spécifié les entrées/sorties, il faut indiquer les différentes 
       OUT ... // les sorties du circuit
 
       PARTS:   // les composantes du circuit
-        // description des différents parties du circuit
+        // description des différentes parties du circuit
    } // marque la fin de la définition du circuit Nom
 
 
-HDL peut être utilisé pour construire de nombreuses fonctions booléennes en s'appuyant sur les fonctions existantes. Le simulateur supporte différents fonctions de base dont:
+HDL peut être utilisé pour construire de nombreuses fonctions booléennes en s'appuyant sur les fonctions existantes. Le simulateur supporte différentes fonctions de base dont :
 
  - la fonction `Nand` qui est la fonction primitive pour de très nombreux circuits électroniques
  - la fonction `And`
@@ -935,7 +939,7 @@ Un autre exemple est de construire un circuit qui implémente la fonction `AND` 
    }
 
    
-Un exemple plus complexe est de construire une implémentation de la fonction `XOR` sur base des fonctions `AND`, `OR`et `NOT`.    
+Un exemple plus complexe est de construire une implémentation de la fonction `XOR` sur base des fonctions `AND`, `OR` et `NOT`.    
 
 
 .. code-block:: console
@@ -956,7 +960,7 @@ Un exemple plus complexe est de construire une implémentation de la fonction `X
    }
 
 
-Les fichiers `HDL` contiennent la description du circuit électronique. Ils seront utilisés pour les différents projets de ce cours. Outre le langage HDL, le simulateur proposé dans le livre de référence supporte également un langage qui permet de définir les tests que chaque circuit doit supporter. Ces tests sont très importants car ils définissent de façon précise les sorties attendues de chaque circuit. Prenons comme exemple les tests pour la fonction `NOT`. Ceux-ci sont définis dans le fichier `Nand.tst` du premier projet. La fonction `Not` a une entrée baptisée `in` et une sortie baptisée `out`. 
+Les fichiers `HDL` contiennent la description du circuit électronique. Ils seront utilisés pour les différents projets de ce cours. Outre le langage HDL, le simulateur proposé dans le livre de référence supporte également un langage qui permet de définir les tests que chaque circuit doit supporter. Ces tests sont très importants car ils définissent de façon précise les sorties attendues de chaque circuit. Prenons comme exemple les tests pour la fonction `NOT`. Ceux-ci sont définis dans le fichier `Not.tst` du premier projet. La fonction `Not` a une entrée baptisée `in` et une sortie baptisée `out`. 
 
 .. code-block:: console
 
@@ -983,7 +987,7 @@ Ce test charge le fichier contenant la description du circuit (`Not.hdl`). Il d�
 
 Dans la deuxième partie de la suite de test, la commande `set` permet de fixer les valeurs des différentes entrées. Comme le circuit n'a qu'une entrée, il suffit de deux commandes `set` pour couvrir toutes les possibilités.
 
-Le fichier `Not.cmp` reprend les résultats attendus lors de l'exécution du circuit qui implémente l'inverseur.
+Le fichier `Not.cmp` reprend les résultats attendus lors de l'exécution du circuit qui implémente l'inverseur. Dans ce cas, il s'agit de la table de vérité complète de l'inverseur. Pour des circuits plus simples, ce fichier ne contiendra que les valeurs attendues pour les tests réalisés.
 
 .. code-block:: console
 
@@ -1019,7 +1023,7 @@ Exercices
    ]
    \node (x) at (0,0) {$x$};
    \node (y) at (0.5,0) {$y$};
-   \node (sel) at (2.2,0) {$sel$};
+   \node (sel) at (2.2,0) {$fct$};
    
    \node (mux) at (2.1,-1) {$mux$};
    \node (out) at (3,-1) {$out$};

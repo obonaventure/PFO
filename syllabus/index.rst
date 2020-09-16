@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Notes du cours LSINC1102
-========================
+Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
+======================================================================
 
 .. toctree::
    :maxdepth: 2
@@ -12,9 +12,9 @@ Notes du cours LSINC1102
 
    introduction   
    1-logique
-   1b-logique2
-   2-arithmetique
-   3-memoire
+..   1b-logique2
+..   2-arithmetique
+..   3-memoire
              
 Indices et tables
 =================
