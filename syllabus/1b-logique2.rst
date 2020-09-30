@@ -173,8 +173,61 @@ La fonction `NAND` est une fonction de base qui permet d'implémenter toutes les
 
    On est presque à celle de la fonction `OR`. Il suffit en effet d'inverser son résultat pour obtenir la fonction `OR`. Donc, :math:`NAND( NAND( NAND(x,x), NAND(y,y) ), NAND( NAND(x,x), NAND(y,y) )) \iff OR(x,y)`.
    
-2. En utilisant uniquement des fonctions `NAND`, implémentez la fonction `XOR`.
+2. En utilisant uniquement des fonctions `NAND`, implémentez les fonctions suivantes:
+   - `XOR`
+   - `NOR`  
 
 
- 
+3. La fonction `NOR` est également une fonction universelle qui permet d'implémenter n'importer quelle fonction logique. En utilisant uniquement une fonction `NOR`, implémentez les fonctions suivantes:
+
+    - inverseur (`NOT`)
+    - `OR`
+    - `AND`
+    - `XOR`
+    - `NAND`
+
+
+Pour rappel, la table de vérité de la fonction `NOR` est la suivante :
+
+=== = ========
+x   y NOR(x,y) 
+--- - --------
+0   0 1 
+0   1 0 
+1   0 0 
+1   1 0 
+=== = ========
+
+Premier projet
+--------------
+
+Votre premier projet dans le cadre de ce cours est de construire les circuits de base de l'on retrouve dans tout ordinateur en utilisant exclusivement des fonctions `NAND`. Ces circuits sont:
+
+ - `NOT` (une entrée), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Not
+ - `AND` (deux entrées), voir https://inginious.info.ucl.ac.be/course/LSINC1102/And
+ - `OR` (deux entrées), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Or
+ - `XOR` (deux entrées), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Xor  
+ - Multiplexeur (deux entrées et sélecteur), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Mux
+ - Démultiplexeur (une entrée et sélecteur, une sortie), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Dmux
+
+Construisez ces différents circuits dans l'ordre indiqué en réutilisant pour chaque circuit votre circuit précédent.
    
+Dans la suite du cours, vous devrez aussi utiliser des circuits qui manipulent des mots de 16 bits. Vous devez donc construire les circuits :
+
+ - `NOT16` (16 entrées et 16 sorties), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Not16
+ - `AND16` (16 entrées et 16 sorties), voir https://inginious.info.ucl.ac.be/course/LSINC1102/And16
+ - `OR16` (16 entrées et 16 sorties), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Or16
+ - Multiplexeur16 (2 fois 16 entrées, un sélecteur et 16 sorties), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Mux16
+
+En outre, vous devez également construire les circuits suivants:
+
+ - une fonction `OR` avec 8 entrées et une sortie (`Or8Way`), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Or8Way
+ - un multiplexeur avec 4 entrées sur 16 bits, un sélecteur sur 2 bits et 16 sorties (`Mux4Way16`), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Mux4Way16
+ - un multiplexeur avec 8 entrées sur 16 bits, un sélecteur sur 3 bits et 16 sortie (`Mux8Way16`), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Mux8Way16
+ - un démultiplexeur une entrée sur 16 bits, un sélecteur sur 2 bits et 4 sorties sur 16 bits (`DMux4Way`), voir https://inginious.info.ucl.ac.be/course/LSINC1102/DMux4Way
+ - un démultiplexeur une entrée sur 16 bits, un sélecteur sur 3 bits et 8 sorties sur 16 bits (`DMux8Way`), voir https://inginious.info.ucl.ac.be/course/LSINC1102/DMux8Way
+   
+   
+Ce projet est également décrit en ligne sur le site `nand2tetris.org/project01 <https://www.nand2tetris.org/project01>`_.
+
+La date limite pour ce projet est fixée au lundi 12 octobre 2020 à 18h00. Vous devez déposer toutes vos solutions aux exercices pour cette date sur https://inginious.info.ucl.ac.be/course/LSINC1102/ Vous recevrez un feedback sur votre projet durant la séance de travaux pratiques du vendredi 16 octobre 2020.

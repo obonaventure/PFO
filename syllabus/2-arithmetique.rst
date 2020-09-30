@@ -107,9 +107,9 @@ _________
    - :math:`N = P`
 
 7. Combien de nombres naturels différents peut-on représenter avec un nombre décimal sur:
-   - 8 bits
-   - 16 bits
-   - 32 bits
+   - 8 bits (c'est-à-dire un :index:`byte` ou un :index:`octet`)
+   - 16 bits 
+   - 32 bits 
 
 Opérations arithmétiques sur les nombres binaires
 -------------------------------------------------

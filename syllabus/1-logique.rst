@@ -245,7 +245,7 @@ _________
 
 4. En utilisant une table de vérité, démontrez la deuxième loi de De Morgan :math:`NOT( AND(x,y) ) = OR ( NOT(x), NOT(y) )`
 
-5. Considérons la fonction booléenne :math:`OR( AND(NOT(x),y), AND(y,NOT(z)), AND(y,z), AND(x,NOT(y),NOT(z)) )`. Pouvez-vous simplifier cette fonction en utilisant uniquement une fonction booléenne `AND` à deux entrées, une fonction `OR` à deux entrées et un inverseur ?
+5. Considérons la fonction booléenne :math:`OR( AND(NOT(x),y), AND(y,NOT(z)), AND(y,z), AND(x,AND(NOT(y),NOT(z))) )`. Pouvez-vous simplifier cette fonction en utilisant uniquement une fonction booléenne `AND` à deux entrées, une fonction `OR` à deux entrées et un inverseur ?
 
    
    
