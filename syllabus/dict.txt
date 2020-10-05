@@ -9,3 +9,5 @@ MIT
 NOR
 XOR
 EQ
+feedback
+Klingon
