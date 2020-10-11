@@ -11,3 +11,7 @@ XOR
 EQ
 feedback
 Klingon
+ADD
+adder
+half
+nibble

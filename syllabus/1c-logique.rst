@@ -10,52 +10,56 @@ Dans un ordinateur, toutes les informations peuvent être stockées sous la form
 
 Parmi les tables d'encodage des caractères les plus simples, la plus connue est certainement la table US-ASCII dont la définition est notamment reprise dans :rfc:`20`. Cette table associe une séquence de 7 bits (`b7` à `b1`) à un caractère particulier. Pour des raisons historiques, certains de ces caractères sont des caractères dits "de contrôle" qui ne sont pas imprimables. Ils permettaient de contrôler le fonctionnement de terminaux ou d'imprimantes. Par exemple, les caractères `CR` et/ou `LF` correspondent au retour de charriot et au passage à la ligne sur un écran ou une imprimante.  
 
-.. _table-ascii:
-.. code-block:: console
 
+
+   .. code-block:: console
+      :name: table-ascii
+      :caption: Table des caractères ASCII
                 
-   |----------------------------------------------------------------------|
-     B  \ b7 ------------>| 0   | 0   | 0   | 0   | 1   | 1   | 1   | 1   |
-      I  \  b6 ---------->| 0   | 0   | 1   | 1   | 0   | 0   | 1   | 1   |
-       T  \   b5 -------->| 0   | 1   | 0   | 1   | 0   | 1   | 0   | 1   |
-        S                 |-----------------------------------------------|
-                  COLUMN->| 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   |
-   |b4 |b3 |b2 |b1 | ROW  |     |     |     |     |     |     |     |     |
-   +----------------------+-----------------------------------------------+
-   | 0 | 0 | 0 | 0 | 0    | NUL | DLE | SP  | 0   | @   | P   |   ` |   p |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 0 | 0 | 1 | 1    | SOH | DC1 | !   | 1   | A   | Q   |   a |   q |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 0 | 1 | 0 | 2    | STX | DC2 | "   | 2   | B   | R   |   b |   r |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 0 | 1 | 1 | 3    | ETX | DC3 | #   | 3   | C   | S   |   c |   s |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 1 | 0 | 0 | 4    | EOT | DC4 | $   | 4   | D   | T   |  d  |   t |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 1 | 0 | 1 | 5    | ENQ | NAK | %   | 5   | E   | U   |  e  |   u |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 1 | 1 | 0 | 6    | ACK | SYN | &   | 6   | F   | V   |  f  |   v |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 0 | 1 | 1 | 1 | 7    | BEL | ETB | '   | 7   | G   | W   |  g  |   w |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 0 | 0 | 0 | 8    | BS  | CAN | (   | 8   | H   | X   |  h  |   x |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 0 | 0 | 1 | 9    | HT  | EM  | )   | 9   | I   | Y   |  i  |   y |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 0 | 1 | 0 | 10   | LF  | SUB | *   | :   | J   | Z   |  j  |   z |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 0 | 1 | 1 | 11   | VT  | ESC | +   |  ;  | K   | [   |  k  |   { |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 1 | 0 | 0 | 12   | FF  | FS  | ,   | <   | L   | \   |  l  |   | |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 1 | 0 | 1 | 13   | CR  | GS  | -   | =   | M   | ]   |  m  |   } |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 1 | 1 | 0 | 14   | SO  | RS  | .   | >   | N   | ^   |  n  |   ~ |
-   |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
-   | 1 | 1 | 1 | 1 | 15   | SI  | US  | /   | ?   | O   | _   |  o  | DEL |
-   +----------------------+-----------------------------------------------+
+      |----------------------------------------------------------------------|
+        B  \ b7 ------------>| 0   | 0   | 0   | 0   | 1   | 1   | 1   | 1   |
+         I  \  b6 ---------->| 0   | 0   | 1   | 1   | 0   | 0   | 1   | 1   |
+          T  \   b5 -------->| 0   | 1   | 0   | 1   | 0   | 1   | 0   | 1   |
+           S                 |-----------------------------------------------|
+                     COLUMN->| 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   |
+      |b4 |b3 |b2 |b1 | ROW  |     |     |     |     |     |     |     |     |
+      +----------------------+-----------------------------------------------+
+      | 0 | 0 | 0 | 0 | 0    | NUL | DLE | SP  | 0   | @   | P   |   ` |   p |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 0 | 0 | 1 | 1    | SOH | DC1 | !   | 1   | A   | Q   |   a |   q |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 0 | 1 | 0 | 2    | STX | DC2 | "   | 2   | B   | R   |   b |   r |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 0 | 1 | 1 | 3    | ETX | DC3 | #   | 3   | C   | S   |   c |   s |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 0 | 0 | 4    | EOT | DC4 | $   | 4   | D   | T   |  d  |   t |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 0 | 1 | 5    | ENQ | NAK | %   | 5   | E   | U   |  e  |   u |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 1 | 0 | 6    | ACK | SYN | &   | 6   | F   | V   |  f  |   v |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 1 | 1 | 7    | BEL | ETB | '   | 7   | G   | W   |  g  |   w |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 0 | 0 | 8    | BS  | CAN | (   | 8   | H   | X   |  h  |   x |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 0 | 1 | 9    | HT  | EM  | )   | 9   | I   | Y   |  i  |   y |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 1 | 0 | 10   | LF  | SUB | *   | :   | J   | Z   |  j  |   z |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 1 | 1 | 11   | VT  | ESC | +   |  ;  | K   | [   |  k  |   { |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 0 | 0 | 12   | FF  | FS  | ,   | <   | L   | \   |  l  |   | |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 0 | 1 | 13   | CR  | GS  | -   | =   | M   | ]   |  m  |   } |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 1 | 0 | 14   | SO  | RS  | .   | >   | N   | ^   |  n  |   ~ |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 1 | 1 | 15   | SI  | US  | /   | ?   | O   | _   |  o  | DEL |
+      +----------------------+-----------------------------------------------+
 
-La table US-ASCII (table :numref:``table-ascii`) définit les représentations binaires suivantes:
+   
+   
+La table US-ASCII (table :numref:`table-ascii`) définit les représentations binaires suivantes:
 
  - `01100000` correspond au caractère représentant le chiffre `0`
  - `01101001` correspond au caractère représentant le chiffre `9`
@@ -141,7 +145,7 @@ Ces deux fonctions peuvent se généraliser. Plutôt que de décaler la séquenc
 Exercices
 _________
 
-1. Écrivez la table de vérité de la fonction de décalage permettant de décaler bloc de quatre bits (:index:`nibble` en anglais et quartet ou semi-octet en français d'une place vers la droite. Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.
+1. Écrivez la table de vérité de la fonction de décalage permettant de décaler bloc de quatre bits (:index:`nibble` en anglais et index:`quartet` ou index:`semi-octet` en français d'une place vers la droite. Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.
 
 2. Écrivez la table de vérité de la fonction de décalage permettant de décaler un quartet (4 bits) d'une place vers la gauche. Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.
 
@@ -157,7 +161,7 @@ _________
 4. Faites de même pour le décalage de `p` places vers la droite.
 
 
-Les fonctions de décalage sont utiles pour certaines manipulations sur les bits dans une séquence. Malheureusement, elles résultent en une perte d'information puisque un ou des bits de poids faible sont perdus lors d'un décalage vers la droite. Les fonctions de rotation évitent ce problème. Elles peuvent notamment servir à construire des algorithmes pour crypter (et décrypter) des données stockées sour forme binaire.
+Les fonctions de décalage sont utiles pour certaines manipulations sur les bits dans une séquence. Malheureusement, elles résultent en une perte d'information puisque un ou des bits de poids faible sont perdus lors d'un décalage vers la droite. Les fonctions de rotation évitent ce problème. Elles peuvent notamment servir à construire des algorithmes pour crypter (et décrypter) des données stockées sous forme binaire.
 
 La rotation la plus simple est la rotation d'une place vers la droite. Cette fonction prend en entrée une séquence de bits :math:`b_{n-1}b_{n-2}...b_{2}b_{1}b_{0}` et retourne la séquence :math:`b_{0}b_{n-1}b_{n-2}...b_{2}b_{1}`. D'une façon similaire, dans un décalage à gauche d'une place, lorsque la fonction reçoit la séquence :math:`b_{n-1}b_{n-2}...b_{2}b_{1}b_{0}` en entrée, elle retourne la séquence :math:`b_{n-2}...b_{2}b_{1}b_{0}b_{n-1}`. Tout comme pour les fonctions de décalage, les fonctions de rotation peuvent recevoir une seconde entrée qui est le nombre de places de rotation.
 

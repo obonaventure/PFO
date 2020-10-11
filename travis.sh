@@ -8,5 +8,7 @@ set -e
 #  -T   output full traceback
 # --keep-going continue the processing after a warning
 cd syllabus
-sphinx-build  -nWNT --keep-going -b html . /tmp
-sphinx-build -b spelling . /tmp
+/usr/bin/sphinx-build  -nWNT --keep-going -b html . /tmp
+/usr/bin/sphinx-build  -M latexpdf . /tmp
+/usr/bin/sphinx-build -b spelling . /tmp
+cd ..
