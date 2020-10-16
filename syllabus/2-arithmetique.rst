@@ -35,7 +35,7 @@ Un tel :index:`quartet`, peut se représenter de façon symbolique: :math:`B_{3}
 
 Cette représentation des quartets est similaire à la représentation que l'on utilise pour les nombres décimaux. Un nombre en représentation décimale peut aussi s'écrire :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}`. Dans cette représentation, les :math:`C_{i}` sont les chiffres de `0` à `9`. :math:`C_{0}` est le chiffre des unités, :math:`C_{1}` le chiffre correspondant aux dizaines, :math:`C_{2}` celui qui correspond aux centaines, ... Numériquement, on peut écrire que la représentation décimale :math:`C_{3}C_{2}C_{1}C_{0}` correspond au nombre :math:`C_{3}*1000 + C_{2}*100 + C_{1}*10 + C_{0}` ou encore :math:`C_{3}*10^{3} + C_{2}*10^{2} + C_{1}*10^{1} + C_{0}*10^{0}` en se rappelant que :math:`10^{0}` vaut 1.
 
-En toute généralité, la suite de chiffres :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` correspond au naturel :math:`\sum{i=0}{i=n-1}C_{i} \times 10^{i}`.
+En toute généralité, la suite de chiffres :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} C_{i} \times 10^{i}`.
 
 A titre d'exemple, le nombre sept cent trente six s'écrit en notation décimale `736`, ce qui équivaut bien à :math:`7*10^{2}+3*10^{2}+6*10^{0}`. 
 
@@ -58,7 +58,7 @@ Pour représenter les nombres naturels en notation binaire, nous allons utiliser
  - `1110` correspond au nombre :math:`1*2^{3}+1*2^{2}+1*2^{1}+0*2^{0}`, soit `14` en notation décimale 
  - `1111` correspond au nombre :math:`1*2^{3}+1*2^{2}+1*2^{1}+1*2^{0}`, soit `15` en notation décimale 
 
-En toute généralité, la suite de bits :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` correspond au naturel :math:`\sum{i=0}{i=n-1}B_{i} \times 2^{i}`.
+En toute généralité, la suite de bits :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} B_{i} \times 2^{i}`.
    
 Cette technique peut s'appliquer à des nombres binaires contenant un nombre quelconque de bits. Pour convertir efficacement un nombre binaire en son équivalent décimal, il est intéressant de connaître les principales puissances de 2:
 
@@ -78,7 +78,7 @@ Cette technique peut s'appliquer à des nombres binaires contenant un nombre que
  - :math:`2^{30}=1073741824` ou un peu plus d'un milliard
  - :math:`2^{32}=4294967296` ou un peu plus de 4 milliards
 
-Cette représentation des nombres peut se généraliser. La notation binaire utilise des puissances de `2` tandis que la notation décimale des puissances de `10`.  On peut faire de même avec d'autres puissances. Ainsi, la suite de symboles :math:`S_{n-1}S_{n-2}...S_{2}S_{1}S_{0}` en base `k` où les symboles :math:`S_{i}` ont une valeur comprises entre `0` et :math:`k-1`, correspond au naturel :math:`\sum{i=0}{i=n-1}S_{i} \times k^{i}`.
+Cette représentation des nombres peut se généraliser. La notation binaire utilise des puissances de `2` tandis que la notation décimale des puissances de `10`.  On peut faire de même avec d'autres puissances. Ainsi, la suite de symboles :math:`S_{n-1}S_{n-2}...S_{2}S_{1}S_{0}` en base `k` où les symboles :math:`S_{i}` ont une valeur comprises entre `0` et :math:`k-1`, correspond au naturel :math:`\sum_{i=0}^{i=n-1}S_{i} \times k^{i}`.
 
 En pratique, outre les notations binaires, deux notations sont couramment utilisées :
 
@@ -811,13 +811,15 @@ Enfin, pour implémenter l'opération `OR` en utilisant l'ALU, on se souviendra 
 Deuxième projet
 ===============
 
-1. Construisez un demi-additionneur sur une bit, https://inginious.info.ucl.ac.be/course/LSINC1102/HalfAdder 
+Ce projet est à rendre par groupe de deux étudiants pour le lundi 26 octobre 2020 à 18h00 sur inginious. 
 
-2. Construisez un additionneur complet sur 1 bit, https://inginious.info.ucl.ac.be/course/LSINC1102/FullAdder
+1. Construisez un demi-additionneur sur un bit, https://inginious.info.ucl.ac.be/course/LSINC1102/HalfAdder 
+
+2. Construisez un additionneur complet sur un bit, https://inginious.info.ucl.ac.be/course/LSINC1102/FullAdder
 
 3. Construisez un additionneur sur 16 bits, https://inginious.info.ucl.ac.be/course/LSINC1102/Add16
 
-4. Construisez un circuit permettent d'incrémenter un nombre sur 16 bits, https://inginious.info.ucl.ac.be/course/LSINC1102/Inc16
+4. Construisez un circuit permettant d'incrémenter un nombre sur 16 bits, https://inginious.info.ucl.ac.be/course/LSINC1102/Inc16
 
 5. Construisez l'ALU qui a été présentée en détails dans la section précédente, https://inginious.info.ucl.ac.be/course/LSINC1102/ALU
    
