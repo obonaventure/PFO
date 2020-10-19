@@ -453,7 +453,7 @@ Exercices
 Représentations graphiques
 ==========================
 
-Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les symboles comme `AND`, `OR`, `NOT`, soit utiliser des symboles graphiques. Ceux-ci sont très utilisés pour construire de petits circuits. La figure :numref:`fig-not` représente l'inverseur ou la fonction `NOT`. La fonction `OR` est présentée schématiquement dans la figure :numref:`fig-or` et la fonction `AND` dans la figure :numref:`fig-and`.
+Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les symboles comme `AND`, `OR`, `NOT`, soit utiliser des symboles graphiques. Ceux-ci sont très utilisés pour construire de petits circuits. La :numref:`fig-not` représente l'inverseur ou la fonction `NOT`. La fonction `OR` est présentée schématiquement dans la :numref:`fig-or` et la fonction `AND` dans la :numref:`fig-and`.
 
 .. _fig-not:
 .. tikz:: Représentation graphique d'une fonction NOT 
@@ -495,7 +495,7 @@ Lorsque l'on travaille avec des fonctions booléennes, on peut soit utiliser les
    \draw (y) -- (and.input 2);
    \draw (and) -- (out);
 
-La fonction `XOR` a aussi sa représentation graphique. Celle-ci est présentée dans la figure :numref:`fig-xor`.
+La fonction `XOR` a aussi sa représentation graphique. Celle-ci est présentée dans la :numref:`fig-xor`.
 
 .. _fig-xor:
 .. tikz:: Représentation graphique d'une fonction XOR 
@@ -512,7 +512,7 @@ La fonction `XOR` a aussi sa représentation graphique. Celle-ci est présentée
    \draw (xor) -- (out);
 
 
-Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND` est finalement une fonction  `AND` suivie d'un inverseur comme représenté sur la figure :numref:`fig-nand`. Cette inversion est symbolisée par un petit rond. Il en va de même pour la fonction `NOR` (:numref:`fig-nor`).    
+Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND` est finalement une fonction  `AND` suivie d'un inverseur comme représenté sur la :numref:`fig-nand`. Cette inversion est symbolisée par un petit rond. Il en va de même pour la fonction `NOR` (:numref:`fig-nor`).    
 
 .. _fig-nand:
 .. tikz:: Représentation graphique d'une fonction NAND 
@@ -543,7 +543,7 @@ Dans de nombreux circuits, on retrouve des inverseurs. Ainsi, la fonction `NAND`
    \draw (y) -- (xor.input 2);
    \draw (xor) -- (out);
 
-Les multiplexeurs et démultiplexeurs ont aussi leur représentation graphique. Le livre les représente en utilisant un triangle comme dans la figure :numref:`fig-mux`.
+Les multiplexeurs et démultiplexeurs ont aussi leur représentation graphique. Le livre les représente en utilisant un triangle comme dans la :numref:`fig-mux`.
 
 .. _fig-mux:
 .. tikz:: Un multiplexeur à deux entrées
@@ -567,7 +567,7 @@ Les multiplexeurs et démultiplexeurs ont aussi leur représentation graphique. 
    \draw [->] (0.6,-1) -- (out);
 
 
-De la même façon, on peut également représenter le démultiplexeur de façon graphique comme représenté dans la figure :numref:`fig-dmux`.
+De la même façon, on peut également représenter le démultiplexeur de façon graphique comme représenté dans la :numref:`fig-dmux`.
 
 
 .. _fig-dmux:
@@ -645,7 +645,7 @@ Cette fonction peut être réalisée en utilisant deux fonctions `AND`, une fonc
    \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
    \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
-Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemment. Celle-ci peut s'implémenter en utilisant deux inverseurs, deux fonctions `AND` et une fonction `OR` comme représenté dans la figure :numref:`fig-xor-real`.
+Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemment. Celle-ci peut s'implémenter en utilisant deux inverseurs, deux fonctions `AND` et une fonction `OR` comme représenté dans la :numref:`fig-xor-real`.
 
 .. _fig-xor-real:
 .. tikz:: Représentation graphique d'un circuit qui réalise la fonction XOR
@@ -683,7 +683,7 @@ Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemm
    \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
 
-Avec un multiplexeur, il est possible de construire un circuit "programmable" qui, en fonction de la valeur de son entrée `sel`, calcule soit la fonction `AND`, soit la fonction `OR`. Ce circuit est représenté dans la figure :numref:`fig-programmable`.
+Avec un multiplexeur, il est possible de construire un circuit "programmable" qui, en fonction de la valeur de son entrée `sel`, calcule soit la fonction `AND`, soit la fonction `OR`. Ce circuit est représenté dans la :numref:`fig-programmable`.
 
 .. _fig-programmable:
 .. tikz:: Un circuit programmable
@@ -731,7 +731,7 @@ Avec un multiplexeur, il est possible de construire un circuit "programmable" qu
 Exercices
 ---------
 
-1. Quelle est la table de vérité qui correspond au circuit représenté dans la figure :numref:`fig-ex-circuit-simple` ?
+1. Quelle est la table de vérité qui correspond au circuit représenté dans la :numref:`fig-ex-circuit-simple` ?
 
    .. dessiner un circuit
 
@@ -770,7 +770,7 @@ Exercices
       \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
       \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
 
-2. Quelle est la table de vérité qui correspond au circuit de la figure :numref:`fig-ex-circuitsimple3` ?
+2. Quelle est la table de vérité qui correspond au circuit de la :numref:`fig-ex-circuitsimple3` ?
 
    .. _fig-ex-circuitsimple3: 
    .. tikz:: Un circuit simple à trois entrées
@@ -902,7 +902,7 @@ En utilisant l'inverseur, il est possible de construire un circuit électronique
    }
 
 
-Graphiquement, ce circuit peut être représenté comme dans la figure :numref:`fig-circuit-rien`.
+Graphiquement, ce circuit peut être représenté comme dans la :numref:`fig-circuit-rien`.
 
 .. _fig-circuit-rien:
 .. tikz:: Représentation graphique du circuit qui ne fait rien
@@ -1013,7 +1013,7 @@ Vous trouverez de nombreux autres exemples de fichiers de test dans l'archive re
 Exercices
 ---------
       
-1. Avec un multiplexeur, il est possible de construire des circuits "programmables", c'est-à-dire des circuits pour lesquels une des entrées permet de choisir la fonction calculée. Considérons le circuit hypothétique représenté dans la figure :numref:`fig-ex-programmable` :
+1. Avec un multiplexeur, il est possible de construire des circuits "programmables", c'est-à-dire des circuits pour lesquels une des entrées permet de choisir la fonction calculée. Considérons le circuit hypothétique représenté dans la :numref:`fig-ex-programmable` :
 
 .. _fig-ex-programmable:   
 .. tikz:: Un exemple de circuit programmable

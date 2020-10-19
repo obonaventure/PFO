@@ -59,7 +59,7 @@ Parmi les tables d'encodage des caractères les plus simples, la plus connue est
 
    
    
-La table US-ASCII (table :numref:`table-ascii`) définit les représentations binaires suivantes:
+La table US-ASCII (:numref:`table-ascii`) définit les représentations binaires suivantes:
 
  - `01100000` correspond au caractère représentant le chiffre `0`
  - `01101001` correspond au caractère représentant le chiffre `9`
@@ -91,7 +91,7 @@ Sur un tel écran, on peut facilement afficher des caractères. Il suffit d'avoi
 
 .. source: https://tex.stackexchange.com/questions/157080/can-tikz-create-pixel-art-images/279697
 
-Une représentation graphique, fortement agrandie, de ce caractère est présentée dans la figure :numref:`fig-pixel-1`.
+Une représentation graphique, fortement agrandie, de ce caractère est présentée dans la :numref:`fig-pixel-1`.
 
 
 .. _fig-pixel-1:

@@ -238,7 +238,7 @@ a b r report somme
 1 1 0    1     0
 = = = ====== =====
 
-Cet additionneur sera important dans le cadre de ce cours. La figure :numref:`fig-adder` le représente schématiquement sous la forme d'un rectangle avec (`a`, `b` et `r`) et deux sorties (`report` et `somme`).
+Cet additionneur sera important dans le cadre de ce cours. La :numref:`fig-adder` le représente schématiquement sous la forme d'un rectangle avec (`a`, `b` et `r`) et deux sorties (`report` et `somme`).
 
 .. _fig-adder:
 .. tikz:: Un additionneur complet
@@ -260,7 +260,7 @@ Cet additionneur sera important dans le cadre de ce cours. La figure :numref:`fi
     \draw[<-] (a.east) --++(0:0.5cm) node [right] {$r$};
     \draw[->] (a.west) --++(180:0.5cm) node [left] {};
 
-Le plus intéressant est que ces additionneurs peuvent se combiner en cascade pour construire un additionneur qui est capable d'additionner deux nombres binaires sur `n` bits. La figure :numref:`fig-adder-4` présente un additionneur qui travaille avec deux quartets, `a` et `b`.
+Le plus intéressant est que ces additionneurs peuvent se combiner en cascade pour construire un additionneur qui est capable d'additionner deux nombres binaires sur `n` bits. La :numref:`fig-adder-4` présente un additionneur qui travaille avec deux quartets, `a` et `b`.
 
 .. _fig-adder-4:
 .. tikz:: Avec quatre additionneurs, on peut additionner des quartets 
@@ -310,7 +310,7 @@ Pour des raisons graphiques, il est compliqué de dessiner un additionneur pour 
     
 L'additionneur que nous venons de construire prend comme entrées les bits des deux nombres à additionner. Dans ce circuit, le report de l'additionneur qui correspond au bit de poids faible est mis à `0`. Que se passerait-il si cette entrée `r` était mise à la valeur `1` ? Le circuit calculerait le résultat de l'addition :math:`a+b+1`.
 
-En informatique, on doit très souvent incrémenter une valeur entière, par exemple à l'intérieur de boucles. Si `a` est la valeur à incrémenter, on peut grâce à nos quatre additionneurs incrémenter cette valeur en forçant les entrées :math:`b_{i}` à 0 et le report du bit de poids faible à `1`. Ce circuit est représenté dans le schéma de la figure :numref:`fig-adder-nibble`.
+En informatique, on doit très souvent incrémenter une valeur entière, par exemple à l'intérieur de boucles. Si `a` est la valeur à incrémenter, on peut grâce à nos quatre additionneurs incrémenter cette valeur en forçant les entrées :math:`b_{i}` à 0 et le report du bit de poids faible à `1`. Ce circuit est représenté dans le schéma de la :numref:`fig-adder-nibble`.
 
 
 .. _fig-adder-nibble:
@@ -471,7 +471,7 @@ Sur base de cette table de vérité, on pourrait facilement construire un circui
  b. incrémenter d'une unité le nombre binaire obtenu
 
 
-La première opération est facile à réaliser en utilisant la fonction `NOT`. La seconde peut se réaliser en utilisant notre additionneur avec un report du bit de poids faible initialisé à `1`. Schématiquement, le circuit à construire pour calculer l'opposé du quartet `a` est donc celui de la figure :numref:`fig-nibble-oppose`.
+La première opération est facile à réaliser en utilisant la fonction `NOT`. La seconde peut se réaliser en utilisant notre additionneur avec un report du bit de poids faible initialisé à `1`. Schématiquement, le circuit à construire pour calculer l'opposé du quartet `a` est donc celui de la :numref:`fig-nibble-oppose`.
 
 .. _fig-nibble-oppose:
 .. tikz:: Calcul de l'opposé d'un quartet 
@@ -537,7 +537,7 @@ La première opération est facile à réaliser en utilisant la fonction `NOT`. 
     \draw[->] (d.west) --++(180:0.5cm) node [left] {$r$};
     
 
-Si on sait facilement calculer l'opposé d'un nombre, et additionner deux nombres, il devient possible de réaliser la soustraction. Pour calculer :math:`a-b`, il suffit de calculer :math:`a+(-b)`. Le circuit de la figure :numref:`fig-b-a` réalise la soustraction :math:`b-a`. Notez que le report du bit de poids faible est mis à `1` et que les bits :math:`a_{i}` sont inversés.
+Si on sait facilement calculer l'opposé d'un nombre, et additionner deux nombres, il devient possible de réaliser la soustraction. Pour calculer :math:`a-b`, il suffit de calculer :math:`a+(-b)`. Le circuit de la :numref:`fig-b-a` réalise la soustraction :math:`b-a`. Notez que le report du bit de poids faible est mis à `1` et que les bits :math:`a_{i}` sont inversés.
 
 .. _fig-b-a:
 .. tikz:: Soustraction: b-a
@@ -638,7 +638,7 @@ _________
 Unité Arithmétique et Logique
 -----------------------------
 
-Cet additionneur joue un rôle important dans les microprocesseurs utilisés par un ordinateur. Souvent, il n'est pas utilisé seul, mais plutôt à l'intérieur d'une :index:`Unité Arithmétique et Logique` (`Arithmetic and Logic Unit` (ALU) en anglais). Ce circuit constitue le coeur d'un ordinateur au niveau du calcul. Il combine les principales fonctions de manipulations de séquences de bits. Dans le projet précédent, vous avez construit un premier circuit programmable: le multiplexeur. Celui-ci a deux entrées sur `n` bits et un signal de contrôle qui permet de sélectionner en sortie la valeur de la première ou de la seconde entrée. L'ALU va plus loin car elle prend deux signaux sur `n` bits en entrée (`x` et `y`) et plusieurs signaux de contrôle qui permettent de sélectionner l'opération à effectuer et à envoyer vers les fils de sortie. L'ALU proposée dans le livre permet de réaliser les 18 opérations reprises dans la table :numref:`table-alu`. 
+Cet additionneur joue un rôle important dans les microprocesseurs utilisés par un ordinateur. Souvent, il n'est pas utilisé seul, mais plutôt à l'intérieur d'une :index:`Unité Arithmétique et Logique` (`Arithmetic and Logic Unit` (ALU) en anglais). Ce circuit constitue le coeur d'un ordinateur au niveau du calcul. Il combine les principales fonctions de manipulations de séquences de bits. Dans le projet précédent, vous avez construit un premier circuit programmable: le multiplexeur. Celui-ci a deux entrées sur `n` bits et un signal de contrôle qui permet de sélectionner en sortie la valeur de la première ou de la seconde entrée. L'ALU va plus loin car elle prend deux signaux sur `n` bits en entrée (`x` et `y`) et plusieurs signaux de contrôle qui permettent de sélectionner l'opération à effectuer et à envoyer vers les fils de sortie. L'ALU proposée dans le livre permet de réaliser les 18 opérations reprises dans la :numref:`table-alu`. 
 
 
 .. _table-alu:
