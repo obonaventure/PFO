@@ -74,11 +74,12 @@ spelling_show_suggestions=True
 latex_elements = {
     'preamble': r'''
 \pgfplotsset{compat=1.16}
+\usepackage{circuitikz}
 '''
 }
 # tikz
 
-tikz_tikzlibraries = "circuits.logic.US,positioning"
+tikz_tikzlibraries = "circuits.logic.US,positioning,calc,quotes,backgrounds"
 tikz_proc_suite = 'ImageMagick'
 
 # -- Options for HTML output -------------------------------------------------

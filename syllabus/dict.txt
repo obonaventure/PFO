@@ -15,3 +15,13 @@ ADD
 adder
 half
 nibble
+flip
+flop
+inginious
+reset
+Kbits
+Mbits
+MBytes
+Hennessy
+Patterson
+

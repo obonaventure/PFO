@@ -54,9 +54,9 @@ Les fonctions multi-bits sont simplement des fonctions qui sont appliquées de l
 
 
 Il est aussi possible de construire des versions multi-bits des fonctions
-`AND` et `OR`. Ces deux circuits sont représentés dans les figures :numref:`fig-and-2` et :numref:`fig-or-2`.
+`AND` et `OR`. Ces deux circuits sont représentés dans les figures :numref:`fig-and2` et :numref:`fig-or-2`.
 
-.. _fig-and-2:
+.. _fig-and2:
 .. tikz:: Représentation graphique d'un circuit AND 2-bits
 
    [label distance=2mm, scale=2,
