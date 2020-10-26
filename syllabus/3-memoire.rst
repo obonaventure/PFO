@@ -544,7 +544,7 @@ Pour construire cette mémoire contenant huit registres, nous pouvons partir du 
     \draw[->,color=blue] (load) -- (bloc.north);
 
 
-Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre bloc de huit registres. Il suffit de considérer que l'un des blocs de registres correspond aux adresses 0 à 3 et le second aux adresses allant de 4 à 7. En notation binaire, les adresses correspondant au premier bloc vont de :math:`000` à :math:`011` tandis que celle du second bloc vont de :math:`100` à :math:`111`. On peut donc utiliser le bit de poids fort de l'adresse (:math:`A_2`) pour choisir entre le premier bloc de registres et le second. Pour l'opération de lecture, il suffit de connecter un multiplexeur connecté aux sorties et de le commandé en utilisant le bit de poids fort de l'adresse. Ce bit de poids fort doit aussi commander le démultiplexeur se trouvant sur la gauche de :numref:`fig-reg8` pour achememiner le signal `load` vers le `bloc 0` ou le `bloc 1`. 
+Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre bloc de huit registres. Il suffit de considérer que l'un des blocs de registres correspond aux adresses 0 à 3 et le second aux adresses allant de 4 à 7. En notation binaire, les adresses correspondant au premier bloc vont de :math:`000` à :math:`011` tandis que celle du second bloc vont de :math:`100` à :math:`111`. On peut donc utiliser le bit de poids fort de l'adresse (:math:`A_2`) pour choisir entre le premier bloc de registres et le second. Pour l'opération de lecture, il suffit de connecter un multiplexeur connecté aux sorties et de le commandé en utilisant le bit de poids fort de l'adresse. Ce bit de poids fort doit aussi commander le démultiplexeur se trouvant sur la gauche de :numref:`fig-reg8` pour acheminer le signal `load` vers le `bloc 0` ou le `bloc 1`. 
     
 
 .. _fig-reg8:
@@ -596,8 +596,86 @@ Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre 
     \draw [->,thick] (B)-- (1,0) |- (bloc0.150);
     \draw [->,thick] (B)-- (1,0) |- (bloc1.150);
 
-Ce schéma général peut se reproduire sans difficulté pour des mémoires de plus grande capacité. La seule limitation sera technologique et liée au nombre de registres et de multiplexeurs/démultiplexeurs que l'on pourra placer sur une surface donnée.   
+Ce schéma général peut se reproduire sans difficulté pour des mémoires de plus grande capacité. La seule limitation sera technologique et liée au nombre de registres et de multiplexeurs/démultiplexeurs que l'on pourra placer sur une surface donnée.
 
+
+Exercice
+________
+
+Il est souvent nécessaire de compter le nombre de cycles d'horloge qui se sont écoulés depuis un instant donné. Parmi les circuits que vous devez réaliser pour cette mission, l'on retrouve un compteur. Celui que vous devez réaliser a une sortie sur 16 bits et quatre entrées :
+
+ - un entier sur 16 bits
+ - un signal de contrôle `load`
+ - un signal de contrôle `inc`
+ - un signal de contrôle `reset`
+
+Ces différents signaux de contrôle permettent de forcer le compteur à réaliser certaines opérations. Si `reset` est mis à `1` durant un cycle d'horloge, alors la sortie du compteur doit valoir `0` durant le cycle suivant. Ce signal de contrôle permet donc de réinitialiser le compteur.
+
+Si `inc` est mis à `1` durant un cycle d'horloge, alors la sortie durant le cycle d'horloge suivant sera celle du cycle d'horloge courant incrémentée d'une unité. C'est le mode de fonctionnement normal du compteur.
+
+Si `load` est mis à `1` durant un cycle d'horloge, alors le compteur lit la valeur en entrée et c'est cette valeur qui sera retournée sur la sortie du compteur durant le cycle d'horloge suivant.
+
+La :numref:`fig-compteur` présente l'évolution dans le temps d'un compteur à deux bits (:math:`out_1` est le bit de poids fort et :math:`out_0` le bit de poids faible) en fonction des différents signaux de contrôle. On suppose dans cet exemple que les deux signaux d'entrée sont mis à `1` ainsi que :math:`out_1` et :math:`out_0`.
+
+
+
+.. _fig-compteur:
+.. tikz:: Evolution de la sortie du compteur en fonction du temps
+
+          \draw[thick,->] (0,0) -- (5,0) node[anchor=north east] {temps};
+          
+          \foreach \tick in {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5}
+          \draw [dotted,-] (\tick, 0) -- (\tick, -7) node [below] {};
+
+
+          \draw [thick,color=blue,-] (0,-1.5) -- (0.5,-1.5) -- (0.5,-1) -- (1,-1) -- (1,-1.5) -- (5,-1.5);
+          \draw [thick,color=orange,-] (0,-2.5) -- (4,-2.5) -- (4, -2) -- (4.5,-2) -- (4.5,-2.5) -- (5,-2.5);                    
+          \draw [thick,color=green,-] (0,-3.5) -- (1,-3.5) -- (1,-3) -- (3.5,-3) -- (3.5,-3.5) -- (5,-3.5);
+          \node [color=blue] at (-0.5,-1) {Reset}; 
+          \node [color=blue] at (5.5,-1) {1}; 
+          \node [color=blue] at (5.5,-1.5) {0};
+
+          \node [color=orange] at (-0.5,-2) {Load}; 
+          \node [color=orange] at (5.5,-2) {1}; 
+          \node [color=orange] at (5.5,-2.5) {0};
+
+          \node [color=green] at (-0.5,-3) {Inc}; 
+          \node [color=green] at (5.5,-3) {1}; 
+          \node [color=green] at (5.5,-3.5) {0};
+
+          \node [color=black] at (-0.5,-5) {$out_{1}$}; 
+          \node [color=black] at (5.5,-5) {1}; 
+          \node [color=black] at (5.5,-5.5) {0};
+
+          \node [color=black] at (-0.5,-6) {$out_{0}$}; 
+          \node [color=black] at (5.5,-6) {1}; 
+          \node [color=black] at (5.5,-6.5) {0};
+
+
+
+	  \foreach \y in {-4}
+           \foreach \tick in {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5}
+           \draw [thick,color=red,-] (\tick, \y-0.5) -- (\tick, \y) --
+                           (\tick+0.1, \y ) -- (\tick+0.1, \y-0.5 ) --
+                           (\tick+0.5, \y-0.5 ) ;
+                           
+          \node [color=red] at (-0.5,-4) {Clock};
+          \node [color=red] at (5.5,-4) {1};
+          \node [color=red] at (5.5,-4.5) {0};
+
+          \draw [thick,color=black,-] (0,-5) -- (1,-5) -- (1,-5.5) -- (2,-5.5) -- (2, -5) -- (3,-5) -- (3,-5.5) -- (4,-5.5) -- (4.5,-5.5) -- (4.5,-5) -- (5,-5);
+
+	  \draw [thick,color=black,-] (0,-6) -- (1,-6) -- (1,-6.5) -- (1.5,-6.5) -- (1.5,-6) -- (2,-6) -- (2,-6.5) -- (2.5,-6.5) -- (2.5,-6) -- (3,-6) -- (3,-6.5) -- (3.5,-6.5) -- (3.5,-6) -- (4,-6) -- (5,-6); 
+
+
+Durant le premier cycle d'horloge, tous les signaux de contrôle sont à `0` et la sortie garde donc sa valeur initiale. Durant le second cycle d'horloge, le signal de contrôle `reset` est activé. Cela provoque une réinitialisation des sorties :math:`out_1` et :math:`out_0` à `0`, mais celle-ci n'est visible qu'autre troisième cycle d'horloge. Durant ce troisième cycle d'horloge, le signal de contrôle `Inc` est activé. Le compteur commence à s'incrémenter. Durant le quatrième cycle, le compteur retourne la valeur binaire `01`. Durant le sixième cycle, il retourne la valeur binaire `11` qui est la valeur maximale pour un compteur sur deux bits. Comme le signal de contrôle `Inc` reste à `1` le compteur repasse à la valeur binaire `00` durant le cycle suivant. Durant le septième cycle, `Inc` est toujours activé. C'est pour cette raison que le compteur retourne la valeur binaire `01` durant le huitième cycle d'horloge. Le signal `Inc` étant désactivé durant ce cycle, le compteur ne modifie pas sa valeur qui reste inchangée pour le neuvième cycle d'horloge. Enfin, durant le dernière cycle d'horloge sur :numref:`fig-compteur`, on observe le résultat de l'activation du signal `Load` sachant que les deux entrées du compteur sont mises à `1`.
+
+
+	  
+
+1.  Quels sont, à votre avis, les circuits de base qui sont nécessaires pour construire un tel compteur ? Pensez aux différents circuits que vous avez construit durant les dernières semaines.
+
+.. un registre, trois multiplexeurs et un incrémenteur
 
 Les mémoires RAM et ROM
 -----------------------
@@ -795,7 +873,7 @@ Le livre a choisi de prendre le data flip-flop comme élément de base pour la c
    :libs:  circuits.logic.US 
 
    [tiny circuit symbols, every circuit symbol/.style={fill=white,draw},
-   connection/.style={draw,circle,inner sep=1.5pt}
+   connection/.style={draw,fill=black,circle,inner sep=1.5pt}
    ]
 
    \node [or gate US, draw] (or) at (0,0) {};
@@ -811,9 +889,9 @@ Le livre a choisi de prendre le data flip-flop comme élément de base pour la c
    \draw (not.output) -- (and.input 2);
    
    \draw (or.output) -- (and.input 1);
-   \draw (and.output) -- ($(and.output) + (0.5,0)$) node[connection,pos=0] {} -- ($(and.output) + (0.5,1)$) --  ($(and.output) + (-2.5,1)$) -- ($(or.input 1) + (-0.5,0)$) -- (or.input 1); 
+   \draw (and.output) -- ($(and.output) + (0.5,0)$)  -- ($(and.output) + (0.5,1)$) --  ($(and.output) + (-2.5,1)$) -- ($(or.input 1) + (-0.5,0)$) -- (or.input 1); 
 
-   \draw [->]   ($(and.output) + (0.5,0)$) -- (q);
+   \draw [->]  ($(and.output) + (0.5,0)$) -- (q);
 
 
    
