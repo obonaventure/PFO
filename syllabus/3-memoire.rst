@@ -457,9 +457,11 @@ De tels registres s'utilisent généralement en groupe. Un microprocesseur conti
       \node (out) [right =of r1] {out};
 
 
-Pour la connexion des bits d'entrée et des bits de sortie, nous devons trouver une solution qui nous permet d'identifier le registre dans lequel nous souhaitons effectuer une opération de lecture ou d'écriture. Pour cela, nous devons identifier chacun de nos registres avec un numéro. Le premier chiffre a `0` comme identifiant, le deuxième `1`, le troisième `2` et le dernier `3`. Comme nous nous avons 4 identifiants, il nous suffit de deux signaux binaires pour encoder la valeur de l'identifiant du registre concerné. Ces deux signaux s'ajoutent au bloc de registre représenté en :numref:`fig-reg4`. Ils doivent nous permettre de sélectionner le registre dans lequel l'information arrivant est écrite ou  lue en fonction de la valeur du signal `load`. Cet identifiant est généralement appelé une :index:`adresse`. Dans notre exemple, nous avons 4 adresses possibles qui sont encodées sur deux bits.
+Pour la connexion des bits d'entrée et des bits de sortie, nous devons trouver une solution qui nous permet d'identifier le registre dans lequel nous souhaitons effectuer une opération de lecture ou d'écriture. Pour cela, nous devons identifier chacun de nos registres avec un numéro. Le premier registre a `0` comme identifiant, le deuxième `1`, le troisième `2` et le dernier `3`. Comme nous nous avons 4 identifiants, il nous suffit de deux signaux binaires pour encoder la valeur de l'identifiant du registre concerné. Ces deux signaux s'ajoutent au bloc de registre représenté en :numref:`fig-reg4`. Ils doivent nous permettre de sélectionner le registre dans lequel l'information arrivant est écrite ou  lue en fonction de la valeur du signal `load`. Cet identifiant est généralement appelé une :index:`adresse`. Dans notre exemple, nous avons 4 adresses possibles qui sont encodées sur deux bits.
 
-Commençons par analyser l'opération d'écriture dans un de nos quatre registres. La valeur à enregistrer arrive via les signaux :math:`B_{3}B_{2}B_{1}B_{0}`. Elle doit être dirigée vers l'entrée du registre correspondant à l'adresse du registre concerné. Nous avons déjà résolu un problème similaire il y a quelques chapitres en utilisant un démultiplexeur. Celui-ci est connecté aux entrées :math:`B_{3}B_{2}B_{1}B_{0}` et aux deux bits d'adresse. Ses quatre sorties sont attachées aux quatre entrées de nos registres. Celui-ci est représenté dans la partie gauche de :numref:`fig-reg4c`. Le même problème se pose en sortie. Nous devons choisir entre la sortie d'un des quatre registres sur base des signaux d'adresses. Cela peut naturellement se faire en utilisent un multiplexeur dont les entrées sont connectées aux sorties de nos quatre registres. Ce multiplexeur est contrôle par les deux bits d'adresse comme le démultiplexeur d'entrée. Ce démultiplexeur est représenté sur la partie droite de la figure :numref:`fig-reg4c`.
+Commençons par analyser l'opération de lecture à travers notre bloc de quatre registres. A chaque cycle d'horloge, chaque registre envoie sur sa sortie la valeur qu'il a stocké. Pour choisir comme sortie globale du bloc de 4 registres une de ces valeurs, il nous suffit d'utiliser un multiplexeur auquel nos quarte registres sont connectés. Ce multiplexeur est commandé par les deux bits d'adresse. Il est représenté sur la droite de la :numref:`fig-reg4c`.
+
+Analysons maintenant l'opération d'écriture dans un de nos quatre registres. La valeur à enregistrer arrive via les signaux :math:`B_{3}B_{2}B_{1}B_{0}`. Elle peut être connectée à nos quatre registres. L'important est de pouvoir activer le signal `load` uniquement sur le registre dans lequel l'information doit être stockée. Lorsque l'adresse est `00` en binaire, le signal `load` doit activer le registre `0`. De même, c'est le registre `3` qui doit être activé pour l'adresse `11` en binaire. Nous avons déjà résolu un problème similaire il y a quelques chapitres en utilisant un démultiplexeur. Celui-ci est connecté à l'entrée `load` et commandé par les deux bits d'adresse. Ses quatre sorties sont attachées aux quatre entrées `load` de nos registres. Ce démultiplexeur est représenté dans la partie gauche de :numref:`fig-reg4c`.
       
       
 .. _fig-reg4c: 
@@ -467,36 +469,38 @@ Commençons par analyser l'opération d'écriture dans un de nos quatre registre
    
       
    [
-      node distance=0.1cm
+      node distance=0.3cm
    ]
 	  
 
 
 
-   \draw (0,0) -- (1,1) -- (1,-1) node (out0) [pos=0.2,left] {\tiny 0} node (out1) [pos=0.4,left] {\tiny 1} node(out2) [pos=0.6,left] {\tiny 2} node (out3) [pos=0.8,left] {\tiny 3} -- (0,0) node (addr0) [pos=0.75,right] {\tiny A0} node (addr1) [pos=0.95,right] {\tiny A1} ;
+   \draw (0,2) -- (1,3) -- (1,1) node (out0) [pos=0.2,left] {\tiny 0} node (out1) [pos=0.4,left] {\tiny 1} node(out2) [pos=0.6,left] {\tiny 2} node (out3) [pos=0.8,left] {\tiny 3} -- (0,2) node (addr0) [pos=0.75,right] {\tiny A0} node (addr1) [pos=0.95,right] {\tiny A1} ;
 
    \node (in) at (0,0) {};
 	  
    \definecolor{g}{gray}{0.8}
-   \node (r0) at (3,1) [draw, fill=g] {Registre 0};
-   \node (r1) [draw,fill=g,below =of r0] {Registre 1};
-   \node (r2) [draw,fill=g,below =of r1] {Registre 2};
-   \node (r3) [draw,fill=g,below =of r2] {Registre 3};
-   \node (load) [color=blue, above =of r0] {\tiny Load};
+   \node (r0) at (3,0.8) [draw, fill=g] {\small Registre 0};
+   \node (r1) at (4.5,0) [draw,fill=g] {\small Registre 1};
+   \node (r2) at (6,-0.8) [draw,fill=g] {\small Registre 2};
+   \node (r3) at (7.5,-1.6) [draw,fill=g] {\small Registre 3};
+   \node (load) at (5,3.5) [color=blue] {Load};
    \node (B) at (-1,0) {B};
    \node (a1) at (-1.5,-2) {$Addr_{1}$};
    \node (a0) at (-1.5,-2.5) {$Addr_{0}$};
    
-   \node (out) at (7,0) {out};
-
-   \draw[->,thick] (B) -- (in);
+   \node (out) at (11,0) {\textbf{out}};
    \foreach \n in {0,1,2,3}
-      \draw[->] (out\n) -- (r\n.west);
+      \draw[->,thick] (B) -- (1,0) |- (r\n.west);
 
+   \foreach \n in {0,1,2,3}
+      \draw[->,color=blue] (out\n) -| (r\n.north);
+
+  \draw [->,color=blue] (load) -| (0,2);   
   \draw [->] (a0) -| (addr0);
   \draw [->] (a1) -| (addr1);
   
-  \draw (6,0) -- (5,1) -- (5,-1) node (mout0) [pos=0.2,right] {\tiny 0} node (mout1) [pos=0.4,right] {\tiny 1} node(mout2) [pos=0.6,right] {\tiny 2} node (mout3) [pos=0.8,right] {\tiny 3} -- (6,0) node (maddr0) [pos=0.75,left] {\tiny A0} node (maddr1) [pos=0.95,left] {\tiny A1} ;
+  \draw (10,0) -- (9,1) -- (9,-1) node (mout0) [pos=0.2,right] {\tiny 0} node (mout1) [pos=0.4,right] {\tiny 1} node(mout2) [pos=0.6,right] {\tiny 2} node (mout3) [pos=0.8,right] {\tiny 3} -- (10,0) node (maddr0) [pos=0.75,left] {\tiny A0} node (maddr1) [pos=0.95,left] {\tiny A1} ;
 
   \draw [->] (a0) -| (maddr0);
   \draw [->] (a1) -| (maddr1);
@@ -504,19 +508,15 @@ Commençons par analyser l'opération d'écriture dans un de nos quatre registre
   \foreach \n in {0,1,2,3}
       \draw[->] (r\n.east) -- (mout\n);
 
-  \draw[->] (6,0) -- (out);
+  \draw[->,thick] (10,0) -- (out);
 
-  \begin{scope}[on background layer]
-    \foreach \n in {0,1,2,3}
-      \draw [->,color=blue] (load) -- (r\n.north);
-  \end{scope}
 
 Ce schéma général peut se reproduire sans difficulté pour des mémoires de plus grande capacité. La seule limitation sera technologique et liée au nombre de registres et de multiplexeurs/démultiplexeurs que l'on pourra placer sur une surface donnée.
 
 A titre d'exemple, regardons comment construire un bloc de huit registres. Ce bloc doit avoir en entrée les signaux suivants :
 
  - les données à mémoriser (:math:`B_{3}B_{2}B_{1}B_{0}` pour des quartets)
- - le signal d'horloge
+ - le signal d'horloge (non représenté sur les figures)
  - le signal `load`
  - 3 bits pour indiquer l'adresse du registre où il faut lire/écrire
 
@@ -544,41 +544,38 @@ Pour construire cette mémoire contenant huit registres, nous pouvons partir du 
     \draw[->,color=blue] (load) -- (bloc.north);
 
 
-Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre bloc de huit registres. Il suffit de considérer que l'un des blocs de registres correspond aux adresses 0 à 3 et le second aux adresses allant de 4 à 7. En notation binaire, les adresses correspondant au premier bloc vont de :math:`000` à :math:`011` tandis que celle du second bloc vont de :math:`100` à :math:`111`. On peut donc utiliser le bit de poids fort de l'adresse (:math:`A_2`) pour choisir entre le premier bloc de registres et le second. Cette sélection peut se faire en utilisant un démultiplexeur connecté aux entrées et un multiplexeur connecté aux sorties comme nous l'avions fait précédemment. En connectant ce multiplexeur et ce démultiplexeur au bit d'adresse de poids fort, :math:`A_2`, on obtient le circuit souhaité (:numref:`fig-reg8`).
+Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre bloc de huit registres. Il suffit de considérer que l'un des blocs de registres correspond aux adresses 0 à 3 et le second aux adresses allant de 4 à 7. En notation binaire, les adresses correspondant au premier bloc vont de :math:`000` à :math:`011` tandis que celle du second bloc vont de :math:`100` à :math:`111`. On peut donc utiliser le bit de poids fort de l'adresse (:math:`A_2`) pour choisir entre le premier bloc de registres et le second. Pour l'opération de lecture, il suffit de connecter un multiplexeur connecté aux sorties et de le commandé en utilisant le bit de poids fort de l'adresse. Ce bit de poids fort doit aussi commander le démultiplexeur se trouvant sur la gauche de :numref:`fig-reg8` pour achememiner le signal `load` vers le `bloc 0` ou le `bloc 1`. 
     
 
 .. _fig-reg8:
 .. tikz:: Un bloc de 8 registres
 
-   \draw (0,0) -- (1,1) -- (1,-1) node (out0) [pos=0.4,left] {\tiny 0} node (out1) [pos=0.8,left] {\tiny 1} -- (0,0) node (addr0) [pos=0.75,right] {\tiny A} ;	  
-	  
+   \draw (0,2.5) -- (1,3.5) -- (1,1.5) node (out0) [pos=0.4,left] {\tiny 0} node (out1) [pos=0.8,left] {\tiny 1} -- (0,2.5) node (addr0) [pos=0.75,right] {\tiny A} ;	  
+    \node(load) at (-1.5,2.5) [text=blue] {load};	  
     \node (B) at (-1.5,0) {\textbf{B}};
-    \draw [->,thick] (B)-- (0,0);
-    
+
     \node (a2) at (-1.5,-3) {$A_2$};
     \node (a1) at (-1.5,-3.5) {$A_1$};
     \node (a0) at (-1.5, -4) {$A_0$};	  
 
-
+    \draw [->, color=blue] (load) -- (0,2.5);
     
-    \node (bloc0) at (3,1.5) [draw, fill=white,align=center] { \small
+    \node (bloc0) at (3,0.8) [draw, fill=white,align=center] { 
     Bloc \textbf{0}\\
-    de\\
     4\\
     registres};
 	  
 
-    \node (bloc1) at (3,-1.5) [draw, fill=white,align=center] { \small
+    \node (bloc1) at (4.5,-0.8) [draw, fill=white,align=center] {
     Bloc \textbf{1}\\
-    de\\
     4\\
     registres};
 
 
-    \draw (6,0) -- (5,1) -- (5,-1) node (mout0) [pos=0.4,right] {\tiny 0} node (mout1) [pos=0.8,right] {\tiny 1} -- (6,0) node (maddr0) [pos=0.75,left] {\tiny A} ;
+    \draw (7.5,0) -- (6.5,1) -- (6.5,-1) node (mout0) [pos=0.4,right] {\tiny 0} node (mout1) [pos=0.8,right] {\tiny 1} -- (7.5,0) node (maddr0) [pos=0.75,left] {\tiny A} ;
 
-    \draw[->,thick] (out0) -- (bloc0.150);
-    \draw[->,thick] (out1) -- (bloc1.150);
+    \draw[->,color=blue] (out0) -| (bloc0.north);
+    \draw[->,color=blue] (out1) -| (bloc1.north);
 
     \draw[->,thick ] (bloc0.east) -- (mout0);
     \draw[->, thick] (bloc1.east) -- (mout1);
@@ -593,13 +590,11 @@ Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre 
     \draw [->] (a2) -| (addr0);
     \draw [->] (a2) -| (maddr0);
 
-    \node (out) at (7,0) {\textbf{out}};
-    \draw [->,thick] (6,0) -- (out.west);
-    \node(load) [text=blue, above =of bloc0.north] {load};
-    \begin{scope}[on background layer]
-	  \foreach \n in {0,1}
-	  \draw [->,color=blue] (load) -- (bloc\n.north);
-    \end{scope}
+    \node (out) at (9,0) {\textbf{out}};
+    \draw [->,thick] (7.5,0) -- (out.west);
+
+    \draw [->,thick] (B)-- (1,0) |- (bloc0.150);
+    \draw [->,thick] (B)-- (1,0) |- (bloc1.150);
 
 Ce schéma général peut se reproduire sans difficulté pour des mémoires de plus grande capacité. La seule limitation sera technologique et liée au nombre de registres et de multiplexeurs/démultiplexeurs que l'on pourra placer sur une surface donnée.   
 
@@ -673,7 +668,7 @@ Une mémoire :index:`RAM` est dite volatile. Elle ne préserve son contenu que t
  - les :index:`SRAM` ou mémoires RAM statiques
  - les :index:`DRAM` ou mémoires RAM dynamiques
    
-En simplifiant fortement la technologie utilisée par ces deux grandes familles de mémoire :index:`RAM`, on peut dire que dans une :index:`SRAM`, une valeur binaire correspond à la présence ou l'absence d'un courant électrique. Pour cette raison, une mémoire :index:`SRAM` consomme en permanence de l'électricité et cela limite la densité de ces mémoires, c'est-à-dire le nombre de bits que l'on peut stocker sur une surface donnée. Dans une mémoire :index:`SRAM`, les bits sont stockés comme une charge électrique présente dans un minuscule condensateur. Comme la charge d'un condensateur décroît naturellement avec le temps, il est nécessaire de réécrire régulièrement (on parle généralement de rafraîchir) les données qui sont stockées en mémoire :index:`DRAM`. Ce rafraîchissement est réalisé automatiquement par un circuit électronique spécialisé. Les mémoires :index:`DRAM` consomment moins d'électricité que les mémoires de type :index:`SRAM`. Cela leur permet d'être beaucoup plus denses et moins coûteuses pour une même quantité de données. Par contre, les mémoires :index:`DRAM` sont généralement plus lentes que les mémoires :index:`SRAM`.
+En simplifiant fortement la technologie utilisée par ces deux grandes familles de mémoire :index:`RAM`, on peut dire que dans une :index:`SRAM`, une valeur binaire correspond à la présence ou l'absence d'un courant électrique. Pour cette raison, une mémoire :index:`SRAM` consomme en permanence de l'électricité et cela limite la densité de ces mémoires, c'est-à-dire le nombre de bits que l'on peut stocker sur une surface donnée. Dans une mémoire :index:`DRAM`, les bits sont stockés comme une charge électrique présente dans un minuscule condensateur. Comme la charge d'un condensateur décroît naturellement avec le temps, il est nécessaire de réécrire régulièrement (on parle généralement de rafraîchir) les données qui sont stockées en mémoire :index:`DRAM`. Ce rafraîchissement est réalisé automatiquement par un circuit électronique spécialisé. Les mémoires :index:`DRAM` consomment moins d'électricité que les mémoires de type :index:`SRAM`. Cela leur permet d'être beaucoup plus denses et moins coûteuses pour une même quantité de données. Par contre, les mémoires :index:`DRAM` sont généralement plus lentes que les mémoires :index:`SRAM`.
 
 
 Les mémoires :index:`RAM` jouent un rôle extrêmement important dans le fonctionnement d'un ordinateur comme nous les verrons dans les prochains chapitres. Durant les dernières décennies, elles ont fortement évolué. Sans entrer dans trop de détails technologiques, il est intéressant d'analyser trois éléments de performance de ces dispositifs de mémoire. Pour cela, nous nous basons sur les données reprises dans le livre `Computer Architecture: A Quantitative Approach <https://www.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1>`_ écrit par John Hennessy et David Patterson. Ce livre va bien au-delà des concepts qui sont vus dans ce cours, mais c'est un des livres de référence du domaine. Son premier chapitre reprend plusieurs chiffres très intéressant que nous analysons.
@@ -939,9 +934,9 @@ Ce projet est à rendre par groupe de deux étudiants pour le lundi 9 novembre 2
 
 5. Construisez un circuit permettant de supporter une mémoire RAM comprenant 512 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM512
 
-6. Construisez un circuit permettant de supporter une mémoire RAM comprenant 4096 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM4K
+.. 6. Construisez un circuit permettant de supporter une mémoire RAM comprenant 4096 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM4K
 
-7. Construisez un circuit permettant de supporter une mémoire RAM comprenant 16K registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM16K
+.. 7. Construisez un circuit permettant de supporter une mémoire RAM comprenant 16K registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM16K
 
-8. Construisez un circuit permettant d'implémenter un compteur de programme, https://inginious.info.ucl.ac.be/course/LSINC1102/PC   
+6. Construisez un circuit permettant d'implémenter un compteur de programme, https://inginious.info.ucl.ac.be/course/LSINC1102/PC   
  
