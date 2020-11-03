@@ -124,17 +124,20 @@ _________
     - un nombre binaire sur 6 bits
     - un nombre binaire sur 8 bits
 
-5. Considérons le nombre binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Construisons le nombre `M` dans lequel on ajoute un bit de poids fort à  0, c'est-à-dire :math:`M=0B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre `N` et `M` ?
+5. Considérons le nombre naturel en représentation binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Construisons le nombre `M` dans lequel on ajoute un bit de poids fort à  0, c'est-à-dire :math:`M=0B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre `N` et `M` ?
+   
    - :math:`N > M`
    - :math:`N < M`
    - :math:`N = M`
 
-6. Considérons le nombre binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Construisons le nombre `P` dans lequel on ajoute un bit de poids faible à  0, c'est-à-dire :math:`P=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}0`. Quelle relation y-a-t-il entre `N` et `P` ?
+6. Considérons le nombre naturel en représentation binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Construisons le nombre `P` dans lequel on ajoute un bit de poids faible à  0, c'est-à-dire :math:`P=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}0`. Quelle relation y-a-t-il entre `N` et `P` ?
+   
    - :math:`N > P`
    - :math:`N < P`
    - :math:`N = P`
 
-7. Combien de nombres naturels différents peut-on représenter avec un nombre décimal sur:
+7. Combien de nombres naturels différents peut-on représenter avec un nombre décimal sur :
+   
    - 8 bits (c'est-à-dire un :index:`byte` ou un :index:`octet`)
    - 16 bits 
    - 32 bits 
@@ -338,7 +341,7 @@ En informatique, on doit très souvent incrémenter une valeur entière, par exe
     \draw[<-] (b.115) --++(90:0.5cm) node [above] {$a_0$};
     \draw[<-] (b.65) --++(90:0.5cm) node [above] {$0$};
     
-   \draw[<-] (c.115) --++(90:0.5cm) node [above] {$a_2$};
+    \draw[<-] (c.115) --++(90:0.5cm) node [above] {$a_2$};
     \draw[<-] (c.65) --++(90:0.5cm) node [above] {$0$};
     \draw[<-] (d.115) --++(90:0.5cm) node [above] {$a_3$};
     \draw[<-] (d.65) --++(90:0.5cm) node [above] {$0$};
@@ -382,7 +385,7 @@ Une première approche serait d'utiliser un bit du nombre binaire pour indiquer 
  - `1 110` représente le nombre `-6`
  - `1 111` représente le nombre `-7`
 
-Nous aurions pu aussi choisir d'utiliser le bit de poids faible pour indiquer le signe du nombre entier. Avec cette convention, nous pourrions représenter les nombres suivants:
+Nous aurions pu aussi choisir d'utiliser le bit de poids faible pour indiquer le signe du nombre entier. Avec cette convention, nous pourrions représenter les nombres suivants :
 
  - `000 0` représente le nombre `+0`
  - `000 1` représente le nombre `-0`
@@ -404,7 +407,7 @@ Nous aurions pu aussi choisir d'utiliser le bit de poids faible pour indiquer le
 Ces deux conventions permettent de représenter les entiers de `-7` à `+7`. Malheureusement, ces deux représentations ont deux inconvénients majeurs. Premièrement, elles utilisent deux nombres binaires différents pour représenter la valeur nulle. De plus, il est difficile de construire des circuits électroniques qui permettent de facilement manipuler de telles représentations des nombres entiers.
 
 
-La solution à ce problème est d'utiliser la notation en :index:`complément à deux`. Pour représenter les nombres entiers en notation binaire, nous adaptons la représentation utilisée pour les nombres naturels. Le nombre binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre naturel :math:`(-1)*B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. Il est important de noter que la présence du facteur `(-1)` qui est appliqué au bit de poids fort. En appliquant cette règle aux quartets, on obtient aisément :
+La solution à ce problème est d'utiliser la notation en :index:`complément à deux`. Pour représenter les nombres entiers en notation binaire, nous adaptons la représentation utilisée pour les nombres naturels. Le nombre binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre entier :math:`(-1)*B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. Il est important de noter que la présence du facteur `(-1)` qui est appliqué au bit de poids fort. En appliquant cette règle aux quartets, on obtient aisément :
 
 
  - `0000` représente le nombre `0`
@@ -622,12 +625,14 @@ _________
 4. Quels sont les plus petit et plus grand nombres entiers que l'on peut représenter en utilisant un nombre binaire sur 8 bits
 
 5. Considérons le nombre binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` en notation en complément à deux. Construisons le nombre de `n+1` bits baptisé `M` dans lequel on ajoute un bit de poids fort mis à la valeur `0`, c'est-à-dire :math:`M=0B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre les valeurs de `N` et `M` ?
+   
    - :math:`N > M`
    - :math:`N < M`
    - :math:`N = M`
    - :math:`N \ne M`
 
 6. Considérons le nombre binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` en notation en complément à deux. Construisons le nombre encodé sur `n+1` bits `M` dans lequel on ajoute un bit de poids fort mis à la valeur `1`, c'est-à-dire :math:`M=1B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre `N` et `M` ?
+   
    - :math:`N > M`
    - :math:`N < M`
    - :math:`N = M`

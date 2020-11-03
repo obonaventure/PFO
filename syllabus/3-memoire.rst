@@ -36,7 +36,7 @@ Un tel signal électrique ne se propage pas instantanément dans un circuit éle
    =================  ===============   =================
 
    
-Dans un circuit électronique, il n'est pas impossible que le signal dans deux parties du circuit suive des chemins de longueurs différentes. Considérons la situation représentée en :numref:`fig-and-elec`. Imaginons que le signal `C` doit parcourir un chemin plus long que celui des signaux `A` et `B`. Initialement, les signaux `A`, `B` et `C` sont `0`. Après quelques picosecondes, les signaux `A` et `C` passent à la valeur `1`. La :numref:`fig-abc` présente l'évolution de ces signaux et leur valeur juste avant les portes `AND` et `OR`. Remarquez que le signal `C` est un peu retardé par rapport au signal `A`.
+Dans un circuit électronique, il n'est pas impossible que le signal dans deux parties du circuit suive des chemins de longueurs différentes. Considérons la situation représentée en :numref:`fig-and-elec`. Imaginons que le signal `C` doit parcourir un chemin plus long que celui des signaux `A` et `B`. Initialement, les signaux `A` et `B` valent `0`. Après quelque temps, les signaux `A` et `C` passent à la valeur `1`, mais le signal `C` est un peu retardé par rapport au signal `A`. La :numref:`fig-abc` présente l'évolution de ces signaux et leur valeur juste avant les portes `AND` et `OR`. Remarquez que le signal `C` est un peu retardé par rapport au signal `A`.
 
 .. _fig-and-elec:
 .. tikz:: Un circuit simple à trois entrées
@@ -105,7 +105,7 @@ Le signal d'horloge
 -------------------
 	   
           
-Pour éviter ces problèmes, la plupart des ordinateurs utilisez un signal d'horloge qui régule le fonctionnement des différents circuits qui sont utilisés. Ce signal d'horloge est un :index:`signal périodique`, c'est-à-dire un signal qui répète sa valeurs à des intervalles réguliers. Les fonctions trigonométriques sont des exemples de signaux périodiques. En informatique on travaille avec des signaux binaires. On dira qu'un signal :math:`S(t)` sera périodique si il existe un réel :math:`P` qui est tel que : :math:`\forall x, S(t+P) = S(t)`. :math:`P` est appelé la période du signal et s'exprime en secondes. La :numref:`fig-clock-signal` présente un exemple de signal binaire périodique aussi appelé signal d'horloge.
+Pour éviter ces problèmes, la plupart des ordinateurs utilisez un signal d'horloge qui régule le fonctionnement des différents circuits qui sont utilisés. Ce signal d'horloge est un :index:`signal périodique`, c'est-à-dire un signal qui répète sa valeurs à des intervalles réguliers. Les fonctions trigonométriques sont des exemples de signaux périodiques. En informatique on travaille avec des signaux binaires. On dira qu'un signal :math:`S(t)` sera périodique si il existe un réel :math:`P` qui est tel que : :math:`\forall t, S(t+P) = S(t)`. :math:`P` est appelé la période du signal et s'exprime en secondes. La :numref:`fig-clock-signal` présente un exemple de signal binaire périodique aussi appelé signal d'horloge.
 
 .. _fig-clock-signal:
 .. tikz:: Signal d'horloge d'un ordinateur
@@ -438,7 +438,7 @@ et quatre sorties :
 De la même façon, on peut construire des registres qui permettent de stocker un octet ou un mot de 16, 32 voire même 64 bits. Dans la suite de ce chapitre, nous représenterons un tel registre sous la forme d'un rectangle.
 
 
-De tels registres s'utilisent généralement en groupe. Un microprocesseur contient plusieurs registres et une mémoire peut stocker des millions ou même des milliards d'octets. A titre d'illustration, considérons un bloc de registre qui stocke quatre octets. Ce bloc de registres comprend bien entendu quatre registres qui stockent chacun un octet. Outre le signal d'horloge (non représenté en :numref:`fig-reg4`), nous devons connecter le signal `load`, les 4 bits d'entrée et les 4 bits de sortie à cet semble de registres. Le signal `load` et l'horloge peuvent être directement connectés à chacun de nos quatre registres.
+De tels registres s'utilisent généralement en groupe. Un microprocesseur contient plusieurs registres et une mémoire peut stocker des millions ou même des milliards d'octets. A titre d'illustration, considérons un bloc de registre qui stocke quatre octets. Ce bloc de registres comprend bien entendu quatre registres qui stockent chacun un octet. Outre le signal d'horloge (non représenté en :numref:`fig-reg4`), nous devons connecter le signal `load`, les 4 bits d'entrée et les 4 bits de sortie à cet semble de registres. Le signal d'horloge peut être directement connectés à chacun de nos quatre registres.
 
 
 .. _fig-reg4b:
@@ -453,8 +453,8 @@ De tels registres s'utilisent généralement en groupe. Un microprocesseur conti
       \node (r2) [draw,fill=g,below =of r1] {Registre 2};
       \node (r3) [draw,fill=g,below =of r2] {Registre 3};
       \node (load) [color=blue, above =of r0] {\tiny Load};
-      \node (B) [left =of r1] {B};
-      \node (out) [right =of r1] {out};
+      \node (B) [left =of r1] {$B_{3-0}$};
+      \node (out) [right =of r1] {$out_{3-0}$};
 
 
 Pour la connexion des bits d'entrée et des bits de sortie, nous devons trouver une solution qui nous permet d'identifier le registre dans lequel nous souhaitons effectuer une opération de lecture ou d'écriture. Pour cela, nous devons identifier chacun de nos registres avec un numéro. Le premier registre a `0` comme identifiant, le deuxième `1`, le troisième `2` et le dernier `3`. Comme nous nous avons 4 identifiants, il nous suffit de deux signaux binaires pour encoder la valeur de l'identifiant du registre concerné. Ces deux signaux s'ajoutent au bloc de registre représenté en :numref:`fig-reg4`. Ils doivent nous permettre de sélectionner le registre dans lequel l'information arrivant est écrite ou  lue en fonction de la valeur du signal `load`. Cet identifiant est généralement appelé une :index:`adresse`. Dans notre exemple, nous avons 4 adresses possibles qui sont encodées sur deux bits.
@@ -485,11 +485,11 @@ Analysons maintenant l'opération d'écriture dans un de nos quatre registres. L
    \node (r2) at (6,-0.8) [draw,fill=g] {\small Registre 2};
    \node (r3) at (7.5,-1.6) [draw,fill=g] {\small Registre 3};
    \node (load) at (5,3.5) [color=blue] {Load};
-   \node (B) at (-1,0) {B};
+   \node (B) at (-1,0) {\textbf{$B_{3-0}$}};
    \node (a1) at (-1.5,-2) {$Addr_{1}$};
    \node (a0) at (-1.5,-2.5) {$Addr_{0}$};
    
-   \node (out) at (11,0) {\textbf{out}};
+   \node (out) at (11,0) {\textbf{$out_{3-0}$}};
    \foreach \n in {0,1,2,3}
       \draw[->,thick] (B) -- (1,0) |- (r\n.west);
 
@@ -531,11 +531,11 @@ Pour construire cette mémoire contenant huit registres, nous pouvons partir du 
     4\\
     registres};
 
-    \node(b) [left =of bloc.150] {\textbf{B}};
+    \node(b) [left =of bloc.150] {\textbf{$B_{3-0}$}};
     \node(a1) [left =of bloc.205] {A1};
     \node(a0) [left =of bloc.220] {A0};
     \node(load) [text=blue, above =of bloc.north] {load};
-    \node(out) [right =of bloc.east] {out};
+    \node(out) [right =of bloc.east] {$out_{3-0}$};
     
     \draw[->,thick] (b) -- (bloc.150);
     \draw[->] (a1) -- (bloc.205);
@@ -552,7 +552,7 @@ Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre 
 
    \draw (0,2.5) -- (1,3.5) -- (1,1.5) node (out0) [pos=0.4,left] {\tiny 0} node (out1) [pos=0.8,left] {\tiny 1} -- (0,2.5) node (addr0) [pos=0.75,right] {\tiny A} ;	  
     \node(load) at (-1.5,2.5) [text=blue] {load};	  
-    \node (B) at (-1.5,0) {\textbf{B}};
+    \node (B) at (-1.5,0) {\textbf{$B_{3-0}$}};
 
     \node (a2) at (-1.5,-3) {$A_2$};
     \node (a1) at (-1.5,-3.5) {$A_1$};
@@ -590,7 +590,7 @@ Grâce à ce bloc de quatre registres, nous pouvons facilement construire notre 
     \draw [->] (a2) -| (addr0);
     \draw [->] (a2) -| (maddr0);
 
-    \node (out) at (9,0) {\textbf{out}};
+    \node (out) at (9,0) {\textbf{$out_{3-0}$}};
     \draw [->,thick] (7.5,0) -- (out.west);
 
     \draw [->,thick] (B)-- (1,0) |- (bloc0.150);

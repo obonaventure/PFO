@@ -217,8 +217,8 @@ La distributivité est une autre propriété qui relie les fonctions `AND` et `O
 
 Lorsque l'on ajoute la fonction `NOT`, on obtient deux autres propriétés utiles en pratique.
  
- - :math:`AND(x,OR(NOT(x),y) \iff AND(x,y)`
- - :math:`OR(x,AND(NOT(x),y) \iff OR(x,y)`  
+ - :math:`AND(x,OR(NOT(x),y)) \iff AND(x,y)`
+ - :math:`OR(x,AND(NOT(x),y)) \iff OR(x,y)`  
 
    
 Enfin, les trois opérations `AND`, `OR` et `NOT` sont reliées entre elles par les lois de `De Morgan`. On peut facilement démontrer, par exemple en utilisant des tables de vérité, que:
@@ -276,7 +276,7 @@ _________
 Fonctions booléennes à plus de deux entrées
 -------------------------------------------
 
-En utilisant les lois de distributivité, on peut facilement construire des fonctions à plus de deux entrées. Ainsi, la fonction `AND` à trois entrées :math:`AND(x,y,z) \iff AND(X,AND(y,z)) \iff AND(AND(x,y),z)`. Sa table de vérité est sans surprise la suivante.
+En utilisant l'associativité, on peut facilement construire des fonctions à plus de deux entrées. Ainsi, la fonction `AND` à trois entrées :math:`AND(x,y,z) \iff AND(X,AND(y,z)) \iff AND(AND(x,y),z)`. Sa table de vérité est sans surprise la suivante.
 
 
 = = = ==========
