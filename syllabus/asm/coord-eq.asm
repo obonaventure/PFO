@@ -1,0 +1,42 @@
+
+	// INIT
+	@3
+	D=A
+	@16
+	M=D
+	@7
+	D=A
+	@17
+	M=D
+	@3
+	D=A	
+	@18
+	M=D
+	@7
+	D=A
+	@19
+	M=D
+(DEBUT)
+	@16
+	D=M
+	@18
+	D=D-M
+	@DIFF
+	D;JNE
+	@16
+	A=A+1
+	D=M
+	@18
+	A=A+1
+	D=D-M
+	@DIFF
+	D;JNE
+(EGAL)	
+        @20
+	M=1
+	@FIN
+	0;JMP
+(DIFF)
+	@20
+	M=0
+(FIN)

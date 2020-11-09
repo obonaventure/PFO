@@ -9,6 +9,15 @@ Langage d'assemblage
 
 Avec la mémoire et l'ALU nous avons les briques de base qui vont nous permettre de construire un micro-processeur qui sera capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neuman`.
 
+Cette architecture est composée d'un :index:`processeur` (:index:`CPU
+` en anglais) ou unité de calcul et d'une mémoire. Le processeur est un circuit électronique qui est capable d'effectuer de nombreuses tâches :
+
+ - lire de l'information en mémoire
+ - écrire de l'information en mémoire
+ - réaliser des calculs
+
+L'architecture des ordinateurs est basée sur l'architecture dite de Von Neumann. Suivant cette architecture, un ordinateur est composé d'un processeur qui exécute un programme se trouvant en mémoire. Ce programme manipule des données qui sont aussi stockées en mémoire. 
+
 .. expliquer von neuman
 
 Dans notre minuscule ordinateur, toutes les informations sont stockées sous la forme de nombres binaires. Le livre a fait le choix d'utiliser des mots de 16 bits comme unité de base pour les calculs et la mémoire. On pourrait dire que notre minuscule ordinateur est un ordinateur "16 bits". Ce choix a plusieurs conséquences sur les données qui sont traitées par ce minuscule processeur:
@@ -23,20 +32,20 @@ Les ordinateurs actuels sont basés sur d'autres choix. Les entiers sont encodé
 
 Le minuscule ordinateur construit dans le livre de référence a d'autres caractéristiques particulières qui simplifient sa réalisation mais ne correspondent pas nécessairement aux ordinateurs actuels. Ce minuscule ordinateur utilise deux mémoires séparées :
 
- - une mémoire dite mémoire d'instructions contenant le code machine des programmes à exécuter
+ - une mémoire dite mémoire d'instructions contenant le code des programmes à exécuter
  - une mémoire dite mémoire de données contenant les données à traiter
 
 Ces deux mémoires ont chacune une capacité de 16384 mots de 16 bits. La plupart des ordinateurs actuels utilisent une mémoire qui contient indifféremment les données et le code machine des programmes. La mémoire d'instructions de notre minuscule ordinateur est une mémoire de type ROM. Elle est initialisée au lancement de l'ordinateur avec le programme à exécuter mais ne peut pas être modifiée par un programme. La mémoire de données elle est une mémoire de type RAM dans laquelle les programmes peuvent lire et écrire des données.
 
-Une autre différence entre le minuscule ordinateur et un ordinateur actuel est la façon dont on accède aux données en mémoires. Le minuscule ordinateur peut uniquement lire ou écrire un mot de 16 bits à la fois à une adresse donnée en mémoire de données. Un ordinateur actuel peut lire et écrire un octet en mémoire, un mot de 16, 32 ou 64 bits.
+Une autre différence entre le minuscule ordinateur et un ordinateur actuel est la façon dont on accède aux données en mémoire. Le minuscule ordinateur peut uniquement lire ou écrire un mot de 16 bits à la fois à une adresse donnée en mémoire de données. Un ordinateur actuel peut lire et écrire un octet en mémoire, un mot de 16, 32 ou 64 bits voire beaucoup plus dans certains cas.
 
 Outre ces deux mémoires, notre minuscule processeur dispose de deux registres :
 
- - le premier, baptisé ``D`` est utilisé pour stocker un mot de 16 bits qui est lu de la mémoire ou résulte d'un calcul réalisé par l'ALU
- - le second, baptisé ``A``. Il a un double rôle. Tout d'abord, va il d'abord servir à stocker une donnée sur 16 bits comme le registre ``D``. Son deuxième rôle est de contenir une adresse dans la mémoire de données pour permettre le chargement d'une donnée depuis la mémoire.
+ - le premier, baptisé ``D`` est utilisé pour stocker un mot de 16 bits qui est lu depuis la mémoire ou résulte d'un calcul réalisé par l'ALU
+ - le second, baptisé ``A``. Il a un double rôle. Tout d'abord, va il servir à stocker une donnée sur 16 bits comme le registre ``D``. Son deuxième rôle est de contenir une adresse dans la mémoire de données pour permettre le chargement d'une donnée depuis cette mémoire.
 
 
-Ces deux registres ``A`` et ``D`` sont schématiquement connectés à l'ALU qui est le coeur de notre minuscule processeur. Cela permet d'utiliser notre ALU pour réaliser différents calculs sur ces deux registres (:numref:`fig-alu-ad`).
+Ces deux registres ``A`` et ``D`` sont schématiquement connectés à l'ALU qui est le coeur de notre minuscule processeur. Cela permet d'utiliser l'ALU pour réaliser différents calculs sur ces deux registres (:numref:`fig-alu-ad`).
 
 .. _fig-alu-ad:
 .. tikz:: Les registres A, D et l'ALU
@@ -45,10 +54,10 @@ Ces deux registres ``A`` et ``D`` sont schématiquement connectés à l'ALU qui 
      reg/.style={rectangle, draw, minimum width=2.7 cm}
    ]
    \node[reg] (output) at (2,0) {\small sortie [16 bits]};
-   \node[reg] (D) at (-2,0.5) {\small D [16 bits]};
-   \node[reg] (A) at (-2,-0.5) {M/A [\small 16 bits]};
+   \node[reg] (D) at (-3,0.5) {\small D [16 bits]};
+   \node[reg] (A) at (-3,-0.5) {M/A [\small 16 bits]};
 
-   \draw (-0.5,-1) -- (-0.5, 1) -- (0,0.25) -- (0,-0.25) -- cycle;
+   \draw (-0.75,-1) -- (-0.75, 1) -- (0,0.35) -- (0,-0.35) -- cycle;
 
    \draw[->] (A.east) -- (-0.5,-0.5);
    \draw[->] (D.east) -- (-0.5,0.5);
@@ -63,15 +72,20 @@ Les instructions du minuscule processeur
 
 Avant de construire le minuscule processeur dans le projet suivant, nous devons d'abord comprendre quelles sont les instructions que celui-ci peut exécuter. Il supporte deux types d'instructions qui sont toutes les deux encodées sous la forme d'un mot de 16 bits.
 
-L'instruction A
-_______________
+L'instruction de type A
+_______________________
 
 L'instruction la plus simple du minuscule microprocesseur est l'instruction de type `A`. Cette instruction permet simplement de charger un nombre binaire sur 15 bits dans le registre ``A``. Dans les logiciels fournis avec le livre de référence, cette instruction s'écrit ``@`` suivi de la valeur à placer dans le registre ``A``. La valeur passée comme argument de cette instruction de type `A` est obligatoirement un entier positif. Nous verrons plus tard comment indiquer une constante négative.
 
 .. code-block:: console
 
-   @0           // charge la valeur 0 dans A    
+   @1           // charge la valeur 1 dans A    
    @123		// charge la valeur 123, i.e. 1111011 en binaire dans A
+
+
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex0.asm`.
+
+..	 <video controls src="_static/asm-123.mp4"></video>
 
    
 Cette instruction a trois utilisations en pratique. Tout d'abord, elle permet de charger une valeur constante dans le registre ``A``. Mais surtout elle est utilisée avec les instructions de type C pour soit indiquer une adresse mémoire à laquelle une donnée doit être chargée soit une adresse mémoire où un saut doit être réalisé si une condition sont vérifiées. Nous y reviendrons.
@@ -86,12 +100,12 @@ Comme toutes les instructions, l'instruction de type A est encodée sous la form
 C'est à cause de l'encodage de l'instruction dans un mot de 16 bits que la constante qui est passée en argument doit être encodée sur 15 bits.
 
 
-L'instruction C
-_______________
+L'instruction de type C
+_______________________
 
 Cette instruction est l'instruction "à tout faire" du minuscule processeur. C'est elle qui permet d'utiliser toutes les fonctionnalités de l'ALU mais aussi d'implémenter des instructions conditionnelles et des boucles comme nous le verrons par après.
 
-Plutôt que de présenter directement toutes les possibilités de cette instruction, nous allons la construire petit à petit sur base d'exemples illustratifs. Une première utilisation de l'instruction de type `C` est de charger des données depuis la mémoire vers un registre ou d'un registre vers la mémoire. Cette variante de l'instruction `C` s'écrit généralement sous la forme :math:`dest = calcul`. Nous verrons plus tard comment réaliser un calcul en utilisant l'ALU. Commençons par observer le fonctionnement de cette instruction. La partie gauche de l'instruction de type `C` indique l'endroit où le résultat de notre calcul doit être stocké. La première destination possible est le registre `D`. Une deuxième destination possible est le registre `A`. Enfin, la troisième destination possible pour le résultat d'un calcul de l'ALU est la mémoire. Dans le minuscule assembleur, ceci est représenté en utilisant le symbole `M`. Ce symbole est un raccourci pour représenter le mot de 16 bits en mémoire se trouvant à l'adresse contenue dans le registre `A`. Ces trois destinations peuvent être combinées entre elles et la partie gauche de l'instruction de type `C` peut contenir les symboles suivants :
+Plutôt que de présenter directement toutes les possibilités de cette instruction, nous allons la construire petit à petit sur base d'exemples illustratifs. Une première utilisation de l'instruction de type `C` est de charger des données depuis la mémoire vers un registre ou d'un registre vers la mémoire. Cette variante de l'instruction `C` s'écrit généralement sous la forme :math:`dest = calcul`. Nous verrons plus tard comment réaliser un calcul en utilisant l'ALU. Commençons par observer le fonctionnement de cette instruction. La partie gauche de l'instruction de type `C` indique l'endroit où le résultat de notre calcul doit être stocké. La première destination possible est le registre `D`. Une deuxième destination possible est le registre `A`. Enfin, la troisième destination possible pour le résultat d'un calcul de l'ALU est la mémoire. Dans le minuscule assembleur, ceci est représenté en utilisant le symbole `M`. Ce symbole est un raccourci pour représenter le mot de 16 bits en mémoire se trouvant à l'adresse contenue dans le registre `A`. Ces trois destinations peuvent être combinées entre elles. La partie gauche de l'instruction de type `C` peut contenir les symboles suivants :
 
  - ``D`` le résultat du calcul doit être stocké dans le registre ``D``
  - ``A`` le résultat du calcul doit être stocké dans le registre ``A``
@@ -101,7 +115,7 @@ Plutôt que de présenter directement toutes les possibilités de cette instruct
  - ``AD`` le résultat du calcul doit être stocké dans le registre ``A`` et dans le registre ``D``
  - ``AMD`` le résultat du calcul doit être stocké dans le registre ``A``, le registre ``D`` et dans la mémoire à l'adresse qui se trouve actuellement dans le registre ``A``
    
-Il est aussi possible d'avoir une instruction de type `C` qui ne modifie ni les registres ``A``/``D`` ni la mémoire. Nous verrons ces instructions plus tard.
+Il est aussi possible d'avoir une instruction de type `C` qui ne modifie ni les registres ``A``/``D`` ni la mémoire. Nous en parlerons plus tard.
 
 
 La partie droite de l'instruction de type `C` permet de spécifier le calcul à réaliser. Une première possibilité est de prendre la valeur d'un registre ou d'une zone mémoire sans demander à l'ALU de réaliser un calcul particulier. Les trois calculs les plus simples à réaliser correspondent aux symboles ``A``, ``D`` et ``M`` :
@@ -131,29 +145,39 @@ Commençons par le code qui permet de charger une donnée en mémoire.
 
 .. code-block:: console
 
-   @1     # place l'adresse 1 dans le registre A
-   D=M    # lit la donnée à l'adresse 1 en mémoire et la place dans D
+   @1     // place l'adresse 1 dans le registre A
+   D=M    // lit la donnée à l'adresse 1 en mémoire et la place dans D
 
+   
 Après exécution de ces deux instructions, le registre ``D`` contient la valeur qui se trouvait en mémoire à l'adresse `1`, c'est-à-dire `2`.
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex1.asm`.
+
+	 
 Notre deuxième exemple montre qu'il est aussi possible de charger le registre ``A`` avec une valeur stockée en mémoire.
 
 .. code-block:: console
 
-   @1     # place l'adresse 1 dans le registre A
-   A=M    # lit la donnée à l'adresse 1 en mémoire (2) et la place dans A
-   D=M    # lit la donnée à l'adresse 2 en mémoire (4) et la place dans D
+   @1     // place l'adresse 1 dans le registre A
+   A=M    // lit la donnée à l'adresse 1 en mémoire (2) et la place dans A
+   D=M    // lit la donnée à l'adresse 2 en mémoire (4) et la place dans D
 
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex2.asm`.
+   
+   
 Notre troisième exemple montre comment déplacer une information en mémoire.
 
 .. code-block:: console
 
-   @3     # place l'adresse 1 dans le registre A
-   AD=M   # lit la donnée à l'adresse 3 en mémoire (1) et la place dans A et D
-   @0     # place l'adresse 0 dans le registre A
-   M=D    # sauve la donnée se trouvant dans D en mémoire à l'adresse se trouvant dans A (0)
+   @3     // place l'adresse 1 dans le registre A
+   AD=M   // lit la donnée à l'adresse 3 en mémoire (1) et la place dans A et D
+   @0     // place l'adresse 0 dans le registre A
+   M=D    // sauve la donnée se trouvant dans D en mémoire à l'adresse se trouvant dans A (0)
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex3.asm`.
+
+   
 Nous pouvons maintenant utiliser ces instructions pour réaliser des initialisations de variables comme dans un langage de haut niveau comme python. En python cette initialisation s'écrit comme en :numref:`code-init-var-py`
 
 .. _code-init-var-py:
@@ -163,7 +187,7 @@ Nous pouvons maintenant utiliser ces instructions pour réaliser des initialisat
    a=1
    b=42
 
-Avant de pouvoir initialiser des variables en assembleur, nous devons d'abord définir l'adresse en mémoire à laquelle chaque variable est stockée. Par convention, le minuscule processeur réserve les adresses de `0` à `15` en mémoire de données pour certaines utilisations particulières. Nous pouvons donc stocker nos variables à partir de l'adresse `16`. Nous pouvons par exemple placer la variable ``a`` à l'adresse `16` et la variable `b` à l'adresse `17`. Dans un programme en assembleur, on définit généralement une table des symboles qui définit les adresses qui sont associées à chaque variable. Dans notre exemple, cette table des symboles pourrait être :numref:`table-symb-ab`.
+Avant de pouvoir initialiser des variables en assembleur, nous devons d'abord définir l'adresse en mémoire à laquelle chaque variable est stockée. Par convention, le minuscule processeur réserve les adresses de `0` à `15` en mémoire de données pour certaines utilisations particulières. Nous pouvons donc stocker nos variables à partir de l'adresse `16`. Nous pouvons par exemple placer la variable ``a`` à l'adresse `16` et la variable `b` à l'adresse `17`. Dans un programme en assembleur, on définit généralement une table des symboles associe une adresse ç chaque variable du programme. Dans notre exemple, cette table des symboles pourrait être celle du :numref:`table-symb-ab`.
 
 
 .. _table-symb-ab:
@@ -187,17 +211,19 @@ Pour initialiser ces variables, la séquence d'instruction à utiliser est la su
 .. code-block:: console
    :caption: Initialisation de variables en assembleur		
 
-   @1    
+   @1    // valeur 1 pour l'initialisation
    D=A    
-   @16   // variable a
+   @16   // adresse de la variable a
    M=D
-   @42
+   @42   // valeur 42 pour l'initialisation
    D=A
-   @17   // variable b
+   @17   // adresse de la variable b
    M=D
 
 
-   
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex4.asm`.
+
+     
 Dans un programme python, il est parfois nécessaire d'échanger le contenu de la variable ``a`` avec celui de la variable ``b``. En python, cela peut se faire de deux façons. La première solution est d'utiliser une variable intermédiaire (:numref:`code-swap2-var-py`)
 
 .. _code-swap-var-py:
@@ -236,9 +262,12 @@ Pour faire la même opération en langage assembleur, nous devons aussi passer p
    D=M
    @16   // variable b
    M=D
-   
 
-Continuons notre exploration des instructions de type `C`. L'ALU de notre minuscule processeur est aussi capable de retourner les constantes suivantes :
+
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex5.asm`.
+
+   
+Continuons notre exploration des instructions de type `C`. L'ALU de notre minuscule processeur est aussi capable de produire les constantes suivantes :
 
  - ``0``
  - ``1``
@@ -255,6 +284,8 @@ Ces constantes peuvent apparaître dans la partie de droite d'une instruction de
    @21   // variable y
    M=-1
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex6.asm`.
+   
 Notre minuscule ALU peut aussi réaliser des calculs sur un registre ou une valeur lue en mémoire. La partie de droite d'une instruction de type `C` peut en effet contenir les symboles suivants:
 
  - ``!D`` : le résultat de l'ALU sera le résultat de l'application de l'opération `NOT` à tous les bits du contenu du registre ``D``
@@ -283,7 +314,7 @@ Enfin, il est possible d'utiliser l'ALU pour effectuer des opérations arithmét
  - ``D-M`` : le résultat de l'ALU sera le résultat de la soustraction du contenu du registre ``D`` moins le mot lu en mémoire à l'adresse contenue dans le registre ``A``
  - ``M-D`` : le résultat de l'ALU sera le résultat de la soustraction du mot lu en mémoire à l'adresse contenue dans le registre ``A`` moins le contenu du registre ``D``
 
-Les dernières opérations supportées par l'ALU sont le opération logiques.
+Les dernières opérations supportées par l'ALU sont les opération logiques.
    
  - ``D&A`` : le résultat de l'ALU sera le résultat de l'opération logique `AND` appliquée au contenu du registre ``D`` et au contenu du registre ``A``
  - ``D|A`` : le résultat de l'ALU sera le résultat de l'opération logique `OR` appliquée au contenu du registre ``D`` et au contenu du registre ``A``
@@ -304,6 +335,8 @@ Avec ces 28 opérations, nous pouvons maintenant réaliser de très nombreuses o
    @20   // adresse de la variable
    M=D   // sauvegarde du résultat en mémoire
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex7.asm`.
+   
 Il existe une solution nettement plus compacte et plus efficace (:numref:`code-inc2-var-asm`).
 
 .. _code-inc2-var-asm:
@@ -314,6 +347,8 @@ Il existe une solution nettement plus compacte et plus efficace (:numref:`code-i
    M=M+1
 
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex7b.asm`.
+   
 Il en va de même pour décrémenter la valeur d'une variable (:numref:`code-dec-var-asm`).
 
 .. _code-dec-var-asm:
@@ -323,7 +358,10 @@ Il en va de même pour décrémenter la valeur d'une variable (:numref:`code-dec
    @20   // adresse de la variable
    M=M-1
 
-Le minuscule langage d'assemblage permet de réaliser des opérations mathématique plus complexes. il est en effet possible de combiner des additions et des soustractions. Supposons que `A`, `B` et `C` sont des variables entières et qu'il faut calculer :math:`A+B-C` et stocker le résultat dans la variable `X`. Pour cela, il faut d'abord fixer les adresses mémoires dans lesquelles ces variables sont stockées :numref:`table-symb-abcx`.
+
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex7c.asm`.
+
+Le minuscule langage d'assemblage permet de réaliser des opérations mathématiques plus complexes. il est en effet possible de combiner des additions et des soustractions. Supposons que `A`, `B` et `C` sont des variables entières et qu'il faut calculer :math:`A+B-C` et stocker le résultat dans la variable :math`X`. Pour cela, il faut d'abord fixer les adresses mémoires dans lesquelles ces variables sont stockées (:numref:`table-symb-abcx`).
    
 .. _table-symb-abcx:
 
@@ -351,7 +389,9 @@ Le minuscule langage d'assemblage permet de réaliser des opérations mathémati
    @25   // adresse de la variable X
    M=D   // sauvegarde du résultat en mémoire 
 
-On peut également utiliser les instructions de notre langage d'assemblage pour calculer l'opposé d'un nombre. Si la variable est stockée à l'adresse ``20`` et que son opposé doit être stocké à l'adresse ``24``, une première solution est de procéder comme en :numref:`code-oppose-asm`.
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex8.asm`.
+   
+On peut également utiliser les instructions de notre langage d'assemblage pour calculer l'opposé d'un nombre. Si la variable est stockée à l'adresse ``20`` et que son opposé doit être stocké à l'adresse ``24``, une première solution est de procéder comme dans le :numref:`code-oppose-asm`.
 
 .. _code-oppose-asm:   
 .. code-block:: console
@@ -363,7 +403,7 @@ On peut également utiliser les instructions de notre langage d'assemblage pour 
    M=D   // sauvegarde du résultat en mémoire 
 
 
-   
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex9.asm`.   
    
    
 Exercices
@@ -375,7 +415,7 @@ _________
 
 2. Avec le minuscule langage d'assemblage, comment faire pour initialiser une variable à la valeur ``-2`` ?   
 
-3. Quel font les instructions en assembleur minuscules ci-dessous ?
+3. Que font les instructions en assembleur minuscule ci-dessous ?
 
    .. calcul de l'opposé (rappel: en complément à deux, -A=NOT(A)+1, cfr ALU
    
@@ -390,8 +430,23 @@ _________
 
 .. Proposer avec Mathieu quelques exercices de lecture de code
 
+4. Avec le minuscule assembleur, l'initialisation d'une variable se fait normalement avec une instruction de type `A` :
 
+  .. code-block:: console
+   
 
+      @1234   // valeur
+      D=A
+      @16     // adresse variable
+      M=D
+
+  Cependant, comme l'instruction de type `A` est encodée sur 16 bits, il n'y a que 15 bits de disponibles pour encoder cette valeur. Comment feriez-vous pour traduire l'assignation ``x=50000`` en minuscule assembleur ?    
+
+  .. faire un calcul pour obtenir ce résultat, par exemple 25000+25000
+
+5. Le minuscule assembleur supporte les opérations logiques `AND` et `OR` de l'ALU. Certains langages de programmation supportent également l'opration `XOR`. Comment feriez-vous pour implémenter l'opération `XOR` en minuscule assembleur ?
+     
+  
 Toutes les instructions de type `C` sont encodées sous la forme d'un mot de 16 bits qui a la structure suivante :
 
  :math:`1 1 1 a c_1 c_2 c_3 c_4 c_5 c_6 d_1 d_2 d_3 j_1 j_2 j_3`
@@ -401,12 +456,23 @@ Dans cette structure, le bit de poids fort mis à `1` permet au minuscule proces
 
  - l'instruction ``M=D+1`` a comme encodage ``1 1 1 0 0 1 1 1 1 1 0 0 1 0 0 0``. Dans cet encodage, ``0 0 1 1 1 1 1`` représente le membre de droite (``D+1``) et ``0 0 1`` le membre de gauche de l'instruction
  - l'instruction ``D=D+1`` a comme encodage ``1 1 1 0 0 1 1 1 1 1 0 1 0 0 0 0``. Dans cet encodage, ``0 0 1 1 1 1 1`` représente le membre de droite (``D+1``) et ``0 1 0`` le membre de gauche de l'instruction
- - l'instruction ``AMD=A-D`` a comme encodage ``1 1 1 0 0 0 0 1 1 1 1 1 1 0 0 0``. Dans cet encodage, ``0 0 0 0 1 1 1 `` représente le membre de droite (``A-D``) et ``1 1 1`` le membre de gauche de l'instruction    
+ - l'instruction ``AMD=A-D`` a comme encodage ``1 1 1 0 0 0 0 1 1 1 1 1 1 0 0 0``. Dans cet encodage, ``0 0 0 0 1 1 1`` représente le membre de droite (``A-D``) et ``1 1 1`` le membre de gauche de l'instruction    
 
+   
 
 Les instructions de saut
 ------------------------
-    
+
+Pour exécuter un programme, notre minuscule processeur doit charger une nouvelle instruction à chaque cycle d'horloge. Il le fait en utilisant le registre ``PC``. Celui-ci est initialisé à la valeur ``0`` lorsque le minuscule processeur démarre. A chaque cycle d'horloge, le minuscule processeur réalise les opérations suivantes :
+
+ - lecture de l'instruction se trouvant à l'adresse qui est stockée dans le registre ``PC``
+ - décodage de l'instruction lue en mémoire
+ - exécution de l'instruction lue en mémoire
+ - mise à jour du registre ``PC``
+
+L'exécution de toutes les instructions que nous avons vu jusque maintenant se termine par l'incrémentation du contenu du registre ``PC``. Cela permettra à notre minuscule processeur de charger automatiquement l'instruction suivante lors du prochain cycle d'horloge.
+
+
 .. spelling::
 
    Program
@@ -448,9 +514,11 @@ Les trois bits de poids fort de l'instruction de type `C` permettent d'influence
    74      0;JMP
    ======= ===========
 
-Exécutons le programme représenté en :numref:`table-inc-imem` instruction par instruction en supposant que la mémoire de données continent initialement la valeur `0` à l'adresse ``22``. Les instructions suivantes sont exécutées :
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex10.asm`.   
+   
+Exécutons le programme représenté en :numref:`table-inc-imem` instruction par instruction en supposant que la mémoire de données contient initialement la valeur `0` à l'adresse ``22``. Les instructions suivantes sont exécutées :
 
- - exécution de l'instruction à l'adresse ``71``, chargement de la valeur `22` dans le registre `A` (0), `PC` passe à ``72``
+ - exécution de l'instruction à l'adresse ``71``, chargement de la valeur `22` dans le registre `A`, `PC` passe à ``72``
  - exécution de l'instruction à l'adresse ``72``, incrémentation de la valeur stockée en mémoire à l'adresse se trouvant dans le registre `A`. L'adresse `22` en mémoire de données contient maintenant `1`. `PC` passe à ``73``
  - exécution de l'instruction à l'adresse ``73``, chargement de la valeur `71` dans le registre `A`, `PC` passe à ``74``
  - exécution de l'instruction à l'adresse ``74``, le `PC` prend la valeur stockée dans le registre `A` (``71``)
@@ -461,7 +529,6 @@ Exécutons le programme représenté en :numref:`table-inc-imem` instruction par
  - ...
 
    
-
 Ce programme ne s'arrêtera jamais. Il est équivalent au code python suivant.
 
 .. code-block:: python
@@ -473,7 +540,7 @@ Ce programme ne s'arrêtera jamais. Il est équivalent au code python suivant.
 Les instructions de saut conditionnel
 -------------------------------------
      
-Cette instruction ``JMP`` est très fréquente en assembleur. Elle permet d'effecteur un saut qui est dit non-conditionnel car la valeur du `PC` est toujours modifiée. A côté des cette instruction, notre minuscule langage d'assemblage supporte plusieurs instructions de :index:`saut conditionnel`. Ces instructions modifient la valeur du `PC` uniquement si une condition particulière est vérifiée. Le langage d'assemblage du minuscule processeur supporte six instructions de saut conditionnel :
+L'instruction de saut (``0;JMP``) est très fréquente en assembleur. Elle permet d'effectuer un saut qui est dit non-conditionnel car la valeur du `PC` est toujours modifiée. A côté de cette instruction, notre minuscule langage d'assemblage supporte plusieurs instructions de :index:`saut conditionnel`. Ces instructions modifient la valeur du `PC` uniquement si une condition particulière est vérifiée. Le langage d'assemblage du minuscule processeur supporte six instructions de saut conditionnel :
 
 .. spelling::
 
@@ -485,12 +552,12 @@ Cette instruction ``JMP`` est très fréquente en assembleur. Elle permet d'effe
    than
    to
    
- - ``JEQ`` (Jump if EQual to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul de l'ALU est nul.
- - ``JNE`` (Jump if Not Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul de l'ALU est différent de zéro.
- - ``JGT`` (Jump if Greater Than 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul de l'ALU est strictement positif.
- - ``JLT`` (Jump if Lower Than 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul de l'ALU est strictement inférieur à 0.
- - ``JGE`` (Jump if Greater than or Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul de l'ALU est supérieur ou égal à 0.
- - ``JLE`` (Jump if Lower than or Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul de l'ALU est inférieur ou égal à 0.   
+ - ``JEQ`` (Jump if EQual to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est nul.
+ - ``JNE`` (Jump if Not Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est différent de zéro.
+ - ``JGT`` (Jump if Greater Than 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est strictement positif.
+ - ``JLT`` (Jump if Lower Than 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est strictement inférieur à 0.
+ - ``JGE`` (Jump if Greater than or Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est supérieur ou égal à 0.
+ - ``JLE`` (Jump if Lower than or Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est inférieur ou égal à 0.   
 
 
 Avec ces six instructions, il est possible de supporter les instructions conditionnelles et les boucles avec le minuscule langage d'assemblage. Commençons par les instructions conditionnelles. Supposons que l'on veuille mettre dans la variable ``y`` la valeur absolue de la variable ``x``. En python, une première approche pourrait être celle du programme ci-dessous.
@@ -502,9 +569,36 @@ Avec ces six instructions, il est possible de supporter les instructions conditi
    if (x<0):
      y=-x
    # y contient abs(x)
+   z=0
+   
+Une première solution pour traduire ces trois lignes de python est de les traduire le plus litéralement possible.
 
+.. _table-abs1-imem:
 
-Ces trois lignes de python peuvent se traduire en minuscule assembleur en utilisant une instruction ``JGE`` (:numref:`table-abs-imem`). 
+.. table:: Calcul de la valeur absolue en minuscule assembleur
+
+   ======= ===========
+   adresse instruction
+   ------- -----------   
+   41      @22  // x      
+   42      D=M
+   43      @23  // y
+   44      DM=D
+   45      @49
+   46      D;JLT
+   47      @51
+   48      0;JMP
+   49      @23
+   50      M=-D
+   51      @24  // z
+   51      M=0
+   ======= ===========
+
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex11a.asm`.   
+
+Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. Cette adresse est celle de la première instruction correspondant au corps du ``if``. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est strictement négatif, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Dans ce cas, le programme exécutera le corps de l'instruction conditionelle. Si par contre le contenu du registre `D` est positif ou nul, nous ne devons pas exécuter le corps de la boucle, mais directement passer à l'instruction qui initialise la variable `z` à partir de l'adresse ``51``.  Ces le rôle de l'instruction de saut inconditionnel aux adresses ``47`` et ``48``. L'instruction à l'adresse ``49`` est celle du corps de l'instruction conditionnelle. A la fin de son exécution on peut exécuter l'instruction qui suit l'instruction conditionnelle.
+
+En y réfléchissant un peu, on peut réduire le nombre d'instructions conditionnelles dans ce programme en utilisant une instruction ``JGE`` (:numref:`table-abs-imem`). 
    
 .. _table-abs-imem:
 
@@ -524,10 +618,9 @@ Ces trois lignes de python peuvent se traduire en minuscule assembleur en utilis
    49      ...
    ======= ===========
 
-Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est positif ou nul, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Sinon, les instructions aux adresses ``47`` et ``48`` sont exécutées. Par rapport au code python, on remarque que l'on prend comme condition pour l'instruction assembleur l'inverse de la condition du code python. En effet, la condition de l'instruction conditionnelle en python doit être vérifiée pour que l'instruction ``y=-x`` soit exécutée. En assembleur, on place la cible du saut après l'exécution des instruction qui se trouvent dans le corps du ``if`` en python.
-
-
-Analysons une seconde variante du calcul de la valeur absolue. 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex11.asm`.   
+   
+Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est positif ou nul, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Sinon, les instructions aux adresses ``47`` et ``48`` sont exécutées. Par rapport au code python, on remarque que l'on prend comme condition pour l'instruction assembleur l'inverse de la condition du code python. En effet, la condition de l'instruction conditionnelle en python doit être vérifiée pour que l'instruction ``y=-x`` soit exécutée. En assembleur, on place la cible du saut après l'exécution des instruction qui se trouvent dans le corps du ``if`` en python. Analysons une seconde variante du calcul de la valeur absolue. 
 
 
 .. code-block:: python
@@ -539,7 +632,7 @@ Analysons une seconde variante du calcul de la valeur absolue.
    # y contient abs(x)
 
 
-Une première approche pour traduire ce code python en minuscule assembleur sera de faire comment dans la :numref:`table-abs2-imem`.
+Une première approche pour traduire ce code python en minuscule assembleur serait de procéder comme dans la :numref:`table-abs2-imem`.
    
 .. _table-abs2-imem:
 
@@ -559,6 +652,8 @@ Une première approche pour traduire ce code python en minuscule assembleur sera
    49      ...
    ======= ===========
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex12.asm`.   
+   
 Malheureusement, cette solution est incorrecte car elle place toujours la valeur de la variable ``-x`` dans la variable ``y`` quel que soit son signe. Lorsque ``x`` est négatif, l'exécution passe directement à l'instruction se trouvant à l'adresse ``47`` et sauve la valeur de ``-x`` dans la variable ``y``. Cependant, si ``x`` est positif, après avoir copié ``x`` dans la variable ``y`` (instructions aux adresses ``45`` et ``46``), le minuscule processeur exécute les instructions aux adresses ``47`` et ``48`` et sauve donc la valeur de ``-x`` dans la variable ``y``. On peut éviter ce problème en utilisant un saut inconditionnel après le corps du ``if ...`` (:numref:`table-abs3-imem`).
 
 
@@ -582,9 +677,11 @@ Malheureusement, cette solution est incorrecte car elle place toujours la valeur
    51      ...
    ======= ===========
 
-Dans ce l'exemple de la :numref:`table-abs3-imem`, le saut inconditionnel des instructions aux adresses ``47`` et ``48`` garantit que les instructions des adresses ``49`` et ``50`` ne seront pas exécutées lorsque ``x`` est positif.   
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex12b.asm`.   
    
-Un approche similaire peut être utilisée pour implémenter d'autres instructions conditionnelles. Le tout est de ramener toute condition à une comparaison avec la valeur `0` ou une comparaison de signe. Ainsi, pour comparer si deux variables contiennent la même valeur, il suffira de calculer une soustraction et ensuite de vérifier si le résultat est nul. Il en va de même pour vérifier si deux variables contiennent des valeurs différentes.
+Dans l'exemple de la :numref:`table-abs3-imem`, le saut inconditionnel des instructions aux adresses ``47`` et ``48`` garantit que les instructions des adresses ``49`` et ``50`` ne seront pas exécutées lorsque ``x`` est positif.   
+   
+Un approche similaire peut être utilisée pour implémenter d'autres instructions conditionnelles. Le tout est de ramener toute condition à une comparaison avec la valeur `0` ou à une comparaison de signe. Ainsi, pour comparer si deux variables contiennent la même valeur, il suffira de calculer une soustraction et ensuite de vérifier si le résultat est nul. Il en va de même pour vérifier si deux variables contiennent des valeurs différentes.
 
 Pour les conditions plus complexes, il faut parfois réécrire l'instruction conditionnelle. Prenons deux exemples en python pour illustrer cette réécriture.
 
@@ -603,7 +700,7 @@ Dans ce cas, on peut réécrire l'instruction conditionnelle sous la forme :
      if (b<1) :
        x=2
 
-Ces deux instructions conditionnelles imbriquées peuvent facilement s'implémenter avec les instructions de saut conditionnelles que nous avons présenté. Il en va de même pour une disjonction logique. L'instruction ci-dessous :
+Ces deux instructions conditionnelles imbriquées peuvent facilement s'implémenter avec les instructions de saut conditionnel que nous avons présenté. Il en va de même pour une disjonction logique. L'instruction ci-dessous :
 
 .. code-block:: python
 
@@ -623,7 +720,7 @@ peut se réécrire de la façon suivante pour supprimer la disjonction logique.
 A nouveau, les deux instructions conditionnelles ci-dessous peuvent facilement s'implémenter avec les instructions conditionnelles de notre minuscule langage d'assemblage.
 	 
 	 
-Lorsqu'on utilise le langage d'assemblage, il peut être fastidieux de devoir indiquer les valeurs numériques des adresses des variables ainsi que des adresses des sauts. Heureusement, l'assembleur du minuscule processeur vous permet d'utiliser des symboles qui correspondent à ces adresses. Avec ces symboles, notre exemple du calcul de la valeur absolue (:numref:`table-abs3-imem`) peut s'écrire comme suit :
+Lorsque l'on utilise le langage d'assemblage, il peut être fastidieux de devoir indiquer les valeurs numériques des adresses des variables ainsi que des adresses des sauts. Heureusement, l'assembleur du minuscule processeur vous permet d'utiliser des symboles qui correspondent à ces adresses. Avec ces symboles, notre exemple du calcul de la valeur absolue (:numref:`table-abs3-imem`) peut s'écrire comme suit :
 
 
 .. code-block:: console
@@ -644,7 +741,9 @@ Lorsqu'on utilise le langage d'assemblage, il peut être fastidieux de devoir in
    //  ...		
 
 
-Dans ce code, l'assembleur construit automatiquement la table des symboles permettant de sauver les variables ``x`` et ``y``. Il détermine aussi l'adresse en mémoire des instructions qui correspond à l'étiquette ``(SUITE)`` et remplace cette étiquette par l'adresse correspondante dans le code. Cela simplifie l'écriture de programmes en minuscule assembleur. 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex13.asm`.   
+   
+Dans ce code, l'assembleur construit automatiquement la table des symboles permettant de sauver les variables ``x`` et ``y``. Il détermine aussi l'adresse en mémoire de l'instruction qui correspond à l'étiquette ``(SUITE)`` et remplace cette étiquette par l'adresse correspondante dans le code. Cela simplifie l'écriture de programmes en minuscule assembleur. 
 
    
 
@@ -679,6 +778,7 @@ _________
       else:
         y=-1
 
+	
 
 Les boucles
 -----------
@@ -689,7 +789,7 @@ Après les opérations arithmétiques et logiques et les instructions conditionn
  - les boucles ``for``
 
 
-Les boucles ``while`` sont les boucles les plus générales. Un boucle ``for`` est généralement une boucle d'un type particulier qui est écrite de façon compacte. Nous nous focaliserons dont sur les boucles ``while`` dans cette section. une boucle ``while`` comprend toujours une condition qui est une expression booléenne et un corps comprenant une ou plusieurs instructions à exécuter. Nous avons déjà vu que la boucle infinie
+Les boucles ``while`` sont les boucles les plus générales. Un boucle ``for`` est généralement une boucle d'un type particulier qui est écrite de façon compacte. Nous nous focaliserons sur les boucles ``while`` dans cette section. Une boucle ``while`` comprend toujours une condition qui est une expression booléenne et un corps comprenant une ou plusieurs instructions à exécuter. Nous avons déjà vu que la boucle infinie
 
 .. code-block:: python
 
@@ -711,15 +811,16 @@ pouvait être traduite dans notre minuscule assembleur par les instructions repr
    74      0;JMP
    ======= ===========
 
+Vous pouvez télécharger cet exemple depuis :download:`asm/ex14.asm`.   
+      
 Nous pouvons nous inspirer de cette approche pour traduire une boucle ``while`` en une séquence d'instructions en minuscule assembleur. Pour cela, notre programme doit :
 
  1. Évaluer la valeur de la condition
  2. Si la condition s'évalue à True, exécuter le corps de la boucle puis revenir au point 1
- 3. Sinon, passer à l'exécution des instructions juste après le corps de la boucle
+ 3. Sinon, passer à l'exécution des instructions placées juste après le corps de la boucle
 
     
-
-Pour illustrer cette traduction, considérons la boucle ci-dessous. Après l'exécution de cette boucle, ``x`` contient la valeur `512`.
+Pour illustrer cette traduction, considérons la boucle ci-dessous. Après l'exécution de cette boucle, la variable ``x`` contient la valeur `512`.
 
 
 .. code-block:: python
@@ -731,7 +832,7 @@ Pour illustrer cette traduction, considérons la boucle ci-dessous. Après l'ex�
      n=n+1
 
 
-Le code assembleur correspondant est présenté ci-dessous. L'étiquette ``(DEBUT)`` correspond à la première instruction. Nous initialisons ensuite les variables ``x`` et ``n`` à la valeur `1` dans les deux mots de mémoire que l'assembleur leur a réservé. L'étiquette ``(DBOUCLE`` correspond à l'adresse de la première instruction de notre boucle. Les quatre instructions qui suivent placent dans le registre ``D`` le résultat de :math:`n-10`. Cela nous permet ensuite de comparer cette valeur avec `0`. Si :math:`n-10 \ge 0`, alors la condition de notre boucle n'est pas vérifiée et nous devons en sortir. C'est le rôle de l'instruction ``JGE`` qui chargera l'adresse de l'étiquette ``(FBOUCLE)``. Sinon, les six instructions suivantes permettent de placer ``x+x`` dans la variable ``x`` et ensuite d'incrémenter la variable ``n``. Les deux dernières instructions permettent de revenir à l'adresse de l'étiquette ``(DBOUCLE)`` pour faire l'itération suivante dans la boucle.
+Le code assembleur correspondant est présenté ci-dessous. L'étiquette ``(DEBUT)`` correspond à la première instruction. Nous initialisons ensuite les variables ``x`` et ``n`` à la valeur `1` dans les deux mots de mémoire que l'assembleur leur a réservé. L'étiquette ``(DBOUCLE)`` correspond à l'adresse de la première instruction de notre boucle. Les quatre instructions qui suivent placent dans le registre ``D`` le résultat de :math:`n-10`. Cela nous permet ensuite de comparer cette valeur avec `0`. Si :math:`n-10 \ge 0`, alors la condition de notre boucle n'est pas vérifiée et nous devons en sortir. C'est le rôle de l'instruction ``JGE`` qui placera l'adresse de l'étiquette ``(FBOUCLE)`` dans le compteur de programme. Sinon, les six instructions suivantes permettent de placer ``x+x`` dans la variable ``x`` et ensuite d'incrémenter la variable ``n``. Les deux dernières instructions permettent de revenir à l'adresse de l'étiquette ``(DBOUCLE)`` pour faire l'itération suivante dans la boucle.
 
 
 .. code-block:: console
@@ -780,7 +881,7 @@ _________
   Convertissez ce programme python en une suite d'instructions en minuscule assembleur.
 
 
-Python, comme d'autres langages de programmation, support les mode clés ``break`` et ``continue`` qui peuvent être utilisé à l'intérieur de boucles. Prenons comme exemple la boucle suivante.
+Python, comme d'autres langages de programmation, support les mode clés ``break`` et ``continue`` qui peuvent être utilisé à l'intérieur de boucles. Prenons comme exemple la boucle ci-dessous.
 
 
 
@@ -795,15 +896,16 @@ Python, comme d'autres langages de programmation, support les mode clés ``break
 	   break
 
 
-Ce fragment de code en python peut être traduite en minuscule assembleur par les instructions ci-dessous (téléchargeable via :download:`asm/boucle-break.asm`). La traduction en assembleur de ce fragment de code  montre que l'instruction ``break`` est traduite comme un saut inconditionnel qui permet de sortir de la boucle.
+Ce fragment de code en python peut être traduit en minuscule assembleur par les instructions ci-dessous (téléchargeable via :download:`asm/boucle-break.asm`). La traduction en assembleur de ce fragment de code  montre que l'instruction ``break`` est traduite comme un saut inconditionnel qui permet de sortir de la boucle.
 
 
 .. literalinclude:: asm/boucle-break.asm
    :language: console
    :start-after: (START)
-	   
 
-Python supporte aussi l'instruction ``continue`` qui permet de continuer l'exécution de la boucle sans exécuter les autres instructions de celle-ci. La code ci-dessous est un exemple de l'utilisation de ``continue`` en python. 
+		 
+
+Python supporte aussi l'instruction ``continue`` qui permet de continuer l'exécution de la boucle sans exécuter les instructions se trouvant après cette instruction. La code ci-dessous est un exemple de l'utilisation de ``continue`` en python. 
 
 
    .. code-block:: python
@@ -822,3 +924,6 @@ A nouveau, la traduction de ce code en minuscule assembleur fait appel à un sau
 .. literalinclude:: asm/boucle-continue.asm
    :language: console
    :start-after: (START)      
+
+Ce programme en minuscule assembleur est téléchargeable via :download:`asm/boucle-continue.asm`.
+		 

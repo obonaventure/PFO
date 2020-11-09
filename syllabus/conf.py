@@ -32,6 +32,7 @@ release = '2020'
 # ones.
 extensions = [ 'sphinxcontrib.spelling',
                'sphinxcontrib.tikz',
+               'sphinxcontrib.video',
 ]
 
 #               'matplotlib.sphinxext.only_directives',
