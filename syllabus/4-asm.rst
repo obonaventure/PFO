@@ -94,7 +94,7 @@ Cette instruction a trois utilisations en pratique. Tout d'abord, elle permet de
 Comme toutes les instructions, l'instruction de type A est encodée sous la forme d'un mot de 16 bits. L'encodage est extrêmement simple :
 
  - le bit de poids fort est mis à ``0``
- - les quinze bits de poids fort sont la valeur de l'argument de l'instruction en binaire
+ - les quinze bits de poids faible sont la valeur de l'argument de l'instruction en binaire
 
 
 C'est à cause de l'encodage de l'instruction dans un mot de 16 bits que la constante qui est passée en argument doit être encodée sur 15 bits.
@@ -331,7 +331,7 @@ Avec ces 28 opérations, nous pouvons maintenant réaliser de très nombreuses o
    @20   // adresse de la variable
    D=M   // chargement de la valeur de la variable
    @1    // constante 1
-   D=D+1 // addition
+   D=D+A // addition
    @20   // adresse de la variable
    M=D   // sauvegarde du résultat en mémoire
 
@@ -536,12 +536,6 @@ Ce programme ne s'arrêtera jamais. Il est équivalent au code python suivant.
    while True:
      x=x+1
 
-
-Les instructions de saut conditionnel
--------------------------------------
-     
-L'instruction de saut (``0;JMP``) est très fréquente en assembleur. Elle permet d'effectuer un saut qui est dit non-conditionnel car la valeur du `PC` est toujours modifiée. A côté de cette instruction, notre minuscule langage d'assemblage supporte plusieurs instructions de :index:`saut conditionnel`. Ces instructions modifient la valeur du `PC` uniquement si une condition particulière est vérifiée. Le langage d'assemblage du minuscule processeur supporte six instructions de saut conditionnel :
-
 .. spelling::
 
    Jump
@@ -551,7 +545,14 @@ L'instruction de saut (``0;JMP``) est très fréquente en assembleur. Elle perme
    Lower
    than
    to
-   
+     
+
+Les instructions de saut conditionnel
+-------------------------------------
+     
+L'instruction de saut (``0;JMP``) est très fréquente en assembleur. Elle permet d'effectuer un saut qui est dit non-conditionnel car la valeur du `PC` est toujours modifiée. A côté de cette instruction, notre minuscule langage d'assemblage supporte plusieurs instructions de :index:`saut conditionnel`. Ces instructions modifient la valeur du `PC` uniquement si une condition particulière est vérifiée. Le langage d'assemblage du minuscule processeur supporte six instructions de saut conditionnel :
+
+
  - ``JEQ`` (Jump if EQual to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est nul.
  - ``JNE`` (Jump if Not Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est différent de zéro.
  - ``JGT`` (Jump if Greater Than 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est strictement positif.
@@ -559,6 +560,7 @@ L'instruction de saut (``0;JMP``) est très fréquente en assembleur. Elle perme
  - ``JGE`` (Jump if Greater than or Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est supérieur ou égal à 0.
  - ``JLE`` (Jump if Lower than or Equal to 0). Avec cette instruction, le saut est réalisé uniquement si le résultat du calcul fait par l'ALU est inférieur ou égal à 0.   
 
+  
 
 Avec ces six instructions, il est possible de supporter les instructions conditionnelles et les boucles avec le minuscule langage d'assemblage. Commençons par les instructions conditionnelles. Supposons que l'on veuille mettre dans la variable ``y`` la valeur absolue de la variable ``x``. En python, une première approche pourrait être celle du programme ci-dessous.
 
@@ -852,7 +854,7 @@ Le code assembleur correspondant est présenté ci-dessous. L'étiquette ``(DEBU
 	  @x
 	  D=M
 	  @x
-	  D=D+M
+	  M=D+M
 	  @n
 	  M=M+1
 	  @DBOUCLE

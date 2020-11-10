@@ -1,8 +1,9 @@
-   @22  // x      
+   @x  
    D=M
-   @47
+   @LABEL
    D;JLE
-   @6  // y
+   @y  
    M=D
-   @23  // y
+(LABEL)	
+   @y  
    M=-D

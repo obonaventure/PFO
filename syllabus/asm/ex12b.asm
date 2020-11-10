@@ -1,10 +1,12 @@
-   @22  // x      
+   @x
    D=M
-   @6
+   @LABEL1
    D;JLE
-   @23  // y
+   @y
    M=D
-   @10
+   @LABEL2
    0;JMP
-   @23  // y
+(LABEL1)
+   @y
    M=-D
+(LABEL2)
