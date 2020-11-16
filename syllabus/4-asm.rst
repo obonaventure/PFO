@@ -9,8 +9,7 @@ Langage d'assemblage
 
 Avec la mémoire et l'ALU nous avons les briques de base qui vont nous permettre de construire un micro-processeur qui sera capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neuman`.
 
-Cette architecture est composée d'un :index:`processeur` (:index:`CPU
-` en anglais) ou unité de calcul et d'une mémoire. Le processeur est un circuit électronique qui est capable d'effectuer de nombreuses tâches :
+Cette architecture est composée d'un :index:`processeur` (:index:`CPU` en anglais) ou unité de calcul et d'une mémoire. Le processeur est un circuit électronique qui est capable d'effectuer de nombreuses tâches : 
 
  - lire de l'information en mémoire
  - écrire de l'information en mémoire
@@ -444,7 +443,7 @@ _________
 
   .. faire un calcul pour obtenir ce résultat, par exemple 25000+25000
 
-5. Le minuscule assembleur supporte les opérations logiques `AND` et `OR` de l'ALU. Certains langages de programmation supportent également l'opration `XOR`. Comment feriez-vous pour implémenter l'opération `XOR` en minuscule assembleur ?
+5. Le minuscule assembleur supporte les opérations logiques `AND` et `OR` de l'ALU. Certains langages de programmation supportent également l'opération `XOR`. Comment feriez-vous pour implémenter l'opération `XOR` en minuscule assembleur ?
      
   
 Toutes les instructions de type `C` sont encodées sous la forme d'un mot de 16 bits qui a la structure suivante :
@@ -573,7 +572,7 @@ Avec ces six instructions, il est possible de supporter les instructions conditi
    # y contient abs(x)
    z=0
    
-Une première solution pour traduire ces trois lignes de python est de les traduire le plus litéralement possible.
+Une première solution pour traduire ces trois lignes de python est de les traduire le plus littéralement possible.
 
 .. _table-abs1-imem:
 
@@ -598,7 +597,7 @@ Une première solution pour traduire ces trois lignes de python est de les tradu
 
 Vous pouvez télécharger cet exemple depuis :download:`asm/ex11a.asm`.   
 
-Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. Cette adresse est celle de la première instruction correspondant au corps du ``if``. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est strictement négatif, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Dans ce cas, le programme exécutera le corps de l'instruction conditionelle. Si par contre le contenu du registre `D` est positif ou nul, nous ne devons pas exécuter le corps de la boucle, mais directement passer à l'instruction qui initialise la variable `z` à partir de l'adresse ``51``.  Ces le rôle de l'instruction de saut inconditionnel aux adresses ``47`` et ``48``. L'instruction à l'adresse ``49`` est celle du corps de l'instruction conditionnelle. A la fin de son exécution on peut exécuter l'instruction qui suit l'instruction conditionnelle.
+Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. Cette adresse est celle de la première instruction correspondant au corps du ``if``. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est strictement négatif, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Dans ce cas, le programme exécutera le corps de l'instruction conditionnelle. Si par contre le contenu du registre `D` est positif ou nul, nous ne devons pas exécuter le corps de la boucle, mais directement passer à l'instruction qui initialise la variable `z` à partir de l'adresse ``51``.  Ces le rôle de l'instruction de saut inconditionnel aux adresses ``47`` et ``48``. L'instruction à l'adresse ``49`` est celle du corps de l'instruction conditionnelle. A la fin de son exécution on peut exécuter l'instruction qui suit l'instruction conditionnelle.
 
 En y réfléchissant un peu, on peut réduire le nombre d'instructions conditionnelles dans ce programme en utilisant une instruction ``JGE`` (:numref:`table-abs-imem`). 
    

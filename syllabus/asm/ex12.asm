@@ -1,9 +1,11 @@
    @x  
    D=M
    @LABEL
-   D;JLE
+   D;JLE	
    @y  
    M=D
 (LABEL)	
+   @x
+   D=M
    @y  
    M=-D

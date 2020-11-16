@@ -1,0 +1,1 @@
+// rectangle en mémoire

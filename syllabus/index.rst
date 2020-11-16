@@ -21,7 +21,7 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    3-memoire
 
    4-asm
-..   4b-asm
+   4b-asm
       
 Indices et tables
 =================
