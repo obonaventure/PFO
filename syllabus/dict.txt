@@ -28,3 +28,6 @@ Von
 Neuman
 ALU
 l'ALU
+KBytes
+MBytes
+TBytes

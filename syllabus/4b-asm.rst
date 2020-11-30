@@ -164,6 +164,8 @@ Le programme ci-dessous présente un exemple simple de lecture de caractères de
 .. literalinclude:: asm/keyb.asm
    :language: console
 
+Ce programme peut être téléchargé via le lien :download:`asm/keyb.asm`.
+	      
 
 Lorsque l'on exécute ce programme en utilisant le simulateur du minuscule CPU, on observe facilement que le compteur n'est incrémenté qu'à condition que la touche soit pressée au moment où le programme lit le mot à l'adresse ``24576`` en mémoire. Dès que l'utilisateur arrête de pousser sur un touche, ce mot revient à la valeur ``0``. Cela implique que sur le minuscule ordinateur, il est nécessaire de consulter très régulièrement l'information stockée à cette adresse pour réagir à la pression d'une touche sur le clavier. C'est le rôle notamment du :index:`système d'exploitation`, mais cela sort du cadre de ce cours.
 
@@ -295,7 +297,7 @@ Cette solution peut être étendue pour stocker des vecteurs ou des tableaux d'e
    ======= ======
 
 
-Sur base de ce tableau de douze nombres, on peut ensuite facilement écrire une programme qui calcule le nombre de jours durant une année en additionnant les nombres présents dans ce tableau. Ce programme est téléchargeable depuis :download:`asm/mois-annee2.asm`.   
+Sur base de ce tableau de douze nombres, on peut ensuite facilement écrire une programme qui calcule le nombre de jours durant une année en additionnant les nombres présents dans ce tableau. Ce programme est téléchargeable depuis :download:`asm/mois-annee.asm`.   
 
 .. literalinclude:: asm/mois-annee.asm
    :language: console
@@ -575,7 +577,7 @@ Quatrième projet
 ================
 
 
-L'objectif de ce quatrième protège, qui se fera de façon individuelle, est de démontrer votre connaissance de la programmation en langage d'assemblage. Vous devrez écrire deux petits programmes dans ce langage pour le lundi 30 novembre 2020 à 18h00. Ce projet vaut trois points et sera le dernier projet côté pour le cours cette année.
+L'objectif de ce quatrième projet, qui se fera de façon individuelle, est de démontrer votre connaissance de la programmation en langage d'assemblage. Vous devrez écrire deux petits programmes dans ce langage pour le lundi 30 novembre 2020 à 18h00. Ce projet vaut trois points et sera le dernier projet côté pour le cours cette année.
 
 
 1. Implémentez un programme en langage d'assemblage qui permet de calculer le résultat de la multiplication entre deux naturels. Ce programme est à déposer sur inginious : https://inginious.info.ucl.ac.be/course/LSINC1102/MultAsm
