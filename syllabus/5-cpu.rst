@@ -61,11 +61,11 @@ Chaque bus permet l'échange de ces trois types d'information entre tous les com
    \draw[thick,<-,color=red] (RAM.south) -- (bus-addr.north);
    \draw[thick,<->,color=green] ($(RAM.south)+(0.3,0)$) -- ($(0.3,0)+(bus-ctrl.north)$);
    
-   \draw[thick,<-,color=blue] ($(Ecran.south)+(-0.3,0)$) -- ($(Ecran.south)+(0,-1)$);
+   \draw[thick,<-,color=blue] ($(Ecran.south)+(-0.3,0)$) -- ($(Ecran.south)+(-0.3,-1)$);
    \draw[thick,<-,color=red] (Ecran.south) -- ($(Ecran.south)+(0,-2.8)$);
    \draw[thick,<->,color=green] ($(Ecran.south)+(0.3,0)$) -- ($(Ecran.south)+(0.3,-4.4)$) ;
 
-   \draw[thick,->,color=blue] ($(clavier.south)+(-0.3,0)$) -- ($(clavier.south)+(0,-1)$);
+   \draw[thick,->,color=blue] ($(clavier.south)+(-0.3,0)$) -- ($(clavier.south)+(-0.3,-1)$);
    \draw[thick,<-,color=red] (clavier.south) -- ($(clavier.south)+(0,-2.8)$);
    \draw[thick,<->,color=green] ($(clavier.south)+(0.3,0)$) -- ($(clavier.south)+(0.3,-4.4)$) ;
    
@@ -880,7 +880,7 @@ Ordinateurs actuels
 
 Le livre de référence et les chapitres précédents nous ont permis de voir les éléments principaux du fonctionnement d'une ordinateur qui est capable d'exécuter des programmes simples écrits en langage d'assemblage. Le minuscule ordinateur est complètement fonctionnel et le livre de référence l'utilise pour développer des logiciels qui permettent de l'exploiter pleinement.
 
-L'approche choisie par le livre de référence est pédagogique. L'ordinateur construit fonctionne mais il est loin d'être équivalent aux ordinateurs et aux microprocesseurs qui existent de nos jours. En une septantaine d'années environ, les ordinateurs et les microprocesseurs ont fait d'immenses progrès. Il est impossible de les lister tous dans ce cours introductif. Vous aurez plus tard l'occasion d'analyser ces techniques avancées plus en détails notamment dans les cours de Master. Cependant, il y a certaines contraintes technologiques auxquelles il est intéressant que vous soyez déjà sensibilisé.
+L'approche choisie par le livre de référence est pédagogique. L'ordinateur construit fonctionne mais il est loin d'être équivalent aux ordinateurs et aux microprocesseurs qui existent de nos jours. En une septa ntaine d'années environ, les ordinateurs et les microprocesseurs ont fait d'immenses progrès. Il est impossible de les lister tous dans ce cours introductif. Vous aurez plus tard l'occasion d'analyser ces techniques avancées plus en détails notamment dans les cours de Master. Cependant, il y a certaines contraintes technologiques auxquelles il est intéressant que vous soyez déjà sensibilisé.
 
 La complexité d'un microprocesseur se mesure d'abord grâce au nombre de transistors qui le composent. En fonction de la technologie utilisée, il faut compter que quelques transistors sont nécessaires pour construire une porte logique de type NAND ou NOR. A partir de ces portes logiques, il est possible de construire un ordinateur complet comme nous l'avons vu. La :numref:`fig-transistors` présente l'évolution du nombre de transistors que contiennent les microprocesseurs commerciaux depuis l'intel 4004 jusqu'au récent Apple M1. En cinquante ans, on est passé d'un microprocesseur comprenant 2300 transistors à une puce qui en comprend plus de 16 milliards. La capacité de l'industrie électronique de concentrer de plus en plus de transistors sur de petites surfaces est une des raisons de son succès. En 1965, Gordon Moore, un des cofondateurs du fabricant de circuits électroniques intel, avait prédit que le nombre de composants que l'on peut intégrer dans un circuit électronique allait doubler chaque année durant la prochaine décennie. En 1975, il a revu ses prévisions et ramené cette croissance à un doublement tous les deux ans. Depuis, cette prévision est connue sous le nom de la :term:`loi de Moore`.
 

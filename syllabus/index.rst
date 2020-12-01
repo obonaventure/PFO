@@ -26,6 +26,7 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    5-cpu 
 
    glossaire   
+
 Indices et tables
 =================
 
