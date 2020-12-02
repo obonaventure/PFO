@@ -10,5 +10,5 @@
 cd syllabus
 sphinx-build  -nWNT --keep-going -b html . /tmp
 sphinx-build  -M latexpdf . /tmp
-sphinx-build -b spelling . /tmp
+#sphinx-build -b spelling . /tmp
 cd ..

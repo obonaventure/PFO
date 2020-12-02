@@ -11,6 +11,7 @@ before_install:
 install:
  - pip3 install -U sphinx
  - pip3 install sphinxcontrib.spelling
+ - pip3 install sphinxcontrib.tikz
  - pip3 install git+https://github.com/sphinx-contrib/video.git
 language: python
 python:
