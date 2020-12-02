@@ -8,7 +8,8 @@
 #  -T   output full traceback
 # --keep-going continue the processing after a warning
 cd syllabus
-sphinx-build  -nWNT --keep-going -b html . /tmp
 sphinx-build  -M latexpdf . /tmp
+mv /tmp/LSINC1102.pdf .
+sphinx-build  -nWNT --keep-going -b html . /tmp
 #sphinx-build -b spelling . /tmp
 cd ..
