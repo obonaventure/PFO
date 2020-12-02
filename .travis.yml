@@ -8,6 +8,7 @@ before_install:
  - sudo apt-get install latexmk
  - sudo apt-get install netpbm 
  - sudo apt-get install poppler-utils
+ - sudo apt-get install imagemagick
 install:
  - pip3 install -U sphinx
  - pip3 install sphinxcontrib.spelling

@@ -23,8 +23,10 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    4-asm
    4b-asm
 
-   5-cpu 
-
+   5-cpu
+   
+   6-asm2
+   
    glossary
 
 Indices et tables

@@ -80,7 +80,7 @@ latex_elements = {
 }
 # tikz
 
-tikz_tikzlibraries = "circuits.logic.US,positioning,calc,quotes,backgrounds"
+tikz_tikzlibraries = "circuits.logic.US,positioning,calc,quotes,backgrounds,matrix"
 tikz_proc_suite = 'ImageMagick'
 
 # -- Options for HTML output -------------------------------------------------
