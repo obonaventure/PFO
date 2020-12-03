@@ -36,3 +36,8 @@ Glossaire
    bus
 
       TODO
+
+   pile
+
+      Structure de données permettant de stocker un nombre quelconque de données. Elle supporte deux opérations: l'ajout d'une donnée au sommet de la pile et le retrait de la donnée se trouvant au sommet de la pile.
+      
