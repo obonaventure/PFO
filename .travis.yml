@@ -5,7 +5,7 @@ before_install:
  - sudo apt-get install texlive-latex-extra
  - sudo apt-get install texlive-latex-recommended
  - sudo apt-get install texlive-fonts-recommended
-  - sudo apt-get install texlive-lang-french
+ - sudo apt-get install texlive-lang-french
  - sudo apt-get install latexmk
  - sudo apt-get install netpbm 
  - sudo apt-get install poppler-utils
