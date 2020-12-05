@@ -74,7 +74,6 @@ spelling_show_suggestions=True
 
 latex_elements = {
     'preamble': r'''
-\pgfplotsset{compat=1.16}
 \usepackage{circuitikz}
 '''
 }
