@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'LSINC1102'
+project = 'LSINC1102 - Principes de Fonctionnement des Ordinateurs'
 copyright = '2020, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
@@ -30,9 +30,10 @@ release = '2020'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ 'sphinxcontrib.spelling',
+extensions = [ 'sphinxcontrib.spelling', 
                'sphinxcontrib.tikz',
                'sphinxcontrib.video',
+               'sphinx.ext.mathjax'
 ]
 
 #               'matplotlib.sphinxext.only_directives',
@@ -81,6 +82,9 @@ latex_elements = {
 
 tikz_tikzlibraries = "circuits.logic.US,positioning,calc,quotes,backgrounds,matrix"
 tikz_proc_suite = 'ImageMagick'
+
+# math
+
 
 # -- Options for HTML output -------------------------------------------------
 

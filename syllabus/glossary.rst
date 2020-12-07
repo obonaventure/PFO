@@ -1,11 +1,21 @@
 
 
-
 Glossaire
 =========
 
+   .. spelling
+
+       Moore
+       von
+       Graphics
+       inline
+   
+
+
+
 .. glossary::
 
+   
    loi de Moore
       Prédiction de Gordon Moore indiquant que les nombre de composants d'un circuit intégré double tous les deux ans. Voir notamment https://en.wikipedia.org/wiki/Moore%27s_law
 
@@ -14,7 +24,7 @@ Glossaire
    
       Organisation d'un ordinateur qui utilise des mémoires séparées pour les programmes et les données. Cette architecture avait été proposé pour l'ordinateur Mark I conçu à l'université de Harvard. La plupart des ordinateurs actuels utilisent l'architecture de von Neuman. Voir https://en.wikipedia.org/wiki/Harvard_architecture
 
-   architecture de von Neuman   
+   architecture de von Neumann   
       Organisation d'un ordinateur qui utilise une mémoire pour stocker à la fois les programmes et les données. Cette architecture est utilisée par la plupart des ordinateurs actuels. Voir https://en.wikipedia.org/wiki/Von_Neumann_architecture
 
    système d'exploitation
@@ -40,4 +50,32 @@ Glossaire
    pile
 
       Structure de données permettant de stocker un nombre quelconque de données. Elle supporte deux opérations: l'ajout d'une donnée au sommet de la pile et le retrait de la donnée se trouvant au sommet de la pile.
-      
+
+
+   passage par valeur
+   
+      TODO
+
+   passage par référence
+
+      TODO
+
+   c
+
+      TODO
+
+   java
+
+      TODO
+
+   python
+
+      TODO
+
+   adresse de retour
+
+      TODO
+
+   récursion
+
+      TODO

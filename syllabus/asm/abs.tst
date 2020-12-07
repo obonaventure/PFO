@@ -1,4 +1,4 @@
-// Script de test du programme de calcule de la valeur absolue
+// Script de test du programme de calcul de la valeur absolue
 load abs.hack,         // le fichier contenant le programme en langage machine
 output-file abs.out,   // le fichier de sortie
 //compare-to abs.cmp,    // les résultats attendus
