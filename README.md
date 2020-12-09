@@ -24,7 +24,7 @@ Voici quelques copies d'écrans qui illustrent comment écrire une issue concern
 La première étape est d'aller dans la zone relative aux "Issues"
 le projet GitHub du blog.
 
-![GitHub issue](/images/github-issue.png)
+![GitHub issue](/images/github-issues.png)
 
 Ensuite il faut créer une nouvelle "Issue".
 
