@@ -36,13 +36,13 @@ L'opération de multiplication :math:`a \times b` prend deux arguments. Le premi
 
     :math:`a \times b = \overbrace{b + b + ... + b}^{a~fois}`
 
-La multiplication et la division étant des opérations complexes, le livre de référence a choisi des les supporter en utilisant du logiciel. Il est intéressant de construire ces algorithmes simples en python de façon à bien comprendre comment ces opérations sont réalisées. Les ordinateurs modernes contiennent bien entendu des circuits électroniques qui implémentent ces opérations arithmétiques de façon efficace.
+La multiplication et la division étant des opérations complexes, le livre de référence a choisi des les supporter par du logiciel. Il est intéressant de construire ces algorithmes simples en python de façon à bien comprendre comment ces opérations sont réalisées. Les ordinateurs modernes contiennent bien entendu des circuits électroniques qui implémentent ces opérations arithmétiques de façon efficace.
        
 
 Pour l'opération de multiplication, un point important à prendre en compte est que la multiplication de deux nombres encodés sur `n` bits retourne un nombre qui peut nécessiter jusqu'à :math:`2 \times n` bits. Pour s'en convaincre, il suffit de considérer les naturels encodés sur 8 bits. Le carré du plus grand de ces naturels, :math:`11111111` (255 en décimal), vaut :math:`65025` dont la représentation binaire est :math:`1111111000000001`.Lorsque l'on calcule :math:`A_{n-1}A_{n-2}...A_{2}A_{1}A_{0} \times B_{m-1}B_{m-2}...B_{2}B_{1}A_{0}`, le résultat est stocké sur :math:`m+n` bits.
 
 
-Avant d'aborder la multiplication en général, il est intéressant de considérer la multiplication par une puissance de 10. En notation décimal, pour multiplier le nombre :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` par :math:`10^{k}`, il suffit d'insérer k fois le chiffre `0` à droite du 
+Avant d'aborder la multiplication en général, il est intéressant de considérer la multiplication par une puissance de 10. En notation décimal, pour multiplier le nombre :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` par :math:`10^{k}`, il suffit d'insérer k fois le chiffre `0` à droite du nombre de façon à obtenir  :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}\overbrace{0..0}^{k~fois}`.
 
 Avant d'aborder la multiplication binaire, regardons le cas particulier de la multiplication d'un nombre par 2. Si :math:`B_{n}B_{n-1}..B_{2}B_{1}B_{0}` est un naturel en notation binaire, alors on peut facilement calculer le double de ce naturel en décalant tous les bits d'une position vers la gauche. Mathématiquement, on pourrait écrire que :math:`2 \times B_{n}B_{n-1}..B_{2}B_{1}B_{0} = B_{n}B_{n-1}..B_{2}B_{1}B_{0}0`. Cette relation est correcte et peut s'étendre à toute puissance positive de `2`. Ainsi, :math:`2^{k} \times B_{n-1}B_{n-2}..B_{2}B_{1}B_{0} = B_{n-1}B_{n-2}..B_{2}B_{1}B_{0}\overbrace{00..0}^{k}`.
 

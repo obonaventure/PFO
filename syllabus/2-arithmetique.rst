@@ -178,7 +178,7 @@ L'intérêt de cette approche est que l'addition avec des nombres en représenta
    ------------- 
       0  1  1  1   << 7 en décimal
 
-On vérifie aisément que :math:`2+5=4`. Comme avec l'addition des naturels, il est aussi possible d'avoir des reports lorsque l'on réalise une addition entre des nombres binaires. L'exemple ci-dessous réalise l'addition :math:`2+7`.
+On vérifie aisément que :math:`2+5=7`. Comme avec l'addition des naturels, il est aussi possible d'avoir des reports lorsque l'on réalise une addition entre des nombres binaires. L'exemple ci-dessous réalise l'addition :math:`2+7`.
 
       
 .. code-block:: console

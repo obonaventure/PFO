@@ -292,7 +292,7 @@ x y z AND(x,y,z)
 1 1 1     1
 = = = ==========
 
-De la même façon, on peut obtenir la fonction `OR` à plus de deux entrées: :math:`OR(x,y,z) \iff OR(X,OR(y,z)) \iff OR(OR(x,y),z)`.
+De la même façon, on peut obtenir la fonction `OR` à plus de deux entrées: :math:`OR(x,y,z) \iff OR(x,OR(y,z)) \iff OR(OR(x,y),z)`.
 
 
 En plus de ces fonctions booléennes classiques, il est possible de construire deux autres fonctions qui sont très utiles en pratique. La première est le multiplexeur qui permet de "sélectionner" une valeur d'entrée. La table de vérité du multiplexeur est reprise ci-dessous.
@@ -663,7 +663,7 @@ Un autre exemple est la fonction `XOR` dont nous avons déjà parlé précédemm
    \node[not gate US, draw, scale=0.75] at ($(t1.input 2)+(-0.5,0)$) (ny1) {};
 
 
-   \node[or gate US, draw, logic gate inputs=nn, scale=1] at ($(t2.output) + (2, 0.5)$) (orTot) {$XOR(x,y)$};
+   \node[or gate US, draw, logic gate inputs=nn, scale=1] at ($(t2.output) + (2, 0.5)$) (orTot) {$OR(x,y)$};
 
    \draw (x) -- ($(x) + (0,-2.5)$);
    \draw (y) -- ($(y) + (0,-2.5)$);
