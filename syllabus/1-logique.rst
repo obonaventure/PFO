@@ -6,7 +6,7 @@ Le fonctionnement des ordinateurs s'appuie sur quelques principes très simples,
  - ``0``
  - ``1``
 
-On peut associer une signification à ces bits. Il est par exemple courant de considéré que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois porter à confusion. 
+On peut associer une signification à ces bits. Il est par exemple courant de considérer que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois porter à confusion. 
 
 Avec ces deux valeurs booléennes, il est intéressant de définir des opérations. Une opération booléenne est une fonction qui prend en entrée 0, 1 ou plusieurs bits et retourne un résultat.
 
@@ -16,12 +16,12 @@ Fonctions booléennes
 La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x` contient les différentes valeurs possibles de l'entrée `x` et la valeur du résultat pour chacune des valeurs possibles de `x`.
 
 
-=== ========
-x   identité 
---- --------
+=== ===========
+x   identité(x) 
+--- -----------
 0   0 
 1   1
-=== ========
+=== ===========
 
 
 Cette fonction n'est pas très utile en pratique. Elle nous permet d'illustrer une table de vérité simple dans laquelle il y a une valeur binaire en entrée et une valeur binaire également en sortie.
@@ -276,7 +276,7 @@ _________
 Fonctions booléennes à plus de deux entrées
 -------------------------------------------
 
-En utilisant l'associativité, on peut facilement construire des fonctions à plus de deux entrées. Ainsi, la fonction `AND` à trois entrées :math:`AND(x,y,z) \iff AND(X,AND(y,z)) \iff AND(AND(x,y),z)`. Sa table de vérité est sans surprise la suivante.
+En utilisant l'associativité, on peut facilement construire des fonctions à plus de deux entrées. Ainsi, la fonction `AND` à trois entrées :math:`AND(x,y,z) \iff AND(x,AND(y,z)) \iff AND(AND(x,y),z)`. Sa table de vérité est sans surprise la suivante.
 
 
 = = = ==========
@@ -396,7 +396,7 @@ x y AND(NOT(x),NOT(y))
 = = ==================
 
 
-Deux de ces fonctions  `AND` peuvent être combinées avec un fonction `OR`. Un premier exemple est de combiner les deux premières fonctions,  `AND(x,y)` et `AND(NOT(x),y)` pour construire la fonction `OR(AND(x,y),AND(NOT(x),y)`. Sa table de vérité est la suivante.
+Deux de ces fonctions  `AND` peuvent être combinées avec une fonction `OR`. Un premier exemple est de combiner les deux premières fonctions,  `AND(x,y)` et `AND(NOT(x),y)` pour construire la fonction `OR(AND(x,y),AND(NOT(x),y)`. Sa table de vérité est la suivante.
 
 = = =========================
 x y OR(AND(x,y),AND(NOT(x),y) 
@@ -826,7 +826,7 @@ Quatre types de fichiers sont utilisés par le simulateur :
  - les fichiers de description de circuits (nom de fichier se terminant par `.hdl`)
  - les fichiers qui définissent les tests à réaliser sur les circuits (nom de fichier se terminant par `.tst`)
  - les fichiers contenant les sorties d'un circuit obtenues lors de l'exécution d'un fichier de test (nom de fichier se terminant par `.out`)
- - les fichiers contenant les sorties attendues d'un circuit (nom de fichier se terminant par `.out`)   
+ - les fichiers contenant les sorties attendues d'un circuit (nom de fichier se terminant par `.cmp`)   
 
 Le langage de description de circuits permet de construire des fonctions booléennes en réutilisant les fonctions de base. Ce langage s'utilise un peu comme un langage de programmation. Dans le langage HDL, un circuit est défini sous la forme d'une liste de commandes, avec généralement une commande par ligne.
 

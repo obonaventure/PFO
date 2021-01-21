@@ -6,7 +6,7 @@ Maintenant que nous avons vu les fonctions logiques de base, nous pouvons nous p
 
 Durant la première semaine, nous avons vu comment une fonction booléenne pouvait traiter des entrées valant `0` ou `1`. Souvent, les circuits électroniques sont amenés à traiter plusieurs données simultanément. Le livre appelle ces circuits les circuits "multi-bits".
 
-L'autre point que nous devons aborder sont les fonctions primitives. Durant la première semaine, nous avons travaillé avec `AND`, `OR` et `NOT`. Ces fonctions sont faciles à comprendre et utiliser. Pour des raisons technologies, les circuits électroniques n'utilisent pas ces fonctions comme des fonctions primitives mais plutôt les fonctions `NAND` ou `NOR` dans certains cas. Nous verrons que la fonction `NAND` est une fonction primitive qui permet d'implémenter n'importe quelle fonction booléenne.
+L'autre point que nous devons aborder sont les fonctions primitives. Durant la première semaine, nous avons travaillé avec `AND`, `OR` et `NOT`. Ces fonctions sont faciles à comprendre et utiliser. Pour des raisons technologiques, les circuits électroniques n'utilisent pas ces fonctions comme des fonctions primitives mais plutôt les fonctions `NAND` ou `NOR` dans certains cas. Nous verrons que la fonction `NAND` est une fonction primitive qui permet d'implémenter n'importe quelle fonction booléenne.
 
 
 Les fonctions "multi-bits"
@@ -201,7 +201,7 @@ x   y NOR(x,y)
 Premier projet
 --------------
 
-Votre premier projet dans le cadre de ce cours est de construire les circuits de base de l'on retrouve dans tout ordinateur en utilisant exclusivement des fonctions `NAND`. Ces circuits sont:
+Votre premier projet dans le cadre de ce cours est de construire les circuits de base que l'on retrouve dans tout ordinateur en utilisant exclusivement des fonctions `NAND`. Ces circuits sont:
 
  - `NOT` (une entrée), voir https://inginious.info.ucl.ac.be/course/LSINC1102/Not
  - `AND` (deux entrées), voir https://inginious.info.ucl.ac.be/course/LSINC1102/And

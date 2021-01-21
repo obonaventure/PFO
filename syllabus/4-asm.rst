@@ -7,7 +7,7 @@ Langage d'assemblage
 ====================
 
 
-Avec la mémoire et l'ALU nous avons les briques de base qui vont nous permettre de construire un micro-processeur qui sera capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neuman`.
+Avec la mémoire et l'ALU nous avons les briques de base qui vont nous permettre de construire un micro-processeur qui sera capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neumann`.
 
 Cette architecture est composée d'un :index:`processeur` (:index:`CPU` en anglais) ou unité de calcul et d'une mémoire. Le processeur est un circuit électronique qui est capable d'effectuer de nombreuses tâches : 
 
@@ -87,7 +87,7 @@ Vous pouvez télécharger cet exemple depuis :download:`asm/ex0.asm`.
 ..	 <video controls src="_static/asm-123.mp4"></video>
 
    
-Cette instruction a trois utilisations en pratique. Tout d'abord, elle permet de charger une valeur constante dans le registre ``A``. Mais surtout elle est utilisée avec les instructions de type C pour soit indiquer une adresse mémoire à laquelle une donnée doit être chargée soit une adresse mémoire où un saut doit être réalisé si une condition sont vérifiées. Nous y reviendrons.
+Cette instruction a trois utilisations en pratique. Tout d'abord, elle permet de charger une valeur constante dans le registre ``A``. Mais surtout elle est utilisée avec les instructions de type C pour soit indiquer une adresse mémoire à laquelle une donnée doit être chargée soit une adresse mémoire où un saut doit être réalisé si une condition est vérifiée. Nous y reviendrons.
 
 
 Comme toutes les instructions, l'instruction de type A est encodée sous la forme d'un mot de 16 bits. L'encodage est extrêmement simple :
@@ -158,7 +158,7 @@ Notre deuxième exemple montre qu'il est aussi possible de charger le registre `
 .. code-block:: console
 
    @1     // place l'adresse 1 dans le registre A
-   A=M    // lit la donnée à l'adresse 1 en mémoire (2) et la place dans A
+   A=M    // lit la donnée à l'adresse 1 en mémoire et place donc (2) dans A
    D=M    // lit la donnée à l'adresse 2 en mémoire (4) et la place dans D
 
 
@@ -169,7 +169,7 @@ Notre troisième exemple montre comment déplacer une information en mémoire.
 
 .. code-block:: console
 
-   @3     // place l'adresse 1 dans le registre A
+   @3     // place l'adresse 3 dans le registre A
    AD=M   // lit la donnée à l'adresse 3 en mémoire (1) et la place dans A et D
    @0     // place l'adresse 0 dans le registre A
    M=D    // sauve la donnée se trouvant dans D en mémoire à l'adresse se trouvant dans A (0)
@@ -186,7 +186,7 @@ Nous pouvons maintenant utiliser ces instructions pour réaliser des initialisat
    a=1
    b=42
 
-Avant de pouvoir initialiser des variables en assembleur, nous devons d'abord définir l'adresse en mémoire à laquelle chaque variable est stockée. Par convention, le minuscule processeur réserve les adresses de `0` à `15` en mémoire de données pour certaines utilisations particulières. Nous pouvons donc stocker nos variables à partir de l'adresse `16`. Nous pouvons par exemple placer la variable ``a`` à l'adresse `16` et la variable `b` à l'adresse `17`. Dans un programme en assembleur, on définit généralement une table des symboles associe une adresse ç chaque variable du programme. Dans notre exemple, cette table des symboles pourrait être celle du :numref:`table-symb-ab`.
+Avant de pouvoir initialiser des variables en assembleur, nous devons d'abord définir l'adresse en mémoire à laquelle chaque variable est stockée. Par convention, le minuscule processeur réserve les adresses de `0` à `15` en mémoire de données pour certaines utilisations particulières. Nous pouvons donc stocker nos variables à partir de l'adresse `16`. Nous pouvons par exemple placer la variable ``a`` à l'adresse `16` et la variable `b` à l'adresse `17`. Dans un programme en assembleur, on définit généralement une table des symboles qui associent une adresse à chaque variable du programme. Dans notre exemple, cette table des symboles pourrait être celle du :numref:`table-symb-ab`.
 
 
 .. _table-symb-ab:
@@ -223,7 +223,7 @@ Pour initialiser ces variables, la séquence d'instruction à utiliser est la su
 Vous pouvez télécharger cet exemple depuis :download:`asm/ex4.asm`.
 
      
-Dans un programme python, il est parfois nécessaire d'échanger le contenu de la variable ``a`` avec celui de la variable ``b``. En python, cela peut se faire de deux façons. La première solution est d'utiliser une variable intermédiaire (:numref:`code-swap2-var-py`)
+Dans un programme python, il est parfois nécessaire d'échanger le contenu de la variable ``a`` avec celui de la variable ``b``. En python, cela peut se faire de deux façons. La première solution est d'utiliser une variable intermédiaire (:numref:`code-swap-var-py`)
 
 .. _code-swap-var-py:
 .. code-block:: python
@@ -469,7 +469,7 @@ Pour exécuter un programme, notre minuscule processeur doit charger une nouvell
  - exécution de l'instruction lue en mémoire
  - mise à jour du registre ``PC``
 
-L'exécution de toutes les instructions que nous avons vu jusque maintenant se termine par l'incrémentation du contenu du registre ``PC``. Cela permettra à notre minuscule processeur de charger automatiquement l'instruction suivante lors du prochain cycle d'horloge.
+L'exécution de toutes les instructions que nous avons vues jusque maintenant se termine par l'incrémentation du contenu du registre ``PC``. Cela permettra à notre minuscule processeur de charger automatiquement l'instruction suivante lors du prochain cycle d'horloge.
 
 
 .. spelling::
@@ -477,7 +477,7 @@ L'exécution de toutes les instructions que nous avons vu jusque maintenant se t
    Program
    Counter
    
-L'encodage de l'instruction de type `C` que les trois bits de poids faible (:math:`j_1 j_2 j_3`) restent disponibles. Ceux-ci vont nous permettre de supporter les instructions conditionnelles (``if ... else``) et les boucles. Pour comprendre comment ces instructions sont supportées en langage d'assemblage, nous devons d'abord comprendre comment fonctionne le :index:`compteur de programme` (ou :index:`Program Counter` - PC en anglais). Ce compteur de programme est un registre qui fait partie de notre minuscule processeur et qui contient à tout instant l'adresse de l'instruction que le minuscule processeur exécute. Reprenons le code du calcul de l'opposé (:numref:`code-oppose-asm`). Ce code contient quatre instructions. Il est stocké dans la mémoire d'instructions (:numref:`table-oppose-imem`). 
+L'encodage de l'instruction de type `C` implique que les trois bits de poids faible (:math:`j_1 j_2 j_3`) restent disponibles. Ceux-ci vont nous permettre de supporter les instructions conditionnelles (``if ... else``) et les boucles. Pour comprendre comment ces instructions sont supportées en langage d'assemblage, nous devons d'abord comprendre comment fonctionne le :index:`compteur de programme` (ou :index:`Program Counter` - PC en anglais). Ce compteur de programme est un registre qui fait partie de notre minuscule processeur et qui contient à tout instant l'adresse de l'instruction que le minuscule processeur exécute. Reprenons le code du calcul de l'opposé (:numref:`code-oppose-asm`). Ce code contient quatre instructions. Il est stocké dans la mémoire d'instructions (:numref:`table-oppose-imem`). 
 
 
 .. _table-oppose-imem:
@@ -496,7 +496,7 @@ L'encodage de l'instruction de type `C` que les trois bits de poids faible (:mat
 
 Pour exécuter ces instructions en mémoire d'instructions, le `PC` prend d'abord la valeur `51`. Le minuscule processeur exécute à ce moment l'instruction ``@20``. A la fin de l'exécution de cette instruction, le `PC` est incrémenté d'une unité et passe à `52`. Il exécute ensuite l'instruction ``D=-M``. A la fin de l'exécution de cette instruction, le `PC` passe à la valeur `53` et ainsi de suite.
 
-Les trois bits de poids fort de l'instruction de type `C` permettent d'influencer la façon dont le contenu du `PC` est modifié à la fin de l'exécution de l'instruction en cours. Lorsque ces trois bits valent `0 0 0`, le `PC` est incrémenté d'une unité. Si par contre ces trois bits valent `1 1 1`, le `PC` prend la valeur qui se trouve dans le registre `A` pour réaliser un saut (`jump` en anglais). Pour comprendre l'utilisation de ces sauts, revenons aux instructions qui nous permettent d'incrémenter un variable en mémoire (:numref:`code-inc2-var-asm`). Supposons que notre variable est stockée à l'adresse ``22`` en mémoire de données et que notre séquence d'instructions commence à l'adresse ``71`` en mémoire d'instructions.
+Les trois bits de poids faible de l'instruction de type `C` permettent d'influencer la façon dont le contenu du `PC` est modifié à la fin de l'exécution de l'instruction en cours. Lorsque ces trois bits valent `0 0 0`, le `PC` est incrémenté d'une unité. Si par contre ces trois bits valent `1 1 1`, le `PC` prend la valeur qui se trouve dans le registre `A` pour réaliser un saut (`jump` en anglais). Pour comprendre l'utilisation de ces sauts, revenons aux instructions qui nous permettent d'incrémenter une variable en mémoire (:numref:`code-inc2-var-asm`). Supposons que notre variable est stockée à l'adresse ``22`` en mémoire de données et que notre séquence d'instructions commence à l'adresse ``71`` en mémoire d'instructions.
 
 
 
@@ -584,7 +584,7 @@ Une première solution pour traduire ces trois lignes de python est de les tradu
    41      @22  // x      
    42      D=M
    43      @23  // y
-   44      DM=D
+   44      MD=D
    45      @49
    46      D;JLT
    47      @51
@@ -597,7 +597,7 @@ Une première solution pour traduire ces trois lignes de python est de les tradu
 
 Vous pouvez télécharger cet exemple depuis :download:`asm/ex11a.asm`.   
 
-Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. Cette adresse est celle de la première instruction correspondant au corps du ``if``. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est strictement négatif, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Dans ce cas, le programme exécutera le corps de l'instruction conditionnelle. Si par contre le contenu du registre `D` est positif ou nul, nous ne devons pas exécuter le corps de la boucle, mais directement passer à l'instruction qui initialise la variable `z` à partir de l'adresse ``51``.  Ces le rôle de l'instruction de saut inconditionnel aux adresses ``47`` et ``48``. L'instruction à l'adresse ``49`` est celle du corps de l'instruction conditionnelle. A la fin de son exécution on peut exécuter l'instruction qui suit l'instruction conditionnelle.
+Il est intéressant d'analyser l'exécution du programme du :numref:`table-abs1-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. Cette adresse est celle de la première instruction correspondant au corps du ``if``. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est strictement négatif, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Dans ce cas, le programme exécutera le corps de l'instruction conditionnelle. Si par contre le contenu du registre `D` est positif ou nul, nous ne devons pas exécuter le corps de la boucle, mais directement passer à l'instruction qui initialise la variable `z` à partir de l'adresse ``51``.  C'est le rôle de l'instruction de saut inconditionnel aux adresses ``47`` et ``48``. L'instruction à l'adresse ``49`` est celle du corps de l'instruction conditionnelle. A la fin de son exécution on peut exécuter l'instruction qui suit l'instruction conditionnelle.
 
 En y réfléchissant un peu, on peut réduire le nombre d'instructions conditionnelles dans ce programme en utilisant une instruction ``JGE`` (:numref:`table-abs-imem`). 
    
@@ -621,7 +621,7 @@ En y réfléchissant un peu, on peut réduire le nombre d'instructions condition
 
 Vous pouvez télécharger cet exemple depuis :download:`asm/ex11.asm`.   
    
-Il est intéressant d'analyser l'exécution du programme du :numref:`table-inc-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est positif ou nul, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Sinon, les instructions aux adresses ``47`` et ``48`` sont exécutées. Par rapport au code python, on remarque que l'on prend comme condition pour l'instruction assembleur l'inverse de la condition du code python. En effet, la condition de l'instruction conditionnelle en python doit être vérifiée pour que l'instruction ``y=-x`` soit exécutée. En assembleur, on place la cible du saut après l'exécution des instruction qui se trouvent dans le corps du ``if`` en python. Analysons une seconde variante du calcul de la valeur absolue. 
+Il est intéressant d'analyser l'exécution du programme du :numref:`table-abs-imem` pas à pas. Les instructions aux adresses ``41`` et ``42`` placent la valeur de la variable ``x`` dans le registre `D`. Les deux instructions suivantes sauvent le contenu de ce registre dans la variable ``y``. L'instruction à l'adresse ``45`` charge l'adresse ``49`` dans le registre `A`. L'instruction suivante va elle comparer le contenu du registre `D` avec `0`. Si le registre `D` est positif ou nul, alors l'adresse se trouvant dans le registre `A`, c'est-à-dire ``49`` est placée dans le compteur de programme. Sinon, les instructions aux adresses ``47`` et ``48`` sont exécutées. Par rapport au code python, on remarque que l'on prend comme condition pour l'instruction assembleur l'inverse de la condition du code python. En effet, la condition de l'instruction conditionnelle en python doit être vérifiée pour que l'instruction ``y=-x`` soit exécutée. En assembleur, on place la cible du saut après l'exécution des instructions qui se trouvent dans le corps du ``if`` en python. Analysons une seconde variante du calcul de la valeur absolue. 
 
 
 .. code-block:: python

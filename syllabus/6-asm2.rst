@@ -56,11 +56,11 @@ Après la deuxième invocation, on exécute la ligne ``5`` du programme python.
 En python, il est facile d'imprimer de l'information à l'écran. En minuscule
 assembleur, cette opération nécessite nettement plus d'efforts. Analysons
 un autre exemple en python qui utilise les variables globales. En python,
-une fonction utilise normalement les arguments qu'elle a reçu ou définit
+une fonction utilise normalement les arguments qu'elle a reçus ou définit
 ses propres variables locales. Il est aussi possible de définir des variables
 globales, c'est-à-dire des variables qui sont stockées dans la mémoire du
 programme et sont accessibles à toutes les fonctions de ce programme. Cette
-utilisation d'un variable globale est illustrée dans le programme
+utilisation d'une variable globale est illustrée dans le programme
 python ci-dessous.
 
 .. literalinclude:: python/procedure.py
@@ -98,7 +98,7 @@ qui correspondent aux différentes assignations de cette variable.
    M=D
    // à compléter
    // ligne 5
-   @1
+   @3
    D=A
    @a  
    M=D
@@ -141,7 +141,7 @@ s'exécuter rapidement.
 		    
 Ce programme est téléchargeable depuis :download:`asm/procedure-ex1.asm`.
   
-Cette approche fonctionne dans notre exemple simple, mais elle a deux inconvénient majeurs. Le premier est que le code de la procédure doit être recopié à chaque invocation de la procédure dans un programme. Cela consomme inutilement de l'espace mémoire surtout si le programme appelle la procédure à de nombreux endroits. Le deuxième inconvénient est que si la procédure modifie le contenu des registres ``A`` ou ``D``, elle pourrait avoir un impact non-voulu sur les instructions du programme principal.
+Cette approche fonctionne dans notre exemple simple, mais elle a deux inconvénients majeurs. Le premier est que le code de la procédure doit être recopié à chaque invocation de la procédure dans un programme. Cela consomme inutilement de l'espace mémoire surtout si le programme appelle la procédure à de nombreux endroits. Le deuxième inconvénient est que si la procédure modifie le contenu des registres ``A`` ou ``D``, elle pourrait avoir un impact non-voulu sur les instructions du programme principal.
 
 Il serait préférable de pouvoir isoler les instructions de la procédure dans
 une partie de la mémoire et d'y faire appel en exécutant un saut inconditionnel. Une première approche pourrait être la suivante. La code de la procédure ``compte`` est placé après l'étiquette ``COMPTE`` et on fait appel à la procédure en utilisant un saut inconditionnel vers cette adresse. 
@@ -150,7 +150,7 @@ une partie de la mémoire et d'y faire appel en exécutant un saut inconditionne
 .. literalinclude:: asm/procedure-ex2.asm
 
 
-Malheureusement, ce n'est pas suffisant. Après la première exécution de la procédure ``compte``, l'exécution doit reprendre à l'adresse ``LIGNE3`` tandis qu'après la seconde exécution de la même procédure, il faut poursuivre l'exécution du programme principal à partir de l'adresse ``LIGNE5``. Pour résoudre ce problème, nous devons rendre le code de la procédure plus générique. Notre procédure doit pouvoir retourner, via une instruction ``JMP`` à l'adresse de l'instruction qui suit celle à partir de laquelle est a été appelée. Malheureusement, il n'est pas possible d'extraire cette information des registres du minuscule CPU durant l'exécution de notre procédure. Le programme appelant devra donc calculer cette adresse, souvent appelée :term:`adresse de retour` et la sauvegarder à un endroit où la procédure peut la récupérer. Sur le minuscule ordinateur, le seul endroit où nous pouvons stocker de l'information est dans la mémoire. Une première solution est de réserver une adresse en mémoire pour sauver cette adresse de retour. Dans ce cas, l'appel à un procédure se déroule comme suit :
+Malheureusement, ce n'est pas suffisant. Après la première exécution de la procédure ``compte``, l'exécution doit reprendre à l'adresse ``LIGNE3`` tandis qu'après la seconde exécution de la même procédure, il faut poursuivre l'exécution du programme principal à partir de l'adresse ``LIGNE5``. Pour résoudre ce problème, nous devons rendre le code de la procédure plus générique. Notre procédure doit pouvoir retourner, via une instruction ``JMP`` à l'adresse de l'instruction qui suit celle à partir de laquelle elle a été appelée. Malheureusement, il n'est pas possible d'extraire cette information des registres du minuscule CPU durant l'exécution de notre procédure. Le programme appelant devra donc calculer cette adresse, souvent appelée :term:`adresse de retour` et la sauvegarder à un endroit où la procédure peut la récupérer. Sur le minuscule ordinateur, le seul endroit où nous pouvons stocker de l'information est dans la mémoire. Une première solution est de réserver une adresse en mémoire pour sauver cette adresse de retour. Dans ce cas, l'appel à un procédure se déroule comme suit :
 
  1. Sauvegarde de l'adresse de retour en mémoire
  2. Appel de la procédure (via l'instruction ``JMP``)
@@ -378,7 +378,7 @@ Pour implémenter ces deux opérations, nous adoptons la représentation de la p
        };
 
        
-      \matrix (second) [below=of first.south, space, column 1/.style={font=\ttfamily},column 2/.style={nodes={cell,minimum width=2em}}]
+      \matrix (second) [below=of first.south, column 1/.style={font=\ttfamily},column 2/.style={nodes={cell,minimum width=2em}}]
       {
       pile     & 1000 \\
       };
@@ -456,7 +456,7 @@ Le programme complet est repris ci-dessous. Il est téléchargeable depuis :down
 .. literalinclude:: asm/procedure-pile.asm
 
 
-Grâce à cette pile, il est possible d'écrire des programmes qui contiennent un nombre quelconque de procédures qui s'appellent l'une l'autre et dans un ordre quelconque. La pile grandira au fur et à mesure des appels successifs à des procédures et rétrécira chaque fois qu'une procédure se termine. Il est important de noter que pour que ce système fonctionne correctement il est nécessaire que chaque procédure manipule correctement la pile. Si le sommet de la pile se situe à l'adresse ``A`` au début de l'exécution d'une procédure, à la fin de celle-ci la pile dont contenir exactement les mêmes informations. Si une procédure laissait la pile avec un élément en plus ou un élément en moins lorsqu'elle retourne à l'adresse de retour dans le programme appelant, alors le programme complet ne fonctionnerait plus correctement. Pour s'en rendre compte, il suffit de prendre le programme ci-dessous et de l'exécuter après avoir par exemple remplacé une des instructions qui modifie la pile dans les fonctions ``compte`` ou ``oppose``. Il faut être très rigoureux lorsque l'on écrit des programmes en langage assembleur qui manipulent la pile.
+Grâce à cette pile, il est possible d'écrire des programmes qui contiennent un nombre quelconque de procédures qui s'appellent l'une l'autre et dans un ordre quelconque. La pile grandira au fur et à mesure des appels successifs à des procédures et rétrécira chaque fois qu'une procédure se termine. Il est important de noter que pour que ce système fonctionne correctement il est nécessaire que chaque procédure manipule correctement la pile. Si le sommet de la pile se situe à l'adresse ``A`` au début de l'exécution d'une procédure, à la fin de celle-ci la pile doit contenir exactement les mêmes informations. Si une procédure laissait la pile avec un élément en plus ou un élément en moins lorsqu'elle retourne à l'adresse de retour dans le programme appelant, alors le programme complet ne fonctionnerait plus correctement. Pour s'en rendre compte, il suffit de prendre le programme ci-dessous et de l'exécuter après avoir par exemple remplacé une des instructions qui modifie la pile dans les fonctions ``compte`` ou ``oppose``. Il faut être très rigoureux lorsque l'on écrit des programmes en langage assembleur qui manipulent la pile.
 
 .. spelling::
 
@@ -526,7 +526,7 @@ L'implémentation de cette fonction en minuscule assembleur est téléchargeable
      1. La fonction ne peut accéder aux éléments qui ont été placés sur la pile `avant` ses arguments et son adresse de retour. Les informations qui se trouvent dans le bas de la pile sont nécessaires à l'exécution d'autres fonctions et ne peuvent en aucun cas être modifiées par la fonction.
      2. La fonction peut rajouter des éléments sur la pile, soit directement soit en appelant d'autres fonctions. Cela implique que l'adresse du sommet de pile peut changer `durant`  l'exécution de la fonction. Quelles que soient les modifications qu'elle fait à la pile, la fonction doit garantir qu'après `n'importe laquelle` de ses exécutions la pile retrouvera l'état qu'elle avait avant l'appel à la fonction.
 
-  Si un de ces principes n'est pas respecté par une fonction, le programme qui utilise cette fonction risque d'avoir un comportement erratique voire totalement incorrect. C'est le développeur d'une fonction en assembleur qui doit garantir la correction de sa fonction pour toutes ses exécutions possibles. Comme dans des langages de programmation de plus haut niveau, les tests les plus exhaustifs possibles sont une excellente façon de vérifier le bon fonctionnement d'un fonction. Notez qu'il existe également des techniques qui permettent de prouver la correction d'une fonction, mais celles-ci sortent largement du cadre de ce document.	
+   Si un de ces principes n'est pas respecté par une fonction, le programme qui utilise cette fonction risque d'avoir un comportement erratique voire totalement incorrect. C'est le développeur d'une fonction en assembleur qui doit garantir la correction de sa fonction pour toutes ses exécutions possibles. Comme dans des langages de programmation de plus haut niveau, les tests les plus exhaustifs possibles sont une excellente façon de vérifier le bon fonctionnement d'un fonction. Notez qu'il existe également des techniques qui permettent de prouver la correction d'une fonction, mais celles-ci sortent largement du cadre de ce document.	
 
 .. passage par valeur et passage par référence ou adresse
 
@@ -535,7 +535,7 @@ Dans notre implémentation des fonctions ``f1`` et ``min``, nous avons utilisé 
 Il existe une seconde technique pour passer les arguments à une fonction. C'est le :term:`passage par référence`. Dans ce cas, le programme appelant fournit à la fonction qu'il appelle une référence vers son argument. Cette référence est l'adresse en mémoire à laquelle la variable contenant l'argument est stockée. La différence fondamentale entre le :term:`passage par référence` et le :term:`passage par valeur` est que comme la fonction connaît l'adresse de la variable contenant son argument, elle peut modifier son contenu alors que c'est impossible avec le passage par valeur. En python, le :term:`passage par référence` est utilisé lorsque l'argument passé à une fonction est une référence à un objet ou une liste. Il est possible de mixer le passage par référence et le passage par valeur dans une même fonction avec un argument entier passé par valeur et une liste passée par référence.
 
 
-A titre d'illustration, la fonction ``inc`` ci-dessous permet d'incrémenter la variable dont l'adresse est passée par le programme appelant comme argument. Le cors de la fonction ``inc`` accède à l'adresse de la variable utilisée par le programme appelant et modifie sa valeur avant de terminer son exécution.
+A titre d'illustration, la fonction ``inc`` ci-dessous permet d'incrémenter la variable dont l'adresse est passée par le programme appelant comme argument. Le corps de la fonction ``inc`` accède à l'adresse de la variable utilisée par le programme appelant et modifie sa valeur avant de terminer son exécution.
 
 
 .. literalinclude:: asm/inc.asm
@@ -552,7 +552,7 @@ Nous devons maintenant trouver une réponse à la troisième question. Lors de s
 
 Chacune des variables locales d'une fonction doit être stockée à une adresse mémoire. Une première approche naïve pour résoudre ce problème serait de réserver une zone de mémoire fixe pour les variables locales utilisées par chaque fonction. Dans une implémentation en assembleur de l'exemple ci-dessus, on pourrait réserver une adresse en mémoire RAM pour la variable ``r`` de la fonction ``fct``. Malheureusement, cette approche a deux inconvénients. Premièrement, toute la mémoire qu'une fonction peut utiliser durant son exécution doit être réservée en RAM avant de pouvoir exécuter cette fonction. Si une fonction doit utiliser un grand tableau lorsqu'elle est appelée avec une valeur spécifique d'un argument, alors la zone nécessaire pour ce tableau doit toujours être réservée, même si la fonction n'est jamais exécutée par le programme. Le deuxième inconvénient est qu'il est impossible avec cette approche de supporter une fonction ``f`` qui appelle une fonction ``g`` qui elle-même appelle une fonction  ``f`` car le premier appel à la fonction ``f`` aura initialisé les "variables locales de la fonction ``f``" puis fera appel à la fonction ``g``. Lorsque ``g`` fait appel de son côté à la fonction ``f``, cette seconde invocation de la fonction ``f`` va modifier les données stockées aux adresses en mémoire qui correspondent à ses variables locales et donc modifier les variables utilisées par la première invocation de la fonction ``f``. Si ce second inconvénient peut paraître un peu théorique et hypothétique à ce stade, il est malheureusement bien réel en pratique.
 
-On peut éviter ces deux inconvénients en utilisant la pile comme mémoire pour stocker les variables locales d'une fonction. La pile n'utilise la RAM que durant l'exécution de la fonction, il n'y a donc pas de gaspillage de mémoire comment avec la solution précédente. Dans le cas où une invocation de la fonction ``f`` appelle la fonction ``g`` qui appelle elle-même la fonction ``f``, le bas de la pile contiendra les arguments, adresse de retour et variables de la première invocation de la fonction ``f``. Au-dessus de ces informations, on trouvera les arguments, adresses de retour et variables locales de la fonction ``g``. Enfin, les arguments, adresse de retour et variables locales de la seconde invocation de la fonction ``f`` sont au sommet de la pile. A la fin de son exécution, cette invocation de la fonction ``f`` libère la mémoire qu'elle utilise sur la pile.
+On peut éviter ces deux inconvénients en utilisant la pile comme mémoire pour stocker les variables locales d'une fonction. La pile n'utilise la RAM que durant l'exécution de la fonction, il n'y a donc pas de gaspillage de mémoire comme avec la solution précédente. Dans le cas où une invocation de la fonction ``f`` appelle la fonction ``g`` qui appelle elle-même la fonction ``f``, le bas de la pile contiendra les arguments, adresse de retour et variables de la première invocation de la fonction ``f``. Au-dessus de ces informations, on trouvera les arguments, adresses de retour et variables locales de la fonction ``g``. Enfin, les arguments, adresse de retour et variables locales de la seconde invocation de la fonction ``f`` sont au sommet de la pile. A la fin de son exécution, cette invocation de la fonction ``f`` libère la mémoire qu'elle utilise sur la pile.
 
 La meilleure illustration de l'utilisation de la pile par les fonctions en assembleur est le support des fonctions récursives. En informatique, on parle de :term:`récursion` lorsqu'une fonction s'appelle elle-même. C'est le cas par exemple de la fonction ``sumn`` qui permet de calculer la somme des ``n`` premiers naturels.
 

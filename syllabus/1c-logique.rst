@@ -72,7 +72,7 @@ Cette table avait l'inconvénient majeur de ne contenir que les représentations
 
 Avoir une représentation binaire pour les caractères permet de les stocker en mémoire, sur disque ou de les transmettre à travers un réseau. C'est important, mais il faut aussi pouvoir permettre à un humain de lire des textes produits par un ordinateur, que ce soit sur papier ou écran. Il existe de très nombreuses solutions qui permettent d'afficher ou d'imprimer des caractères. Dans ce cours d'introduction, nous nous contentons d'une solution très simple qui fonctionne en noir et blanc. Nous pourrons ajouter les couleurs lorsque nous aurons vu comment représenter des nombres dans le chapitre suivant.
 
-Un écran et une imprimante permettent d'afficher des points à n'importe quelle position. On peut aisément se représenter un écran comme un rectangle dans composé de pixels. Chacun des points de cet écran est identifié par une abscisse et une ordonnée qui sont toutes les deux entières. Ainsi, un écran 1024x768 peut afficher 1024 points selon l'axe des x et 768 points selon l'axe des y. 
+Un écran et une imprimante permettent d'afficher des points à n'importe quelle position. On peut aisément se représenter un écran comme un rectangle composé de pixels. Chacun des points de cet écran est identifié par une abscisse et une ordonnée qui sont toutes les deux entières. Ainsi, un écran 1024x768 peut afficher 1024 points selon l'axe des x et 768 points selon l'axe des y. 
 
 Sur un tel écran, on peut facilement afficher des caractères. Il suffit d'avoir pour chaque caractère une table qui contient la représentation graphique de chacun des caractère à afficher sous la forme de pixels. A titre d'exemple, supposons que l'on veut afficher chaque caractère dans un carré de 8x8 pixels. Dans ce cas, on peut stocker la représentation graphique d'un caractère en noir en blanc sous la forme d'une suite de 8 bytes. Par exemple, les huit octets ci-dessous contiennent une représentation graphique du caractère `1`.
 
@@ -127,7 +127,7 @@ Fonctions booléennes sur les séquences de bits
 ----------------------------------------------
 
 
-De nombreuses fonctions manipulent des séquences de bits. Nous verrons dans le prochain chapitre comment représenter des nombres sous la forme d'une séquence de bits et comment réaliser différentes opérations arithmétiques sur ces séquences de bits. Ces fonctions sont dites combinatoires car ce sont des fonctions dont le résultat dépend uniquement des valeurs d'entrée. Dans cette section, nous abordons d'abord les fonctions combinatoires qui permettent de déplacer des bits dans une séquence. Nous considérons deux types de fonctions:
+De nombreuses fonctions manipulent des séquences de bits. Nous verrons dans le prochain chapitre comment représenter des nombres sous la forme d'une séquence de bits et comment réaliser différentes opérations arithmétiques sur ces séquences de bits. Ces fonctions sont dites combinatoires car ce sont des fonctions dont le résultat dépend uniquement des valeurs d'entrée. Dans cette section, nous abordons d'abord les fonctions combinatoires qui permettent de déplacer des bits dans une séquence. Nous considérons trois types de fonctions:
 
  - les fonctions de décalage (à droite ou à gauche)
  - les fonctions de rotation (à droite ou à gauche)

@@ -12,7 +12,7 @@ Dans le chapitre précédent, nous avons vu comment un ordinateur pouvait repré
 Représentation des nombres naturels
 -----------------------------------
 
-Commençons par analyser comme représenter les nombres pour effectuer des opérations arithmétiques. Pour simplifier la présentation, nous travaillerons surtout avec des quartets dans ce chapitre. Il y a seize quartets différents : 
+Commençons par analyser comment représenter les nombres pour effectuer des opérations arithmétiques. Pour simplifier la présentation, nous travaillerons surtout avec des quartets dans ce chapitre. Il y a seize quartets différents : 
 
  - `0000`
  - `0001`
@@ -37,7 +37,7 @@ Cette représentation des quartets est similaire à la représentation que l'on 
 
 En toute généralité, la suite de chiffres :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} C_{i} \times 10^{i}`.
 
-A titre d'exemple, le nombre sept cent trente six s'écrit en notation décimale `736`, ce qui équivaut bien à :math:`7*10^{2}+3*10^{2}+6*10^{0}`. 
+A titre d'exemple, le nombre sept cent trente six s'écrit en notation décimale `736`, ce qui équivaut bien à :math:`7*10^{2}+3*10^{1}+6*10^{0}`. 
 
 Pour représenter les nombres naturels en notation binaire, nous allons utiliser le même principe. Un nombre en notation binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre naturel :math:`B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. En appliquant cette règle aux quartets, on obtient aisément :
 
@@ -156,7 +156,7 @@ Sur base de cette représentation binaire des nombres naturels, il est possible 
       5 8 6
 
 Pour des nombres simples comme celui repris ci-dessus, l'addition s'effectue
-"chiffre par chiffre". Vous avez aussi appris qu'il faut parfois faire des reports lorsqu'une addition "chiffre par chiffre" donne un résultat qui est supérieur à 10. C'est le case lorsque l'on cherche à ajouter `456` à `789`. 
+"chiffre par chiffre". Vous avez aussi appris qu'il faut parfois faire des reports lorsqu'une addition "chiffre par chiffre" donne un résultat qui est supérieur à 10. C'est le cas lorsque l'on cherche à ajouter `456` à `789`. 
 
 .. code-block:: console
 
@@ -241,7 +241,7 @@ a b r report somme
 1 1 0    1     0
 = = = ====== =====
 
-Cet additionneur sera important dans le cadre de ce cours. La :numref:`fig-adder` le représente schématiquement sous la forme d'un rectangle avec (`a`, `b` et `r`) et deux sorties (`report` et `somme`).
+Cet additionneur sera important dans le cadre de ce cours. La :numref:`fig-adder` le représente schématiquement sous la forme d'un rectangle avec trois entrées (`a`, `b` et `r`) et deux sorties (`report` et `somme`).
 
 .. _fig-adder:
 .. tikz:: Un additionneur complet
@@ -407,7 +407,7 @@ Nous aurions pu aussi choisir d'utiliser le bit de poids faible pour indiquer le
 Ces deux conventions permettent de représenter les entiers de `-7` à `+7`. Malheureusement, ces deux représentations ont deux inconvénients majeurs. Premièrement, elles utilisent deux nombres binaires différents pour représenter la valeur nulle. De plus, il est difficile de construire des circuits électroniques qui permettent de facilement manipuler de telles représentations des nombres entiers.
 
 
-La solution à ce problème est d'utiliser la notation en :index:`complément à deux`. Pour représenter les nombres entiers en notation binaire, nous adaptons la représentation utilisée pour les nombres naturels. Le nombre binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre entier :math:`(-1)*B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. Il est important de noter que la présence du facteur `(-1)` qui est appliqué au bit de poids fort. En appliquant cette règle aux quartets, on obtient aisément :
+La solution à ce problème est d'utiliser la notation en :index:`complément à deux`. Pour représenter les nombres entiers en notation binaire, nous adaptons la représentation utilisée pour les nombres naturels. Le nombre binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre entier :math:`(-1)*B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. Il est important de noter que le facteur `(-1)` est appliqué uniquement au bit de poids fort. En appliquant cette règle aux quartets, on obtient aisément :
 
 
  - `0000` représente le nombre `0`
@@ -431,7 +431,7 @@ On remarque aisément qu'il n'y a qu'une seule chaîne de bits qui représente l
 
 Une propriété intéressante de la notation en complément à deux est que tous les nombres négatifs ont leur bit de poids fort qui vaut `1`. C'est une conséquence de la façon dont ces nombres sont représentés et pas un `bit de signe` explicite comme dans les représentations précédentes.
 
-Enfin, l'avantage principal de cette représentation est que l'on va pouvoir assez facilement construire les circuits qui permettent de d'effectuer des opérations arithmétique sur ces nombres. Un premier avantage de la représentation en complément à deux, est qu'il est possible de réutiliser notre additionneur sans aucune modification pour additionner des entiers. Considérons comme premier exemple :math:`(-6)+-(1)`.
+Enfin, l'avantage principal de cette représentation est que l'on va pouvoir assez facilement construire les circuits qui permettent d'effectuer des opérations arithmétiques sur ces nombres. Un premier avantage de la représentation en complément à deux, est qu'il est possible de réutiliser notre additionneur sans aucune modification pour additionner des entiers. Considérons comme premier exemple :math:`(-6)+-(1)`.
 
 
 .. code-block:: console
@@ -456,7 +456,7 @@ Le quartet `1001` est bien la représentation du nombre négatif `-7`. Comme sec
 On peut maintenant se demander comment calculer l'opposé d'un nombre en représentation binaire. Une première approche est de déterminer la table de vérité de cette opération qui prend comme entrée `n` bits et retourne un résultat sur `n` bits également. A titre d'exemple, considérons des nombres binaires sur 3 bits.
 
 == == == == == == ============================
-a2 a1 a0 b0 b1 b0 Commentaire
+a2 a1 a0 b2 b1 b0 Commentaire
 -- -- -- -- -- -- ----------------------------
 0  0  0  0  0  0  `opposé(0)=0`
 0  0  1  1  1  1  `opposé(1)=-1`
@@ -678,7 +678,7 @@ Certaines ALUs vont plus loin et supportent d'autres opérations, mais supporter
  - `zy` : l'entrée `y` est mise à `0`
  - `nx` : l'entrée `x` est inversée
  - `ny` : l'entrée `y` est inversée
- - `f`: permet de choisir entre le résultat de l'additionneur (`1`) et de le fonction `AND` pour la sortie
+ - `f`: permet de choisir entre le résultat de l'additionneur (`1`) et de la fonction `AND` pour la sortie
  - `no` : permet d'inverser ou non le résultat
 
 Outre le résultat qui est encodé sur 16 bits, l'ALU retourne également deux drapeaux:
@@ -758,7 +758,7 @@ Enfin, le signal de contrôle `f` permet de connecter soit le résultat de l'add
 
 Les éléments principaux de l'ALU sont donc des inverseurs, la constante `0`, des multiplexeurs, un additionneur 16 bits et une fonction `AND` à 16 bits.
 
-La construction complète de cette ALU nécessite l'utilisation quelques astuces et propriétés de la représentation binaire des nombres entiers. Le livre suggère d'utiliser les signaux de contrôle d'une façon particulière.
+La construction complète de cette ALU nécessite l'utilisation de quelques astuces et propriétés de la représentation binaire des nombres entiers. Le livre suggère d'utiliser les signaux de contrôle d'une façon particulière.
 
 Pour calculer `0`, il faut mettre `zx`, `zy` et `f` à `1`. Cela revient donc à calculer l'opération :math:`0+0`.
 

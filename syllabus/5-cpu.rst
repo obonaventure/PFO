@@ -238,7 +238,7 @@ Il ne nous reste plus qu'à relier le minuscule CPU à la mémoire ROM. Pour cel
 Construction du minuscule CPU
 -----------------------------
 
-Avant de commencer à construire le minuscule CPU, nous devons d'abord réfléchir à la façon dont celui-ci va exécuter les instructions qui se trouvent en mémoire ROM. Notre objectif est de pouvoir exécuter une instruction se trouvant en mémoire ROM durant chaque cycle d'horloge. Durant chacun de ces cycles d'horloge, notre minuscule processeur devra procéder comme représenté sur la :numref:`fig-fetch-decode-execute`. Premièrement, le minuscule processeur doit charger (`fetch` en anglais) l'instruction à exécuter à l'adresse contenue dans le registre ``PC``. Ensuite, il faut décoder cette instruction. Enfin, il faut exécuter cette exécution et par exemple charger ou sauver un mot en mémoire. 
+Avant de commencer à construire le minuscule CPU, nous devons d'abord réfléchir à la façon dont celui-ci va exécuter les instructions qui se trouvent en mémoire ROM. Notre objectif est de pouvoir exécuter une instruction se trouvant en mémoire ROM durant chaque cycle d'horloge. Durant chacun de ces cycles d'horloge, notre minuscule processeur devra procéder comme représenté sur la :numref:`fig-fetch-decode-execute`. Premièrement, le minuscule processeur doit charger (`fetch` en anglais) l'instruction à exécuter à l'adresse contenue dans le registre ``PC``. Ensuite, il faut décoder cette instruction. Enfin, il faut exécuter cette instruction et par exemple charger ou sauver un mot en mémoire. 
 
 
 .. _fig-fetch-decode-execute:
@@ -284,7 +284,7 @@ Les trois sorties de l'ALU sont :
  - le signal de contrôle `ng` qui est mis à `1` si le résultat du calcul est négatif  
    
 
-Il ne nous reste plus qu'à connecter ces différents composants ensemble de façon à pouvoir supporter toutes les instructions que nous avons présenté dans les chapitres précédents. La :numref:`fig-cpu-blocs` présente un schéma bloc de notre minuscule CPU que nous allons compléter petit à petit.
+Il ne nous reste plus qu'à connecter ces différents composants ensemble de façon à pouvoir supporter toutes les instructions que nous avons présentées dans les chapitres précédents. La :numref:`fig-cpu-blocs` présente un schéma bloc de notre minuscule CPU que nous allons compléter petit à petit.
    
 .. _fig-cpu-blocs:
 .. tikz:: Composition du minuscule CPU
@@ -371,10 +371,10 @@ Notre minuscule CPU utilise le bit de poids fort de l'instruction pour détermin
    
 Commençons par analyser les instructions de type ``A``. Une de ces instructions permet de charger dans le registre ``A`` la valeur correspondant aux quinze bits de poids faible du mot de seize bits contenant l'instruction. Pour supporter cette instruction, nous devons donc :
 
- - mettre le signal de contrôle `in` du registre ``A`` à `1` lorsque le bit de poids faible de l'instruction lue en mémoire ROM a bien la valeur `0` 
+ - mettre le signal de contrôle `load` du registre ``A`` à `1` lorsque le bit de poids fort de l'instruction lue en mémoire ROM a bien la valeur `0` 
  - connecter les quinze bits de poids faible de l'instruction lue en mémoire ROM sur l'entrée `in` du registre ``A``
 
-Pour mettre à `1` le signal de contrôle de registre ``A`` lorsque le bit de poids de l'instruction vaut `0`, il suffit de faire passer ce bit dans un inverseur avant de le connecter à l'entrée `load` du registre ``A``.
+Pour mettre à `1` le signal de contrôle de registre ``A`` lorsque le bit de poids fort de l'instruction vaut `0`, il suffit de faire passer ce bit dans un inverseur avant de le connecter à l'entrée `load` du registre ``A``.
    
 .. _fig-cpu-blocs-pc-a:
 .. tikz:: Support de l'instruction de type A
@@ -812,7 +812,7 @@ Nous devons maintenant analyser les conditions dans lesquelles le registre ``PC`
  - le drapeau `ng` 
 
 
-Ce circuit logique va avoir comme sortie la valeur su signal de contrôle `load` du registre ``PC``. Pour construire le circuit logique correspondant, il suffit de construire sa table de vérité (:numref:`table-verite-jump`). Cette table de vérité aura donc 32 lignes. Pour construire cette table de vérité, il faut se souvenir du fonctionnement des différents instructions de saut et les conditions qui doivent être remplies pour que le contenu du ``PC`` prenne la valeur du registre ``A``.
+Ce circuit logique va avoir comme sortie la valeur du signal de contrôle `load` du registre ``PC``. Pour construire le circuit logique correspondant, il suffit de construire sa table de vérité (:numref:`table-verite-jump`). Cette table de vérité aura donc 32 lignes. Pour construire cette table de vérité, il faut se souvenir du fonctionnement des différents instructions de saut et les conditions qui doivent être remplies pour que le contenu du ``PC`` prenne la valeur du registre ``A``.
 
 Le premier cas correspond aux instructions dont les trois bits de poids faible sont à zéro. Dans ce cas, `load` est toujours à zéro quelles que soient les valeurs de `zr` et `ng`.
 
@@ -879,7 +879,7 @@ Le :numref:`table-verite-jump` contient la table de vérité complète du circui
 Ordinateurs actuels
 ===================
 
-Le livre de référence et les chapitres précédents nous ont permis de voir les éléments principaux du fonctionnement d'une ordinateur qui est capable d'exécuter des programmes simples écrits en langage d'assemblage. Le minuscule ordinateur est complètement fonctionnel et le livre de référence l'utilise pour développer des logiciels qui permettent de l'exploiter pleinement.
+Le livre de référence et les chapitres précédents nous ont permis de voir les éléments principaux du fonctionnement d'un ordinateur qui est capable d'exécuter des programmes simples écrits en langage d'assemblage. Le minuscule ordinateur est complètement fonctionnel et le livre de référence l'utilise pour développer des logiciels qui permettent de l'exploiter pleinement.
 
 L'approche choisie par le livre de référence est pédagogique. L'ordinateur construit fonctionne mais il est loin d'être équivalent aux ordinateurs et aux microprocesseurs qui existent de nos jours. En une septa ntaine d'années environ, les ordinateurs et les microprocesseurs ont fait d'immenses progrès. Il est impossible de les lister tous dans ce cours introductif. Vous aurez plus tard l'occasion d'analyser ces techniques avancées plus en détails notamment dans les cours de Master. Cependant, il y a certaines contraintes technologiques auxquelles il est intéressant que vous soyez déjà sensibilisé.
 
@@ -927,7 +927,7 @@ La complexité d'un microprocesseur se mesure d'abord grâce au nombre de transi
 
 .. voir aussi https://en.wikipedia.org/wiki/Transistor_count
 
-Sur base de la loi de Moore, on pourrait penser que l'industrie informatique continue son évolution sans difficultés depuis les début des années 1970s et qu'il en sera toujours de même. Ce n'est pas tout à fait correct. Il y a certaines contraintes technologiques qui ont un impact sur l'architecture des ordinateurs et l'évolution de leurs performances. L'analyse de cette évolution et des techniques qui permettent d'améliorer les performances des ordinateurs sort du cadre de ce cours introductif. Il y a cependant certains points sur lesquels il est important que vous soyez déjà conscientisés.
+Sur base de la loi de Moore, on pourrait penser que l'industrie informatique continue son évolution sans difficulté depuis les début des années 1970s et qu'il en sera toujours de même. Ce n'est pas tout à fait correct. Il y a certaines contraintes technologiques qui ont un impact sur l'architecture des ordinateurs et l'évolution de leurs performances. L'analyse de cette évolution et des techniques qui permettent d'améliorer les performances des ordinateurs sort du cadre de ce cours introductif. Il y a cependant certains points sur lesquels il est important que vous soyez déjà conscientisés.
 
 
 .. spelling::
@@ -992,12 +992,12 @@ La vitesse de l'horloge d'un ordinateur a souvent été présentée, notamment d
    
 Jusqu'aux environs de l'année 2000, la fréquence d'horloge des microprocesseurs a régulièrement augmenté. Les premiers processeurs fonctionnaient à des fréquences de quelques centaines de kHz. En 1978, le 8086 atteignait les 10 MHz. En 1999, l'intel Pentium atteignait 1 GHz. Depuis, la plupart des processeurs sont restés aux alentours de 2 à 5 GHz. Les contraintes technologiques font qu'il est difficile aujourd'hui de construire des microprocesseurs qui supportent des fréquences d'horloge supérieures à 4-5 GHz. Face à cette limitation technologique, les fabricants de processeurs ont dû trouver des solutions pour exécuter plus d'instructions sans augmenter la fréquence d'horloge des microprocesseurs.
 
-Les deux principales technologies sont l'hyperthreading et l'utilisation de plusieurs coeurs sur un même processeur. L'hyperthreading a été introduit au début des années 2000. Cette technologie permet à un :term:`système d'exploitation` d'exécuter deux programme simultanément sur le même processeur. Ces deux programmes ont chacun accès à des registres qui leurs sont propres et leurs accès en mémoire sont entrelacés. La deuxième technique est d'installer sur un processeur unique plusieurs coeurs, c'est-à-dire plusieurs unités de calcul qui sont chacune capables d'interagir avec la mémoire et d'exécuter des programmes. Chacun de ces coeurs dispose d'un ensemble de registres qui lui est propre. Il peut donc exécuter un programme différent. Il est aussi possible d'écrire les programmes de façon à ce que plusieurs parties de chaque programme puissent s'exécuter en parallèle sur le même coeur ou sur des coeurs différents. Cette technique de programmation sort du cadre de ce cours. Elle sera abordée en deuxième bachelier en utilisant les langages de programmation Java et C.
+Les deux principales technologies sont l'hyperthreading et l'utilisation de plusieurs coeurs sur un même processeur. L'hyperthreading a été introduit au début des années 2000. Cette technologie permet à un :term:`système d'exploitation` d'exécuter deux programmes simultanément sur le même processeur. Ces deux programmes ont chacun accès à des registres qui leurs sont propres et leurs accès en mémoire sont entrelacés. La deuxième technique est d'installer sur un processeur unique plusieurs coeurs, c'est-à-dire plusieurs unités de calcul qui sont chacune capables d'interagir avec la mémoire et d'exécuter des programmes. Chacun de ces coeurs dispose d'un ensemble de registres qui lui est propre. Il peut donc exécuter un programme différent. Il est aussi possible d'écrire les programmes de façon à ce que plusieurs parties de chaque programme puissent s'exécuter en parallèle sur le même coeur ou sur des coeurs différents. Cette technique de programmation sort du cadre de ce cours. Elle sera abordée en deuxième bachelier en utilisant les langages de programmation Java et C.
 
 La plupart des microprocesseurs actuels utilisent plusieurs coeurs. En voici quelques exemples :
 
  - l'`intel core 2 duo <https://en.wikipedia.org/wiki/Core_2_Duo>`_, introduit en 2006, comprenait deux coeurs
- - l'`AMD K10 <https://en.wikipedia.org/wiki/AMD_K10>`_, introduit en 2007, comprenait coeurs
+ - l'`AMD K10 <https://en.wikipedia.org/wiki/AMD_K10>`_, introduit en 2007, comprenait quatre coeurs
  - l'`intel Xeon 7400 <https://en.wikipedia.org/wiki/Xeon>`_, introduit en 2008, était composé de six coeurs
  - le `Sparc T3 <https://en.wikipedia.org/wiki/SPARC_T3>`_, introduit en 2010, était composé de 16 coeurs
  - l '`intel Xeon Westmere <https://en.wikipedia.org/wiki/Westmere-EX>`_, introduit en 2011, comprenait 10 coeurs
@@ -1148,9 +1148,9 @@ Si les SRAMs sont satisfaisantes au niveau des temps d'accès, elles ont un inco
    \draw [<->, color=blue] (4,-3.5) -- (5,-3.5) node[midway, below] {data};
 
 
-Une mémoire cache ne fonctionne pas comme une mémoire RAM. Une mémoire RAM est un peu comme un tableau dans un langage de programmation comme python. En python, on peut accéder à un élément de ce tableau en utilisant son index. Dans une mémoire RAM, on accède à une donnée en fournissant son adresse. Chaque zone a la mémoire est identifiée par une adresse unique et une mémoire RAM supporte autant d'adresses qu'il y a d'éléments qu'elle peut stocker en mémoire.
+Une mémoire cache ne fonctionne pas comme une mémoire RAM. Une mémoire RAM est un peu comme un tableau dans un langage de programmation comme python. En python, on peut accéder à un élément de ce tableau en utilisant son index. Dans une mémoire RAM, on accède à une donnée en fournissant son adresse. Chaque zone de la mémoire est identifiée par une adresse unique et une mémoire RAM supporte autant d'adresses qu'il y a d'éléments qu'elle peut stocker en mémoire.
 
-Une mémoire cache est une mémoire qui est dite associative. Une cache stocke des couples `adresse, donnée`. Elle fonctionne un peu comme un dictionnaire en langage python. Lorsqu'elle reçoit une adresse, elle parcourt rapidement l'ensemble des couples `adresse, donnée` qu'elle a mémorisé. Si l'adresse demandée s'y trouve, elle retourne la donnée qui y est associée au processeur et arrête de demander cette adresse à la mémoire RAM. Sinon, elle attend simplement que la mémoire, plus lente, retourne la donnée demandé au processeur. Lorsque la mémoire RAM retourne la valeur demandée par le processeur, celle-ci passe par la mémoire cache qui en profite pour mémoriser ce nouveau couple `adresse,donnée`. Comme la capacité de la mémoire cache est limitée, il est possible qu'elle doivent supprimer un ancien couple pour avoir la place pour stocker le nouveau couple.
+Une mémoire cache est une mémoire qui est dite associative. Une cache stocke des couples `adresse, donnée`. Elle fonctionne un peu comme un dictionnaire en langage python. Lorsqu'elle reçoit une adresse, elle parcourt rapidement l'ensemble des couples `adresse, donnée` qu'elle a mémorisé. Si l'adresse demandée s'y trouve, elle retourne la donnée qui y est associée au processeur et arrête de demander cette adresse à la mémoire RAM. Sinon, elle attend simplement que la mémoire, plus lente, retourne la donnée demandée au processeur. Lorsque la mémoire RAM retourne la valeur demandée par le processeur, celle-ci passe par la mémoire cache qui en profite pour mémoriser ce nouveau couple `adresse,donnée`. Comme la capacité de la mémoire cache est limitée, il est possible qu'elle doivent supprimer un ancien couple pour avoir la place pour stocker le nouveau couple.
 
    
 Une analyse détaillée du fonctionnement des mémoires cache sort du cadre de ce cours. La :numref:`fig-cache-cpu` présente l'évolution de la taille des mémoires cache sur les processeurs intel durant les trente dernières années. On est passé de quelques KBytes à quelques dizaines de MBytes, soit une capacité décuplée chaque décennie.

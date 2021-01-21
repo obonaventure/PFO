@@ -105,7 +105,7 @@ Le signal d'horloge
 -------------------
 	   
           
-Pour éviter ces problèmes, la plupart des ordinateurs utilisez un signal d'horloge qui régule le fonctionnement des différents circuits qui sont utilisés. Ce signal d'horloge est un :index:`signal périodique`, c'est-à-dire un signal qui répète sa valeurs à des intervalles réguliers. Les fonctions trigonométriques sont des exemples de signaux périodiques. En informatique on travaille avec des signaux binaires. On dira qu'un signal :math:`S(t)` sera périodique si il existe un réel :math:`P` qui est tel que : :math:`\forall t, S(t+P) = S(t)`. :math:`P` est appelé la période du signal et s'exprime en secondes. La :numref:`fig-clock-signal` présente un exemple de signal binaire périodique aussi appelé signal d'horloge.
+Pour éviter ces problèmes, la plupart des ordinateurs utilisent un signal d'horloge qui régule le fonctionnement des différents circuits qui sont utilisés. Ce signal d'horloge est un :index:`signal périodique`, c'est-à-dire un signal qui répète sa valeurs à des intervalles réguliers. Les fonctions trigonométriques sont des exemples de signaux périodiques. En informatique on travaille avec des signaux binaires. On dira qu'un signal :math:`S(t)` sera périodique si il existe un réel :math:`P` qui est tel que : :math:`\forall t, S(t+P) = S(t)`. :math:`P` est appelé la période du signal et s'exprime en secondes. La :numref:`fig-clock-signal` présente un exemple de signal binaire périodique aussi appelé signal d'horloge.
 
 .. _fig-clock-signal:
 .. tikz:: Signal d'horloge d'un ordinateur
@@ -183,7 +183,7 @@ Un tel signal d'horloge permet de contrôler le fonctionnement des circuits comb
    \draw (t3.output) -- (out);
 
 
-Grâce à ce signal d'horloge et à la porte `AND` que nous avons ajouté, nous pouvons maintenant observer (:numref:`fig-abc-clock`) que la valeur du signal de sortie (`out`) ne se modifie pas malgré le délai dans le signal `C`. En pratique, on choisira la période de l'horloge de façon à ce qu'elle soit supérieur à la différence de délais de propagation dans le circuit électronique. On veillera également à ce que le signal d'horloge lui-même soit acheminé suivant le chemin le plus court vers tous les circuits qu'il contrôle.
+Grâce à ce signal d'horloge et à la porte `AND` que nous avons ajoutés, nous pouvons maintenant observer (:numref:`fig-abc-clock`) que la valeur du signal de sortie (`out`) ne se modifie pas malgré le délai dans le signal `C`. En pratique, on choisira la période de l'horloge de façon à ce qu'elle soit supérieur à la différence de délais de propagation dans le circuit électronique. On veillera également à ce que le signal d'horloge lui-même soit acheminé suivant le chemin le plus court vers tous les circuits qu'il contrôle.
    
    
 .. _fig-abc-clock:
@@ -786,7 +786,7 @@ Une première métrique pour analyser l'évolution des mémoires RAM est de rega
         \legend{Capacité d'un chip (Mbits)}
     \end{semilogyaxis}
 
-La deuxième métrique que l'on peut utiliser pour comparer des mémoires est de regarder le débit auquel il est possible de lire des données depuis une telle mémoire. Ce débit s'exprime en MBytes/s. En 1980, celui-ci était de seulement 13 MBytes/s. En 200, il est passé à 1600 MBytes/s et en 2016 il a atteint 27000 MBytes/s. L'amélioration en performance reste importante, mais nettement moindre que pour la capacité des mémoires. En 33 ans, le débit ne s'est amélioré que d'un facteur d'environ 2000. Cela reste impressionnant évidemment (:numref:`fig-ram-debit`).
+La deuxième métrique que l'on peut utiliser pour comparer des mémoires est de regarder le débit auquel il est possible de lire des données depuis une telle mémoire. Ce débit s'exprime en MBytes/s. En 1980, celui-ci était de seulement 13 MBytes/s. En 2000, il est passé à 1600 MBytes/s et en 2016 il a atteint 27000 MBytes/s. L'amélioration en performance reste importante, mais nettement moindre que pour la capacité des mémoires. En 33 ans, le débit ne s'est amélioré que d'un facteur d'environ 2000. Cela reste impressionnant évidemment (:numref:`fig-ram-debit`).
     
 
 .. _fig-ram-debit:    
@@ -895,7 +895,7 @@ Le livre a choisi de prendre le data flip-flop comme élément de base pour la c
 
 
    
-Ce circuit très simple utilise une port `AND` et une porte `OR`. Il comporte deux  entrées : `S` et `R` et a comme sortie `Q`. Pour analyser le comportement de ce circuit, commençons par discuter de ce qu'il se passe lorsque `S` et `R` valent `0`. Dans ce cas, la sortie de la porte `OR` vaut la valeur de `Q`. Il en va de même pour celle de la sortie de la porte `AND` puisque sa deuxième entrée est mise à `1`. Quelle que soit la valeur initiale de `Q`, celle-ci est conservée lorsque `R` et `S` valent `0`.
+Ce circuit très simple utilise une porte `AND` et une porte `OR`. Il comporte deux  entrées : `S` et `R` et a comme sortie `Q`. Pour analyser le comportement de ce circuit, commençons par discuter de ce qu'il se passe lorsque `S` et `R` valent `0`. Dans ce cas, la sortie de la porte `OR` vaut la valeur de `Q`. Il en va de même pour celle de la sortie de la porte `AND` puisque sa deuxième entrée est mise à `1`. Quelle que soit la valeur initiale de `Q`, celle-ci est conservée lorsque `R` et `S` valent `0`.
 
 Essayons maintenant de faire passer `S` à la valeur `1` tout en gardant `R` à `0`. Si `Q` valait initialement `0`, alors la sortie `Q` passe à `1` et cette valeur reste stable. Si `Q` valait initialement `1`, alors sa valeur reste à `1`. On utilise généralement le nom `Set` pour l'entrée `S` car elle permet de faire passer la valeur de `Q` à `1`.
 
