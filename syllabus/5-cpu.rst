@@ -1,3 +1,4 @@
+.. -*- coding: utf-8 -*-
 .. LSINC1102 documentation master file, created by
    sphinx-quickstart on Tue Jan 28 18:06:33 2020.
    You can adapt this file completely to your liking, but it should at least
@@ -280,7 +281,7 @@ Les trois sorties de l'ALU sont :
 
  - le mot de seize bits qui est le résultat du calcul
  - le signal de contrôle `zr` qui est mis à `1` si le résultat du calcul est égal à zéro
- - le signal de contrôle `zr` qui est mis à `1` si le résultat du calcul est négatif  
+ - le signal de contrôle `ng` qui est mis à `1` si le résultat du calcul est négatif  
    
 
 Il ne nous reste plus qu'à connecter ces différents composants ensemble de façon à pouvoir supporter toutes les instructions que nous avons présenté dans les chapitres précédents. La :numref:`fig-cpu-blocs` présente un schéma bloc de notre minuscule CPU que nous allons compléter petit à petit.
