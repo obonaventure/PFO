@@ -5,9 +5,6 @@ a=0b01111011
 b=0b0111
 
 #begin
-
-
-
 def div(dividende,diviseur):
     quotient=0b0000
     reste = dividende
@@ -24,7 +21,6 @@ def div(dividende,diviseur):
 
         diviseur = diviseur >> 1
     return quotient, reste
-
 #end
 
 print(div(a,b))        

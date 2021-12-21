@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. include:: defs.rst
+   
 
 Tests de programmes en langage d'assemblage
 ===========================================
@@ -242,7 +244,7 @@ Ce programme comprendra deux boucles imbriquées. La première va permettre d'af
 Utilisation des tableaux
 ------------------------
 
-Jusque maintenant, nous avons manipulé des variables entières qui sont stockées en mémoire ou dans des registres. Un ordinateur doit également pouvoir traiter des objets mathématiques tels que les vecteurs et les matrices. Ceux-u doivent pouvoir être stockés en mémoire.
+Jusque maintenant, nous avons manipulé des variables entières qui sont stockées en mémoire ou dans des registres. Un ordinateur doit également pouvoir traiter des objets mathématiques tels que les vecteurs et les matrices. Ceux-ci doivent pouvoir être stockés en mémoire.
 
 Commençons par analyser la façon dont un programme peut manipuler les coordonnées `(x,y)` d'un pixel à l'écran. Ces coordonnées sont toutes les deux représentées sous la forme d'un nombre entier. Une première approche serait d'associer une variable pour l'abscisse et une autre pour l'ordonnée. Malheureusement cette solution nous force à définir un très grand nombre de variables. Une autre possibilité est de dire que ces coordonnées constituent une paire d'entiers et que cette paire peut être stockée en mémoire en utilisant deux adresses consécutives. Par exemple, on peut prendre la convention que l'adresse ``C`` contiendra la valeur de l'abscisse tandis que l'adresse ``C+1`` contiendra la valeur de l'ordonnée. La :numref:`table-memxy` présente deux de ces coordonnées en mémoire. La première, `(3,7)` est stockée aux adresses ``16`` et ``17``. La seconde, `(6,4)` occupe les adresses ``18`` et ``19``.
 
@@ -426,7 +428,7 @@ Il est aussi possible de stocker cette matrice colonne par colonne comme représ
 .. somme de deux vecteurs
 
 
-On est parfois amener à manipuler des tableaux de différentes tailles. Dans ce cas, il est intéressant de réserver un mot en mémoire pour stocker la taille du tableau. Tout tableau utilisant cette représentation contient donc comme premier élément sa taille. Un tableau de `n` entiers occupe donc :math:`n+1` mots en mémoire.
+On est parfois amené à manipuler des tableaux de différentes tailles. Dans ce cas, il est intéressant de réserver un mot en mémoire pour stocker la taille du tableau. Tout tableau utilisant cette représentation contient donc comme premier élément sa taille. Un tableau de `n` entiers occupe donc :math:`n+1` mots en mémoire.
 
 A titre d'exemple, reprenons notre tableau avec le nombre de jours dans chaque mois. La représentation de notre tableau contient donc une entrée supplémentaire qui est sa taille (:numref:`table-jour2`).
 
@@ -577,7 +579,7 @@ Quatrième projet
 ================
 
 
-L'objectif de ce quatrième projet, qui se fera de façon individuelle, est de démontrer votre connaissance de la programmation en langage d'assemblage. Vous devrez écrire deux petits programmes dans ce langage pour le lundi 30 novembre 2020 à 18h00. Ce projet vaut trois points et sera le dernier projet côté pour le cours cette année.
+L'objectif de ce quatrième projet, qui se fera de façon individuelle, est de démontrer votre connaissance de la programmation en langage d'assemblage. Vous devrez écrire deux petits programmes dans ce langage pour le |deadlineP4|. Ce projet vaut trois points et sera le dernier projet côté pour le cours cette année.
 
 
 1. Implémentez un programme en langage d'assemblage qui permet de calculer le résultat de la multiplication entre deux naturels. Ce programme est à déposer sur inginious : https://inginious.info.ucl.ac.be/course/LSINC1102/MultAsm

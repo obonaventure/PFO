@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. include:: defs.rst
+   
 Fonctions en assembleur
 =======================
 
@@ -41,7 +43,7 @@ ligne et place la valeur ``2`` dans la variable ``a``. La quatrième ligne
 relance l'exécution de la procédure ``p()``. Celle-ci va à nouveau exécuter
 les instructions qui permettent d'afficher ``Bonjour`` à l'écran, mais
 après son exécution le programme python exécutera la ligne ``5``. On remarque
-une différence important entre les deux invocations de la procédure ``p()``.
+une différence importante entre les deux invocations de la procédure ``p()``.
 Après la première invocation, on exécute la ligne ``3`` du programme python.
 Après la deuxième invocation, on exécute la ligne ``5`` du programme python.
 
@@ -358,7 +360,7 @@ Pour implémenter ces deux opérations, nous adoptons la représentation de la p
 
    .. _fig-stack-down-1000:
 
-   .. tikz:: Pile pouvant stocker mots éléments
+   .. tikz:: Pile pouvant stocker 10 éléments
 
       [cell/.style={rectangle,draw=black},
       space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
@@ -510,7 +512,7 @@ Pour récupérer son argument, la fonction ``f1`` doit donc lire l'information s
 
 .. literalinclude:: asm/f1.asm
 
-Il est intéressant d'examiner un peu plus en détails l'implémentation de la fonction ``f1``. Tout d'abord, notre fonction doit récupérer son argument. Celui-ci étant le deuxième élément sur la pile, il suffit de mettre son adresse dans le registre ``A``. C'est ce que font les deux premières instructions de notre fonction. Après l'exécution de ces deux instructions, le registre ``A`` contient l'adresse de la zone mémoire contenant l'argument de la fonction ``f1``. Pour incrémenter cet argument, il nous suffit de calculer ``M+1``. Comme le résultat de ce calcul est aussi la valeur de retour de la fonction ``f1``, il suffit de le stocker dans le registre ``D``. En trois lignes nous avons donc implémenté le corps de la fonction. Il nous reste ensuite à récupérer l'adresse de retour de la fonction ``f1`` sur la pile et de retirer cette adresse ainsi que l'argument pour que la fonction appelante retrouve la pile dans l'état dans lequel celle-ci se trouvait avant l'appel à ``f1``. Toutes ces opérations doivent se faire sans utiliser le registre ``D`` puisque celui-ci contient déjà la valeur retournée par notre fonction. Les trois instructions suivantes (``@SP``, ``M=M+1`` et ``M=M+1``) modifient l'adresse du sommet de pile et "suppriment" donc l'adresse et l'argument qui s'y trouvent. Il est utile de noter qu'il suffit d'incrémenter l'adresse contenue dans ``SP`` pour retirer un élément sur la pile. Il n'est pas nécessaire de remplacer la valeur qui s'y trouve par zéro. Mettre cette valeur à zéro serait une perte de temps et donc de performance. Après l'exécution de ces trois instructions, ``SP`` contient la bonne valeur. Il nous reste à récupérer l'adresse de retour. Si ``X`` est l'adresse actuelle du sommet de la pile, alors l'adresse de retour se trouver à l'adresse ``X-2``. Les quatre instructions qui suivent permettent de récupérer cette adresse et de la stocker dans le registre ``A`` pour pouvoir exécuter un saut vers cette adresse sans utiliser le registre ``D``.
+Il est intéressant d'examiner un peu plus en détails l'implémentation de la fonction ``f1``. Tout d'abord, notre fonction doit récupérer son argument. Celui-ci étant le deuxième élément sur la pile, il suffit de mettre son adresse dans le registre ``A``. C'est ce que font les deux premières instructions de notre fonction. Après l'exécution de ces deux instructions, le registre ``A`` contient l'adresse de la zone mémoire contenant l'argument de la fonction ``f1``. Pour incrémenter cet argument, il nous suffit de calculer ``M+1``. Comme le résultat de ce calcul est aussi la valeur de retour de la fonction ``f1``, il suffit de le stocker dans le registre ``D``. En trois lignes nous avons donc implémenté le corps de la fonction. Il nous reste ensuite à récupérer l'adresse de retour de la fonction ``f1`` sur la pile et de retirer cette adresse ainsi que l'argument pour que la fonction appelante retrouve la pile dans l'état dans lequel celle-ci se trouvait avant l'appel à ``f1``. Toutes ces opérations doivent se faire sans utiliser le registre ``D`` puisque celui-ci contient déjà la valeur retournée par notre fonction. Les trois instructions suivantes (``@SP``, ``M=M+1`` et ``M=M+1``) modifient l'adresse du sommet de pile et "suppriment" donc l'adresse et l'argument qui s'y trouvent. Il est utile de noter qu'il suffit d'incrémenter l'adresse contenue dans ``SP`` pour retirer un élément sur la pile. Il n'est pas nécessaire de remplacer la valeur qui s'y trouve par zéro. Mettre cette valeur à zéro serait une perte de temps et donc de performance. Après l'exécution de ces trois instructions, ``SP`` contient la bonne valeur. Il nous reste à récupérer l'adresse de retour. Si ``X`` est l'adresse actuelle du sommet de la pile, alors l'adresse de retour doit se trouver à l'adresse ``X-2``. Les quatre instructions qui suivent permettent de récupérer cette adresse et de la stocker dans le registre ``A`` pour pouvoir exécuter un saut vers cette adresse sans utiliser le registre ``D``.
 
 Nous pouvons maintenant analyser une fonction qui prend deux arguments comme celle qui calcule le minimum. 
 

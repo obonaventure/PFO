@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'LSINC1102 - Principes de Fonctionnement des Ordinateurs'
-copyright = '2020, Olivier Bonaventure'
+copyright = '2020-2021, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
 # The full version, including alpha/beta/rc tags
-release = '2020'
+release = '2021'
 
 
 # -- General configuration ---------------------------------------------------

@@ -56,7 +56,7 @@
      @RET
      0;JMP
 (RETY)
-     @SP     // saut conditionnel a réuissi, D doit contenir x
+     @SP     // saut conditionnel a réussi, D doit contenir x
      A=M+1   // adresse de l'argument y
      A=A+1   // adresse de l'argument x
      D=M     // valeur de retour 
@@ -64,9 +64,9 @@
      0;JMP
 (RET)
      @SP     // récupération de l'adresse de retour
-     M=M+1   // et suppression du premier argument
+     M=M+1   // et suppression de l'adresse de retour de la pile
      M=M+1   // et suppression du second argument
-     M=M+1   // et de l'adresse de retour de la pile
+     M=M+1   // et suppression du premier argument
      A=M     // adresse du sommet de la pile après min
      A=A-1   // adresse du premier argument sur la pile
      A=A-1   // adresse du deuxième argument sur la pile		

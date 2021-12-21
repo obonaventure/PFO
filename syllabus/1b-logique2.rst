@@ -1,3 +1,5 @@
+.. include:: defs.rst
+
 Préparation au premier projet
 =============================
 
@@ -230,4 +232,4 @@ En outre, vous devez également construire les circuits suivants:
    
 Ce projet est également décrit en ligne sur le site `nand2tetris.org/project01 <https://www.nand2tetris.org/project01>`_.
 
-La date limite pour ce projet est fixée au lundi 12 octobre 2020 à 18h00. Vous devez déposer toutes vos solutions aux exercices pour cette date sur https://inginious.info.ucl.ac.be/course/LSINC1102/ Vous aurez un retour sur votre projet durant la séance de travaux pratiques du vendredi 16 octobre 2020.
+La date limite pour ce projet est fixée au |deadlineP1|. Vous devez déposer toutes vos solutions aux exercices pour cette date sur https://inginious.info.ucl.ac.be/course/LSINC1102/ Vous aurez un retour sur votre projet durant la séance de travaux pratiques de la semaine suivante. 

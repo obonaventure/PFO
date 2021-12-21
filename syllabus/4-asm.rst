@@ -455,8 +455,11 @@ Dans cette structure, le bit de poids fort mis à `1` permet au minuscule proces
 
  - l'instruction ``M=D+1`` a comme encodage ``1 1 1 0 0 1 1 1 1 1 0 0 1 0 0 0``. Dans cet encodage, ``0 0 1 1 1 1 1`` représente le membre de droite (``D+1``) et ``0 0 1`` le membre de gauche de l'instruction
  - l'instruction ``D=D+1`` a comme encodage ``1 1 1 0 0 1 1 1 1 1 0 1 0 0 0 0``. Dans cet encodage, ``0 0 1 1 1 1 1`` représente le membre de droite (``D+1``) et ``0 1 0`` le membre de gauche de l'instruction
- - l'instruction ``AMD=A-D`` a comme encodage ``1 1 1 0 0 0 0 1 1 1 1 1 1 0 0 0``. Dans cet encodage, ``0 0 0 0 1 1 1`` représente le membre de droite (``A-D``) et ``1 1 1`` le membre de gauche de l'instruction    
+ - l'instruction ``AMD=A-D`` a comme encodage ``1 1 1 0 0 0 0 1 1 1 1 1 1 0 0 0``. Dans cet encodage, ``0 0 0 0 1 1 1`` représente le membre de droite (``A-D``) et ``1 1 1`` le membre de gauche de l'instruction
 
+
+   
+Le rôle des autres bits qui composent cette instruction sera détaillé plus tard.
    
 
 Les instructions de saut
@@ -592,7 +595,7 @@ Une première solution pour traduire ces trois lignes de python est de les tradu
    49      @23
    50      M=-D
    51      @24  // z
-   51      M=0
+   52      M=0
    ======= ===========
 
 Vous pouvez télécharger cet exemple depuis :download:`asm/ex11a.asm`.   

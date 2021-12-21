@@ -1,0 +1,4 @@
+sphinx==3.5.4
+sphinxcontrib-tikz==0.4.8
+sphinxcontrib-spelling
+sphinxcontrib-video

@@ -1,3 +1,5 @@
+.. include:: defs.rst
+
 Logique booléenne
 *****************
 
@@ -153,7 +155,7 @@ _________
 
 2. Construisez la table de vérité de la fonction booléenne à trois entrées :math:`OR(AND(NOT(x),y,NOT(z)), AND(x,NOT(y),z) )`
 
-3. Construisez la table de vérité de la fonction booléenne à quatre entrées :math:`AND(x,OR(y,AND(z,a)) )`
+3. Construisez la table de vérité de la fonction booléenne à quatre entrées :math:`OR(AND(x,y),AND(z,NOT(x)))`
 
 .. trouver la table de vérité de
    .. AND(x,OR(y,AND(z,a)))
@@ -245,7 +247,13 @@ _________
 
 4. En utilisant une table de vérité, démontrez la deuxième loi de De Morgan :math:`NOT( AND(x,y) ) = OR ( NOT(x), NOT(y) )`
 
-5. Considérons la fonction booléenne :math:`OR( AND(NOT(x),y), AND(y,NOT(z)), AND(y,z), AND(x,AND(NOT(y),NOT(z))) )`. Pouvez-vous simplifier cette fonction en utilisant uniquement une fonction booléenne `AND` à deux entrées, une fonction `OR` à deux entrées et un inverseur ?
+5. Considérons la fonction booléenne suivante:
+
+   .. math::
+      
+      OR( AND(NOT(x),y), AND(y,NOT(z)), AND(y,z), AND(x, AND(NOT(y), NOT(z))) )
+
+   Pouvez-vous simplifier cette fonction en utilisant uniquement une fonction booléenne `AND` à deux entrées, une fonction `OR` à deux entrées et un inverseur ?
 
    
    
@@ -346,18 +354,18 @@ Tant le multiplexeur que le démultiplexeur peuvent s'implémenter en utilisant 
 Synthèse de fonctions booléennes
 ================================
 
-L'intérêt des fonctions booléennes est qu'il est possible de concevoir des fonctions booléennes pour supporter n'importe quelle table de vérité. Prenons comme exemple la fonction `DIFF` qui retourne `1` lorsque ses deux entrées sont différentes et `0` sinon. Sa table de vérité est reprise ci-dessous.
+L'intérêt des fonctions booléennes est qu'il est possible de concevoir des fonctions booléennes pour supporter n'importe quelle table de vérité. Prenons comme exemple la fonction `XOR` qui retourne `1` lorsque ses deux entrées sont différentes et `0` sinon. Sa table de vérité est reprise ci-dessous.
 
-= = =========
-x y DIFF(x,y)
-- - ---------
+= = ========
+x y XOR(x,y)
+- - --------
 0 0    0
 0 1    1
 1 0    1
 1 1    0
-= = =========
+= = ========
 
-Pour réaliser une telle fonction, il suffit de se trouver une combinaison de fonctions `AND`, `OR` et `NOT` qui produit la même table de vérité. Une façon mécanique de produire cette fonction est de remarquer que la sortie d'une fonction `AND` ne vaut `1` que lorsque ses deux entrées sont à `1`. Examinons la deuxième ligne de la table de vérité de la fonction `DIFF`. Celle-ci indique que cette fonction doit valoir `1`  lorsque `x` vaut `0` et `y` vaut `1`. Avec des fonctions `AND` et des inverseurs, on peut obtenir les tables de vérité suivantes:
+Pour réaliser une telle fonction, il suffit de se trouver une combinaison de fonctions `AND`, `OR` et `NOT` qui produit la même table de vérité. Une façon mécanique de produire cette fonction est de remarquer que la sortie d'une fonction `AND` ne vaut `1` que lorsque ses deux entrées sont à `1`. Examinons la deuxième ligne de la table de vérité de la fonction `XOR`. Celle-ci indique que cette fonction doit valoir `1`  lorsque `x` vaut `0` et `y` vaut `1`. Avec des fonctions `AND` et des inverseurs, on peut obtenir les tables de vérité suivantes:
 
 = = =========
 x y AND(x,y)
@@ -409,11 +417,11 @@ x y OR(AND(x,y),AND(NOT(x),y)
 
 On remarque aisément que la fonction combinée vaut `1` uniquement lorsque `x` vaut `1` et `y` vaut `1` ou lorsque `x` vaut `0` et `y` vaut `1`.
 
-En revenant à notre fonction `DIFF`, on se rend aisément compte qu'elle doit valoir `1` dans uniquement deux cas :
+En revenant à notre fonction `XOR`, on se rend aisément compte qu'elle doit valoir `1` dans uniquement deux cas :
  - `x` vaut `1` et `y` vaut `0`
  - `x` vaut `0` et `y` vaut `1`
    
-Dans tous les autres cas, la fonction `DIFF` doit retourner `0`. Le premier cas peut s'implémenter en utilisant la fonction `AND(x,NOT(y))` tandis que le second correspond à la fonction `AND(NOT(x),y)`. Ces deux fonctions peuvent se combiner comme suit: `OR(AND(x,NOT(y)), AND(NOT(x),y))`. En construisant la table de vérité, on se convainc facilement que :math:`OR(AND(x,NOT(y)), AND(NOT(x),y)) \iff DIFF(x,y)`.
+Dans tous les autres cas, la fonction `XOR` doit retourner `0`. Le premier cas peut s'implémenter en utilisant la fonction `AND(x,NOT(y))` tandis que le second correspond à la fonction `AND(NOT(x),y)`. Ces deux fonctions peuvent se combiner comme suit: `OR(AND(x,NOT(y)), AND(NOT(x),y))`. En construisant la table de vérité, on se convainc facilement que :math:`OR(AND(x,NOT(y)), AND(NOT(x),y)) \iff XOR(x,y)`.
 
 En pratique, il est possible de construire n'importe quelle fonction booléenne en combinant avec la fonction `OR`, autant de fonctions `AND` qu'il y a de lignes de la table de vérité dont la sortie vaut `1`.
 
@@ -823,10 +831,10 @@ Les représentations graphiques sont très utiles pour permettre à des électro
 Il existe de nombreux langages qui permettent de décrire de façon précise des fonctions booléennes et des circuits électroniques de façon générale [#hdl]_ . Une description détaillée de ces langages sort du cadre de ce cours. Nous nous contenterons de voir celui qui est utilisé par les simulateurs du livre de référence. 
 
 Quatre types de fichiers sont utilisés par le simulateur :
- - les fichiers de description de circuits (nom de fichier se terminant par `.hdl`)
- - les fichiers qui définissent les tests à réaliser sur les circuits (nom de fichier se terminant par `.tst`)
- - les fichiers contenant les sorties d'un circuit obtenues lors de l'exécution d'un fichier de test (nom de fichier se terminant par `.out`)
- - les fichiers contenant les sorties attendues d'un circuit (nom de fichier se terminant par `.cmp`)   
+ - les fichiers de description de circuits (nom de fichier se terminant par ``.hdl``)
+ - les fichiers qui définissent les tests à réaliser sur les circuits (nom de fichier se terminant par ``.tst``)
+ - les fichiers contenant les sorties d'un circuit obtenues lors de l'exécution d'un fichier de test (nom de fichier se terminant par ``.out``)
+ - les fichiers contenant les sorties attendues d'un circuit (nom de fichier se terminant par ``.cmp``)   
 
 Le langage de description de circuits permet de construire des fonctions booléennes en réutilisant les fonctions de base. Ce langage s'utilise un peu comme un langage de programmation. Dans le langage HDL, un circuit est défini sous la forme d'une liste de commandes, avec généralement une commande par ligne.
 

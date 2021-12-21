@@ -39,8 +39,8 @@
      A=M+1   // adresse contenant l'argument
      M=D     // mise à jour de la valeur de la variable passée en argument
      @SP     // récupération de l'adresse de retour
-     M=M+1   // et suppression de l'argument
-     M=M+1   // et de l'adresse de retour de la pile
+     M=M+1   // et suppression de l'adresse de retour de la pile
+     M=M+1   // et de l'argument
      A=M     // adresse du sommet de la pile après inc
      A=A-1   // adresse de l'argument de inc sur la pile
      A=A-1   // adresse de l'adresse de retour sur la pile

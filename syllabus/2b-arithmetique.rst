@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. include:: defs.rst
+   
 Compléments d'arithmétique
 ==========================
 
@@ -108,10 +110,11 @@ Prenons un second exemple en notation binaire avec deux naturels sur 4 bits: :ma
    \hfill\textcolor{green}{000}\textcolor{blue}{1011}\textcolor{red}{0}\\
    \hfill\textcolor{green}{00}\textcolor{blue}{0000}\textcolor{red}{00}\\
    \underline{+~~\textcolor{green}{0}\textcolor{blue}{1011}\textcolor{red}{000}}\\
-    \hfill\emph{01101110}}}; 
+   \hfill\emph{01101110}}}; 
     
 
 Pour implémenter cette addition dans un programme python, nous pouvons utiliser le principe décrit ci-dessus avec trois variables :
+
  - le multiplicande
  - le multiplicateur
  - le produit intermédiaire
@@ -164,7 +167,7 @@ Division euclidienne
 .. division euclidienne entière
    calcul du reste
 
-La quatrième opération arithmétique de base sur les naturels est la division euclidienne. Cette division prend deux arguments : un dividende et un diviseur/ Elle retourne deux entiers : un quotient et un reste. Formellement, la relation entre ces trois entiers est: :math:`dividende = diviseur \times quotient + reste`. Nous nous concentrerons sur la division euclidienne appliquée aux naturels même si elle peut évidemment s'appliquer aux entiers positifs et négatifs.
+La quatrième opération arithmétique de base sur les naturels est la division euclidienne. Cette division prend deux arguments : un `dividende` et un `diviseur`. Elle retourne deux entiers : un quotient et un reste. Formellement, la relation entre ces trois entiers est: :math:`dividende = diviseur \times quotient + reste`. Nous nous concentrerons sur la division euclidienne appliquée aux naturels même si elle peut évidemment s'appliquer aux entiers positifs et négatifs.
 
 
 .. note:: Division entière en python 
@@ -298,6 +301,7 @@ La dernière étape (:numref:`div-bin5`) nous permet de déterminer la valeur du
    
 
 Le résultat final de notre division en binaire est donc :
+
  - :math:`quotient=01001`
  - :math:`reste=0001`
 
@@ -332,7 +336,7 @@ Opérations sur les réels
    
 .. nombres en virgule flottante et opérations
 
-Les entiers sont des nombres importants, mais ce ne sont pas les seuls types de nombres avec lesquels nous devons réaliser des opérations mathématiques. Les réels sont nettement plus importants dans de très nombreux domaines scientifiques. Les réels sont d'ailleurs les nombres que nous manipulons le plus fréquemment, que ce soit dans la vie de tous les jours pour représenter des montants en Euros ou pour réaliser des calculs scientifiques. Les constantes mathématiques importantes comme :math:`\pi`(3.141592653589793) ou :math:`e` (2.718281828459045) sont des réels.
+Les entiers sont des nombres importants, mais ce ne sont pas les seuls types de nombres avec lesquels nous devons réaliser des opérations mathématiques. Les réels sont nettement plus importants dans de très nombreux domaines scientifiques. Les réels sont d'ailleurs les nombres que nous manipulons le plus fréquemment, que ce soit dans la vie de tous les jours pour représenter des montants en Euros ou pour réaliser des calculs scientifiques. Les constantes mathématiques importantes comme :math:`\pi` (3.141592653589793) ou :math:`e` (2.718281828459045) sont des réels.
 
 Quasiment tous les ordinateurs construits depuis les années 1980s ont adopté la norme `IEEE 754 <https://fr.wikipedia.org/wiki/IEEE_754>`_ pour représenter les nombres réels et réaliser des opérations mathématiques sur ces nombres. Cette norme peut être vue comme la façon d'utiliser sur un ordinateur la notation scientifique à laquelle vous avez étés habituée durant vos études secondaires. Lorsque l'on doit représenter des réels très grands ou très petits, on exprime le réel sous la forme d'une mantisse et d'un exposant. La notation standard est :math:`\pm m \times 10^{p}` où :math:`m` est appelée la mantisse et doit être dans l'intervalle :math:`[1,10[` et :math:`p` est l'exposant. L'avantage de la notation scientifique est qu'elle permet de manipuler efficacement de grands et de petits nombres comme le nombre d'Avogadro, :math:`N_{A} = 6.02214076 \times 10^{23}` ou la masse de l'électron, :math:`9.109 \times 10^{-31}`. Formellement, il n'y a pas de représentation pour le nombre `0` en utilisant la notation scientifique, mais tout le monde utilise le chiffre `0` dans ce cas.
 

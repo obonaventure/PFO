@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. include:: defs.rst
+   
 Arithmétique binaire
 ====================
 
@@ -309,7 +311,7 @@ Le plus intéressant est que ces additionneurs peuvent se combiner en cascade po
 
     \draw[->] (d.west) --++(180:0.5cm) node [left] {$r$};
 
-Pour des raisons graphiques, il est compliqué de dessiner un additionneur pour des octets ou des mots de 16 ou 32 bits, mais le même principe s'applique. On peut donc facilement construire un additionneur qui prend en entrées deux nombres encodés sur `n` et retourne un résultat encodé sur `n` bits avec un report éventuel.
+Pour des raisons graphiques, il est compliqué de dessiner un additionneur pour des octets ou des mots de 16 ou 32 bits, mais le même principe s'applique. On peut donc facilement construire un additionneur qui prend en entrées deux nombres encodés sur `n` bits et retourne un résultat encodé sur `n` bits avec un report éventuel.
     
 L'additionneur que nous venons de construire prend comme entrées les bits des deux nombres à additionner. Dans ce circuit, le report de l'additionneur qui correspond au bit de poids faible est mis à `0`. Que se passerait-il si cette entrée `r` était mise à la valeur `1` ? Le circuit calculerait le résultat de l'addition :math:`a+b+1`.
 
@@ -431,7 +433,7 @@ On remarque aisément qu'il n'y a qu'une seule chaîne de bits qui représente l
 
 Une propriété intéressante de la notation en complément à deux est que tous les nombres négatifs ont leur bit de poids fort qui vaut `1`. C'est une conséquence de la façon dont ces nombres sont représentés et pas un `bit de signe` explicite comme dans les représentations précédentes.
 
-Enfin, l'avantage principal de cette représentation est que l'on va pouvoir assez facilement construire les circuits qui permettent d'effectuer des opérations arithmétiques sur ces nombres. Un premier avantage de la représentation en complément à deux, est qu'il est possible de réutiliser notre additionneur sans aucune modification pour additionner des entiers. Considérons comme premier exemple :math:`(-6)+-(1)`.
+Enfin, l'avantage principal de cette représentation est que l'on va pouvoir assez facilement construire les circuits qui permettent d'effectuer des opérations arithmétiques sur ces nombres. Un premier avantage de la représentation en complément à deux, est qu'il est possible de réutiliser notre additionneur sans aucune modification pour additionner des entiers. Considérons comme premier exemple :math:`(-6)+(-1)`.
 
 
 .. code-block:: console
@@ -442,7 +444,7 @@ Enfin, l'avantage principal de cette représentation est que l'on va pouvoir ass
    -------------
    1  1  0  0  1   
 
-Le quartet `1001` est bien la représentation du nombre négatif `-7`. Comme second exemple, prenons :math:`(-2)+-(3)`. Le résultat de l'addition bit à bit est `1011` qui est le quartet qui représente le nombre entier `-5`.
+Le quartet `1001` est bien la représentation du nombre négatif `-7`. Comme second exemple, prenons :math:`(-2)+(-3)`. Le résultat de l'addition bit à bit est `1011` qui est le quartet qui représente le nombre entier `-5`.
 
 
 .. code-block:: console
@@ -816,7 +818,7 @@ Enfin, pour implémenter l'opération `OR` en utilisant l'ALU, on se souviendra 
 Deuxième projet
 ===============
 
-Ce projet est à rendre par groupe de deux étudiants pour le lundi 26 octobre 2020 à 18h00 sur inginious. 
+Ce projet est à rendre par groupe de deux étudiants pour le |deadlineP2| sur inginious. 
 
 1. Construisez un demi-additionneur sur un bit, https://inginious.info.ucl.ac.be/course/LSINC1102/HalfAdder 
 
