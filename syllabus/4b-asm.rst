@@ -573,19 +573,5 @@ La conversion de ce programme en minuscule assembleur est présentée ci-dessous
    :start-after: (DEBUT)
 
 
-		 
-      
-Quatrième projet
-================
-
-
-L'objectif de ce quatrième projet, qui se fera de façon individuelle, est de démontrer votre connaissance de la programmation en langage d'assemblage. Vous devrez écrire deux petits programmes dans ce langage pour le |deadlineP4|. Ce projet vaut trois points et sera le dernier projet côté pour le cours cette année.
-
-
-1. Implémentez un programme en langage d'assemblage qui permet de calculer le résultat de la multiplication entre deux naturels. Ce programme est à déposer sur inginious : https://inginious.info.ucl.ac.be/course/LSINC1102/MultAsm
-   Cet exercice compte pour un point sur les trois points de ce projet.
-
-2. Vous avez maintenant appris les bases vous permettant d'écrire un petit programme en langage d'assemblage. En utilisant ces connaissances, soyez créatifs et proposez un programme non trivial qui traite des données sous la forme d'un tableau, d'une matrice ou de chaînes de caractères. Le type de traitement est laissé à votre choix. Inventez un traitement qui est utile et écrivez d'abord un petit programme python qui réalise un traitement de votre choix. Écrivez un script de test qui permettra de valider votre programme. Ensuite, traduisez ce programme en minuscule langage d'assemblage et utilisez votre script de test pour démontrer le bon fonctionnement de votre programme. Justifiez vos choix éventuels dans les commentaires de votre programme et du script de test. Cette seconde partie du projet comptera pour 2 points, le programme et le script de test auront le même poids.
-
 
  

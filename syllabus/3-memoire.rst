@@ -777,7 +777,7 @@ Une première métrique pour analyser l'évolution des mémoires RAM est de rega
 	    ymax=2020
             nodes near coords,
             nodes near coords align={vertical},
-            ymin=0,ymax=5000,
+            ymin=1,ymax=5000,
             ylabel={Mbits},
 	    legend pos= north west,
 	    x tick label style={
@@ -810,7 +810,7 @@ La deuxième métrique que l'on peut utiliser pour comparer des mémoires est de
 	    ymax=2020
             nodes near coords,
             nodes near coords align={vertical},
-            ymin=0,ymax=40000,
+            ymin=1,ymax=40000,
             ylabel={Mbytes/sec},
 	    legend pos=north west,
 	    x tick label style={
@@ -997,25 +997,5 @@ _________
    \draw ($(nor2.output) + (0.5,0)$) -- (qb); 
    \draw  ($(nor1.output) + (0.5,0)$) -- (q);
     
-    
-Troisième projet
-================
 
-Ce projet est à rendre par groupe de deux étudiants pour le |deadlineP3| sur inginious.
-
-1. Construisez un circuit permettant de stocker un bit, https://inginious.info.ucl.ac.be/course/LSINC1102/Bit
-
-2. Construisez un circuit permettant d'implémenter un registre à 16 bits, https://inginious.info.ucl.ac.be/course/LSINC1102/Register
-
-3. Construisez un circuit permettant de supporter une mémoire RAM comprenant 8 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM8
-
-4. Construisez un circuit permettant de supporter une mémoire RAM comprenant 64 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM64
-
-5. Construisez un circuit permettant de supporter une mémoire RAM comprenant 512 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM512
-
-.. 6. Construisez un circuit permettant de supporter une mémoire RAM comprenant 4096 registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM4K
-
-.. 7. Construisez un circuit permettant de supporter une mémoire RAM comprenant 16K registres de 16 bits chacun, https://inginious.info.ucl.ac.be/course/LSINC1102/RAM16K
-
-6. Construisez un circuit permettant d'implémenter un compteur de programme, https://inginious.info.ucl.ac.be/course/LSINC1102/PC   
  

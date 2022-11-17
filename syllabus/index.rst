@@ -12,20 +12,18 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
 
    introduction   
    1-logique
-   1b-logique2
-   1c-logique
 
    2-arithmetique
-   2b-arithmetique
       
    3-memoire
 
    4-asm
-   4b-asm
 
    5-cpu
    
    6-asm2
+
+   projets
    
    glossary
 

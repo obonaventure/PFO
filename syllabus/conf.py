@@ -32,7 +32,6 @@ release = '2021'
 # ones.
 extensions = [ 'sphinxcontrib.spelling', 
                'sphinxcontrib.tikz',
-               'sphinxcontrib.video',
                'sphinx.ext.mathjax'
 ]
 
