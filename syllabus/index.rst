@@ -23,6 +23,8 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    
    6-asm2
 
+   7-stockage
+   
    projets
    
    glossary

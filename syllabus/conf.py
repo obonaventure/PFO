@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'LSINC1102 - Principes de Fonctionnement des Ordinateurs'
-copyright = '2020-2021, Olivier Bonaventure'
+project = 'Principes de Fonctionnement des Ordinateurs [LSINC1102/LINFO1140]'
+copyright = '2020-2022, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
 # The full version, including alpha/beta/rc tags
-release = '2021'
+release = '2022'
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,6 +32,7 @@ release = '2021'
 # ones.
 extensions = [ 'sphinxcontrib.spelling', 
                'sphinxcontrib.tikz',
+               'sphinx.ext.githubpages',
                'sphinx.ext.mathjax'
 ]
 
@@ -52,7 +53,7 @@ language = 'fr'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '._*.rst']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '._*.rst', 'old/*']
 
 master_doc = 'index'
 
@@ -74,12 +75,14 @@ spelling_show_suggestions=True
 
 latex_elements = {
     'preamble': r'''
+\usepackage{bytefield}
 \usepackage{circuitikz}
+\usepackage{fontawesome}
 '''
 }
 # tikz
 
-tikz_tikzlibraries = "circuits.logic.US,positioning,calc,quotes,backgrounds,matrix"
+tikz_tikzlibraries = "circuits.logic.US,arrows,positioning,calc,quotes,backgrounds,matrix"
 tikz_proc_suite = 'ImageMagick'
 
 # math
@@ -90,9 +93,35 @@ tikz_proc_suite = 'ImageMagick'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+#html_static_path = ['_static']
+
+
+html_theme_options = {
+    #'analytics_id': 'G-XXXXXXXXXX',  #  Provided by Google in your dashboard
+    #'analytics_anonymize_ip': False,
+    'logo_only': False,
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': False,
+    'vcs_pageview_mode': '',
+    'style_nav_header_background': 'white',
+    # Toc options
+    'collapse_navigation': True,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False
+}
+
+html_context = {
+  'display_github': True,
+  'github_user': 'obonaventure',
+  'github_repo': 'PFO',
+  'github_version': 'master',
+  'conf_py_path': '/'
+}
