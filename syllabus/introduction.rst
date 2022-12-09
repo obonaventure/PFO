@@ -1,7 +1,7 @@
 Introduction
 ============
 
-Les ordinateurs sont au coeur d'un nombre grandissant de services dans notre
+Les ordinateurs sont utilisés dans un nombre grandissant de services dans notre
 société qui est de plus en plus numérique. Ce cours vise à vous apprendre les principes de base de fonctionnement des dispositifs numériques que vous utilisez tous les jours. Le cours s'appuie sur l'excellent livre `The Elements of Computing Systems <https://www.nand2tetris.org>`_ écrit par Noam Nisan et Shimon Schocken et publié au MIT Press. 
 
 Ce syllabus n'est pas exhaustif, le livre de référence contient de nombreux détails qui ne sont pas abordés dans le syllabus. Par contre, le syllabus est interactif, c'est-à-dire qu'à côté des concepts théoriques, vous y trouverez également de nombreux exercices qui sont supportés par `inginious <https://inginious.info.ucl.ac.be>`_ afin de permettre à chaque étudiant de vérifier sa compréhension de la théorie.
