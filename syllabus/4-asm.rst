@@ -475,7 +475,7 @@ Pour exécuter un programme, notre minuscule processeur doit charger une nouvell
 L'exécution de toutes les instructions que nous avons vues jusque maintenant se termine par l'incrémentation du contenu du registre ``PC``. Cela permettra à notre minuscule processeur de charger automatiquement l'instruction suivante lors du prochain cycle d'horloge.
 
 
-.. spelling::
+.. spelling:word-list::
 
    Program
    Counter
@@ -538,7 +538,7 @@ Ce programme ne s'arrêtera jamais. Il est équivalent au code python suivant.
    while True:
      x=x+1
 
-.. spelling::
+.. spelling:word-list::
 
    Jump
    EQual
@@ -961,7 +961,7 @@ Les trois registres du minuscule ordinateur sont représentés par des boites. L
 
 Il est possible d'exécuter un programme en minuscule langage d'assemblage de trois façons différentes. La première est l'exécution pas à pas. En cliquant sur la flèche bleue simple, on simule un cycle d'horloge et donc l'exécution d'une instruction. Cela permet d'observer l'exécution de petits programmes et l'effet de chaque instruction sur les différents registres et la mémoire. Cette exécution pas à pas reste fastidieuse pour de grands programmes.
 
-.. spelling::
+.. spelling:word-list::
 
    breakpoints
 
@@ -1028,7 +1028,7 @@ Dans ce chapitre, nous allons d'abord voir comment notre minuscule ordinateur pe
 Entrées-sorties
 ---------------
 
-.. spelling::
+.. spelling:word-list::
 
    I/O
    Input/Output
@@ -1038,7 +1038,7 @@ Un ordinateur doit interagir avec son environnement. Les ordinateurs actuels com
 
 Commençons par le clavier qui est le dispositif le plus simple. Un clavier peut s'interfacer de différentes façons avec un ordinateur. On peut voir un clavier comme une sorte de matrice dans laquelle chaque touche correspond à une position dans la matrice. Lorsqu'un utilisateur pousse sur une touche, l'élément correspondant de la matrice est mis à une valeur convenue. Si l'utilisateur pousse sur plusieurs touches, les positions correspondantes de la matrice sont modifiées. Cela permet de supporter des claviers avec des touches telles que `shift` ou `ctrl` dont la pression modifie le caractères correspondant à une autre touche. 
 
-.. spelling::
+.. spelling:word-list::
 
    memory
    mapped
@@ -1048,7 +1048,7 @@ Le minuscule ordinateur prend une approche beaucoup plus simple. Il ne représen
 
 Le clavier du minuscule ordinateur comprend un registre qui contient le code ASCII du caractère sur lequel l'utilisateur tape actuellement sur le clavier. Si l'utilisateur ne tape pas sur le clavier, celui-ci contient la valeur ``0``. En outre, le minuscule ordinateur définit les caractères de contrôle repris dans le :numref:`table-keyboard`.
 
-.. spelling::
+.. spelling:word-list::
 
    backspace
    end
@@ -1099,7 +1099,7 @@ Ce programme peut être téléchargé via le lien :download:`asm/keyb.asm`.
 Lorsque l'on exécute ce programme en utilisant le simulateur du minuscule CPU, on observe facilement que le compteur n'est incrémenté qu'à condition que la touche soit pressée au moment où le programme lit le mot à l'adresse ``24576`` en mémoire. Dès que l'utilisateur arrête de pousser sur un touche, ce mot revient à la valeur ``0``. Cela implique que sur le minuscule ordinateur, il est nécessaire de consulter très régulièrement l'information stockée à cette adresse pour réagir à la pression d'une touche sur le clavier. C'est le rôle notamment du :index:`système d'exploitation`, mais cela sort du cadre de ce cours.
 
 
-.. spelling::
+.. spelling:word-list::
 
    polling
 

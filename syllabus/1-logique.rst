@@ -144,29 +144,6 @@ x   y XOR(x,y)
 === = ========
 
 
-Exercices
-_________
-
-
-
-.. TODO Exercices inginious sur les fonctions booléennes 
-
-1. Construisez la table de vérité de la fonction booléenne à quatre entrées :math:`AND(x,OR(y,AND(z,a)))`
-
-2. Construisez la table de vérité de la fonction booléenne à trois entrées :math:`OR(AND(NOT(x),y,NOT(z)), AND(x,NOT(y),z) )`
-
-3. Construisez la table de vérité de la fonction booléenne à quatre entrées :math:`OR(AND(x,y),AND(z,NOT(x)))`
-
-.. trouver la table de vérité de
-   .. AND(x,OR(y,AND(z,a)))
-   .. OR(AND(NOT(x),y,NOT(z)), AND(x,NOT(y),z) )
-   .. AND(x,OR(y,AND(z,a)) )
-      
-
-   .. TODO Trouver d'autres exemples à faire sur inginious
-
-.. - OR(AND(x,y),AND(z,NOT(x)))
-
 
 Algèbre booléenne
 -----------------
@@ -229,55 +206,6 @@ Enfin, les trois opérations `AND`, `OR` et `NOT` sont reliées entre elles par 
  - `NOT( AND(x,y) ) = OR ( NOT(x), NOT(y) )`
 
 Ce lois sont très utiles lorsque l'on doit manipuler des fonctions booléennes. 
-
-
-Exercices
-_________
-
-1. En utilisant une table de vérité, démontrez que :math:`AND(x,OR(NOT(x),y)) \iff AND(x,y)`
-
-2. En utilisant une table de vérité, démontrez que :math:`OR(x,AND(NOT(x),y)) \iff OR(x,y)` 
-
-.. todo: exercices de simplification d'expressions
-
-.. de https://www.tutorialspoint.com/discrete_mathematics/simplification_of_boolean_functions.htm
-
-
-3. En utilisant une table de vérité, démontrez la première loi de De Morgan :math:`NOT( OR(x,y) ) = AND ( NOT(x), NOT(y) )`
-
-4. En utilisant une table de vérité, démontrez la deuxième loi de De Morgan :math:`NOT( AND(x,y) ) = OR ( NOT(x), NOT(y) )`
-
-5. Considérons la fonction booléenne suivante:
-
-   .. math::
-      
-      OR( AND(NOT(x),y), AND(y,NOT(z)), AND(y,z), AND(x, AND(NOT(y), NOT(z))) )
-
-   Pouvez-vous simplifier cette fonction en utilisant uniquement une fonction booléenne `AND` à deux entrées, une fonction `OR` à deux entrées et un inverseur ?
-
-   
-   
-.. F(x,y,z)=OR( AND(NOT(x),y), AND(y,NOT(z)), AND(y,z), AND(x,NOT(y),NOT(z)) )
-.. solution: OR( y, AND(x,NOT(z) )
-
-6. Même question pour la fonction :math:`AND(OR(x,y), OR(x,z) )`
-   
-.. F(x,y,z)= AND(OR(x,y), OR(x,z) )
-.. solution: OR(x, AND(y,z) )
-
-
-.. exemple https://www.ssucet.org/~jgallaher/download/ETEC2301-ProgrammableLogic/Chapter4-BooleanAlgebraAndLogicSimplification.pdf
-
-7. Même question pour la fonction :math:`OR( x, AND(x,y), AND(x, NOT(y), z))`
-
- 
-
-.. OR( x, AND(x,y), AND(x, NOT(y), z)) -> x
-.. OR( AND(x,y), AND(x,OR(y,z)), AND(y,(OR(y,z))) )
-
-.. attention à des sites tels que http://www.bool-simplifier.com   
-   
-.. trouver une petite dizaine d'exemple de simplification, voir comment les faire sur inginious autrement qu'avec des QCMs, pas sur que ce soit facile
 
    
 
@@ -448,13 +376,6 @@ Cette implémentation de la fonction `F(x,y)` n'est pas la plus compacte. On rem
 
 Dans le cadre de ce cours, nous nous focaliserons sur la synthèse de fonctions booléennes qui sont correctes, c'est-à-dire qui produisent une table de vérité donnée, mais qui n'utilisent pas nécessairement un nombre minimal de fonctions de base. Différentes techniques existent pour minimiser de telles fonctions booléennes, mais elles correspondent plus à un cours d'électronique digitale qu'à un cours d'introduction au fonctionnement des ordinateurs.
 
-
-Exercices
----------
-
-1. En utilisant uniquement des fonctions `AND`, `OR` et `NOT`, réalisez un multiplexeur.
-
-2. En utilisant uniquement des fonctions `AND`, `OR` et `NOT`, réalisez un démultiplexeur.
 
    
 
@@ -735,90 +656,6 @@ Avec un multiplexeur, il est possible de construire un circuit "programmable" qu
 
 .. todo: exercices inginious pour la reconnaissance de ces fonctions logiques et construction de tables de vérité. Probablement uniquement faisable sous la forme de table de vérité
 
-
-Exercices
----------
-
-1. Quelle est la table de vérité qui correspond au circuit représenté dans la :numref:`fig-ex-circuit-simple` ?
-
-   .. dessiner un circuit
-
-.. _fig-ex-circuit-simple:   
-.. tikz:: Un circuit simple à deux entrées
-             
-      [label distance=2mm, scale=2,
-      connection/.style={draw,circle,fill=black,inner sep=1.5pt}
-      ]
-      \node (x) at (0.5,0) {$x$};
-      \node (y) at (1,0) {$y$};
-      
-      \node[and gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-1)$) (t1) {};
-      \node[or gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-2)$) (t2) {};
- 
-      \node[not gate US, draw, scale=0.75] at ($(t2.input 1)+(-0.5,0)$) (nx1) {};
-      \node[not gate US, draw, scale=0.75] at ($(t1.input 2)+(-0.5,0)$) (ny1) {};
-
-
-      \node[and gate US, draw, logic gate inputs=nn, scale=1] at ($(t2.output) + (2, 0.5)$) (orTot) {};
-
-      \draw (x) -- ($(x) + (0,-2.5)$);
-      \draw (y) -- ($(y) + (0,-2.5)$);
- 
-      \draw (nx1) -- (t2.input 1);
-      \draw (ny1) -- (t1.input 2);
-
-      \draw (x) |- (nx1) node[connection,pos=0.5]{};
-      \draw (y) |- (ny1) node[connection,pos=0.5]{};
-
-
-      \draw (x) |- (t1.input 1) node[connection,pos=0.5]{};
-      \draw (y) |- (t2.input 2) node[connection,pos=0.5]{};
-
-
-      \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
-      \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
-
-2. Quelle est la table de vérité qui correspond au circuit de la :numref:`fig-ex-circuitsimple3` ?
-
-   .. _fig-ex-circuitsimple3: 
-   .. tikz:: Un circuit simple à trois entrées
-             
-      [label distance=2mm, scale=2,
-      connection/.style={draw,circle,fill=black,inner sep=1.5pt}
-      ]
-      \node (x) at (0.5,0) {$x$};
-      \node (y) at (0.75,0) {$y$};
-      \node (z) at (1,0) {$z$};
-      
-      
-      \node[or gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-1)$) (t1) {};
-      \node[and gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(2,-2)$) (t2) {};
- 
-      \node[not gate US, draw, scale=0.75] at ($(t2.input 1)+(-0.5,0)$) (nx1) {};
-      \node[not gate US, draw, scale=0.75] at ($(t1.input 2)+(-0.5,0)$) (ny1) {};
-      \node[not gate US, draw, scale=0.75] at ($(t2.input 2)+(-0.5,0)$) (nz1) {};
-
-
-      \node[and gate US, draw, logic gate inputs=nn, scale=1] at ($(t2.output) + (2, 0.5)$) (orTot) {};
-
-      \draw (x) -- ($(x) + (0,-2.5)$);
-      \draw (y) -- ($(y) + (0,-2.5)$);
-      \draw (z) -- ($(z) + (0,-2.5)$);
- 
-      \draw (nx1) -- (t2.input 1);
-      \draw (ny1) -- (t1.input 2);
-      \draw (nz1) -- (t2.input 2);
-
-      \draw (x) |- (nx1) node[connection,pos=0.5]{};
-      \draw (y) |- (ny1) node[connection,pos=0.5]{};
-      \draw (z) |- (nz1) node[connection,pos=0.5]{};
-
-      \draw (x) |- (t1.input 1) node[connection,pos=0.5]{};
- 
-
-
-      \draw (t1.output) -- ([xshift=0.3cm]t1.output) |- (orTot.input 1);
-      \draw (t2.output) -- ([xshift=0.2cm]t2.output) |- (orTot.input 2);
       
    
 Un langage de description de circuits logiques
@@ -1017,48 +854,8 @@ Vous trouverez de nombreux autres exemples de fichiers de test dans l'archive re
           .. todo: exercices inginious pour construire des circuits simples en partie lié au premier projet pour qu'ils puissent avancer dans ce projet sans trop de difficultés et le réussir
 
 
-
-Exercices
----------
-      
-1. Avec un multiplexeur, il est possible de construire des circuits "programmables", c'est-à-dire des circuits pour lesquels une des entrées permet de choisir la fonction calculée. Considérons le circuit hypothétique représenté dans la :numref:`fig-ex-programmable` :
-
-.. _fig-ex-programmable:   
-.. tikz:: Un exemple de circuit programmable
-
-   [label distance=2mm, scale=2,
-   connection/.style={draw,circle,fill=black,inner sep=1.5pt}
-   ]
-   \node (x) at (0,0) {$x$};
-   \node (y) at (0.5,0) {$y$};
-   \node (sel) at (2.2,0) {$fct$};
-   
-   \node (mux) at (2.1,-1) {$mux$};
-   \node (out) at (3,-1) {$out$};
-   
-   \node[and gate US, draw, rotate=0, logic gate inputs=nn, scale=1] at ($(x)+(1,-0.5)$) (t1) {and};
-   \node[not gate US, draw, rotate=0, logic gate inputs=n, scale=1] at ($(x)+(1,-1.5)$) (t2) {not};
- 
-   \draw (x) -- ($(x) + (0,-2)$);
-   \draw (y) -- ($(y) + (0,-2)$);
-
-   \draw (x) |- (t1.input 1) node[connection,pos=0.5]{}; 
-   \draw (y) |- (t1.input 2) node[connection,pos=0.5]{}; 
-
-   \draw (y) |- (t2.input) node[connection,pos=0.5]{}; 
-   
-   \draw (t1.output) -- (mux);
-   \draw (t2.output) -- (mux);
-
-   \draw (1.9,-0.6) -- (1.9, -1.4) -- (2.5, -1) --cycle;
-
-   \draw (sel) -- (2.2,-0.8);
-   \draw (2.5,-1) -- (out);
-
-   
-Construisez d'abord la table de vérité de ce circuit et ensuite proposez une suite de test qui permet de valider qu'une implémentation de ce circuit est correcte.   
-   
-
+Les fonctions "multi-bits"
+--------------------------
 
 Maintenant que nous avons vu les fonctions logiques de base, nous pouvons nous préparer à construire les circuits qui seront les briques de base d'un microprocesseur. Avant cela, il nous reste deux concepts importants à discuter.
 
@@ -1067,9 +864,6 @@ Durant la première semaine, nous avons vu comment une fonction booléenne pouva
 
 L'autre point que nous devons aborder sont les fonctions primitives. Durant la première semaine, nous avons travaillé avec `AND`, `OR` et `NOT`. Ces fonctions sont faciles à comprendre et utiliser. Pour des raisons technologiques, les circuits électroniques n'utilisent pas ces fonctions comme des fonctions primitives mais plutôt les fonctions `NAND` ou `NOR` dans certains cas. Nous verrons que la fonction `NAND` est une fonction primitive qui permet d'implémenter n'importe quelle fonction booléenne.
 
-
-Les fonctions "multi-bits"
---------------------------
 
 Les fonctions multi-bits sont simplement des fonctions qui sont appliquées de la même façon à plusieurs entrées. Le circuit de la :numref:`fig-not-4` applique la fonction `NOT` à quatre entrées baptisées `x[0]`, `x[1]`, `x[2]` et `x[3]`. Les sorties sont `out[0]`, `out[1]`, `out[2]` et `out[3]`.
 
@@ -1209,53 +1003,6 @@ x   y NAND(x,y) NAND(x,y) NAND( NAND(x,y), NAND(x,y) )
 1   0     1         1                 0 
 1   1     0         0                 1 
 === = ========= ========= ============================
-
-
-
-Exercices
-_________
-
-La fonction `NAND` est une fonction de base qui permet d'implémenter toutes les autres fonctions booléennes.
-
-1. En appliquant les lois de De Morgan, il est aussi possible de construire la fonction `OR` en se basant uniquement sur la fonction `NAND`.
-
-.. En effet, on remarque que  `NAND(x,y) = OR ( NOT(x), NOT(y) )`. Calculons donc la table de vérité de `NAND( NOT(x), NOT(y) )`.
-
-   === = ========= ========= ============================
-   x   y NAND(x,x) NAND(y,y) NAND( NAND(x,x), NAND(y,y) )
-   --- - --------- --------- ----------------------------
-   0   0     1         1                 1
-   0   1     1         0                 1 
-   1   0     0         1                 1 
-   1   1     0         0                 0 
-   === = ========= ========= ============================
-
-   On est presque à celle de la fonction `OR`. Il suffit en effet d'inverser son résultat pour obtenir la fonction `OR`. Donc, :math:`NAND( NAND( NAND(x,x), NAND(y,y) ), NAND( NAND(x,x), NAND(y,y) )) \iff OR(x,y)`.
-   
-2. En utilisant uniquement des fonctions `NAND`, implémentez les fonctions suivantes:
-   - `XOR`
-   - `NOR`  
-
-
-3. La fonction `NOR` est également une fonction universelle qui permet d'implémenter n'importer quelle fonction logique. En utilisant uniquement une fonction `NOR`, implémentez les fonctions suivantes:
-
-    - inverseur (`NOT`)
-    - `OR`
-    - `AND`
-    - `XOR`
-    - `NAND`
-
-
-Pour rappel, la table de vérité de la fonction `NOR` est la suivante :
-
-=== = ========
-x   y NOR(x,y) 
---- - --------
-0   0 1 
-0   1 0 
-1   0 0 
-1   1 0 
-=== = ========
 
 
 
@@ -1404,43 +1151,6 @@ De la même façon, la fonction de décalage d'une place vers la gauche prend co
 Ces deux fonctions peuvent se généraliser. Plutôt que de décaler la séquence de bits d'une place vers la gauche ou vers la droite, on peut la décaler de `p` places où `p` est aussi une entrée de la fonction. Ainsi, lorsque l'on décale de deux places vers la droite la séquence :math:`b_{n-1}b_{n-2}...b_{2}b_{1}b_{0}`, on obtient la séquence :math:`00b_{n-1}b_{n-2}...b_{2}`. Il en va de même pour le décalage vers la gauche.
 
 
-Exercices
-_________
-
-1. Écrivez la table de vérité de la fonction de décalage permettant de décaler bloc de quatre bits (:index:`nibble` en anglais et index:`quartet` ou index:`semi-octet` en français d'une place vers la droite. Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.
-
-2. Écrivez la table de vérité de la fonction de décalage permettant de décaler un quartet (4 bits) d'une place vers la gauche. Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.
-
-3. Écrivez la table de vérité de la fonction de décalage permettant de décaler un quartet (4 bits) de `p` places vers la droite. Pour écrire cette date de vérité, on utilisera deux bits pour représenter l'entrée `p` est les séquences de deux bits suivantes pour représenter les entiers de `0` à `3`.
-
-   - `00` représente l'entier 0
-   - `01` représente l'entier 1
-   - `10` représente l'entier 2
-   - `11` représente l'entier 3
-     
-  Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.  
-
-4. Faites de même pour le décalage de `p` places vers la droite.
-
-
-Les fonctions de décalage sont utiles pour certaines manipulations sur les bits dans une séquence. Malheureusement, elles résultent en une perte d'information puisque un ou des bits de poids faible sont perdus lors d'un décalage vers la droite. Les fonctions de rotation évitent ce problème. Elles peuvent notamment servir à construire des algorithmes pour crypter (et décrypter) des données stockées sous forme binaire.
-
-La rotation la plus simple est la rotation d'une place vers la droite. Cette fonction prend en entrée une séquence de bits :math:`b_{n-1}b_{n-2}...b_{2}b_{1}b_{0}` et retourne la séquence :math:`b_{0}b_{n-1}b_{n-2}...b_{2}b_{1}`. D'une façon similaire, dans un décalage à gauche d'une place, lorsque la fonction reçoit la séquence :math:`b_{n-1}b_{n-2}...b_{2}b_{1}b_{0}` en entrée, elle retourne la séquence :math:`b_{n-2}...b_{2}b_{1}b_{0}b_{n-1}`. Tout comme pour les fonctions de décalage, les fonctions de rotation peuvent recevoir une seconde entrée qui est le nombre de places de rotation.
-
-Exercices
-_________
-
-
-1. Écrivez la table de vérité de la fonction qui réalise la rotation d'une place vers la gauche d'un quartet (4 bits). Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.
-
-2. Écrivez la table de vérité de la fonction qui réalise la rotation d'un quartet (4 bits) de `p` places vers la gauche. Pour écrire cette table de vérité, on utilisera deux bits pour représenter l'entrée `p` est les séquences de deux bits suivantes pour représenter les entiers de `0` à `3`.
-
-   - `00` représente l'entier `0`
-   - `01` représente l'entier `1`
-   - `10` représente l'entier `2`
-   - `11` représente l'entier `3`
-     
-  Implémentez ensuite cette fonction en utilisant uniquement des fonctions `AND`, `OR` et `NOT`.  
 
 .. masquage
 
@@ -1468,24 +1178,6 @@ Il est utile de prendre quelques exemples pour bien comprendre comment cette tec
 
 Considérons une sonde spatiale qui envoie la séquence de bits composée de ces trois caractères avec leur parité paire, c'est-à-dire : `011000000` `011010010` `100000111`. La station d'écoute pourra recalculer le bit de parité qui est placé dans le bit de poids faible de chaque octet pour vérifier qu'il n'y a pas eu d'erreur de transmission. Si par contre la station d'écoute reçoit `011000001` `111010010` `100000111`, elle pourra vérifier que les deux premiers octets sont incorrects tandis que le troisième est correct. Cette technique de parité permet de détecter les erreurs de transmission qui modifient la valeur de un (et un seul bit) dans la séquence de bits couverte par la parité. En pratique, l'émetteur envoie les bits et calcule la valeur du bit de parité pendant l'envoi de ces bits. Le receveur fait l'inverse pour vérifier que la parité de la séquence reçue est correcte.
 
-.. parité paire
-
-.. parité impaire
-
-Exercices
-_________
-
-1. Écrivez la table de vérité d'une fonction qui prend une séquence de trois bits en entrée et retourne un bit de parité paire.
-
-2. Écrivez la table de vérité d'une fonction qui prend une séquence de trois bits en entrée et retourne un bit de parité impaire.
-
-3. Écrivez la table de vérité d'une fonction qui prend en entrée un quartet dont le bit de poids faible contient une parité paire et retourne `1` si ce quartet est valide et `0` sinon.
-
-4. Écrivez la table de vérité d'une fonction qui prend en entrée un quartet dont le bit de poids faible contient une parité impaire et retourne `1` si ce quartet est valide et `0` sinon.
-   
-.. code de Hamming https://en.wikipedia.org/wiki/Hamming_code   
-  
-.. Le code de Hamming dépend de la représentation des nombres
    
 
    

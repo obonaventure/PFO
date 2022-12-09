@@ -109,41 +109,6 @@ En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les sym
       n = 023 # octal -> valeur décimale 19
       
 
-Exercices
-_________
-
-1. Quel est le nombre décimal qui correspond au nombre binaire `1001100` ?
-
-2. Quel est le nombre décimal qui correspond au nombre binaire `00001101110` ?
-
-3. Comment peut-on facilement reconnaître si un nombre en notation binaire est :
-   
-   - pair
-   - impair
-
-4. Quel est le plus grand nombre naturel que l'on peut représenter en utilisant :
-    - un nombre binaire sur 4 bits
-    - un nombre binaire sur 6 bits
-    - un nombre binaire sur 8 bits
-
-5. Considérons le nombre naturel en représentation binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Construisons le nombre `M` dans lequel on ajoute un bit de poids fort à  0, c'est-à-dire :math:`M=0B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre `N` et `M` ?
-   
-   - :math:`N > M`
-   - :math:`N < M`
-   - :math:`N = M`
-
-6. Considérons le nombre naturel en représentation binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Construisons le nombre `P` dans lequel on ajoute un bit de poids faible à  0, c'est-à-dire :math:`P=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}0`. Quelle relation y-a-t-il entre `N` et `P` ?
-   
-   - :math:`N > P`
-   - :math:`N < P`
-   - :math:`N = P`
-
-7. Combien de nombres naturels différents peut-on représenter avec un nombre décimal sur :
-   
-   - 8 bits (c'est-à-dire un :index:`byte` ou un :index:`octet`)
-   - 16 bits 
-   - 32 bits 
-
      
 Opérations arithmétiques sur les nombres binaires
 -------------------------------------------------
@@ -610,35 +575,6 @@ Si on sait facilement calculer l'opposé d'un nombre, et additionner deux nombre
 
     \draw[->] (d.west) --++(180:0.5cm) node [left] {$r$};
 
-
-
-Exercices
-_________
-
-1. Quel est le nombre décimal qui correspond au nombre binaire `1001100` ?
-
-2. Quel est le nombre décimal qui correspond au nombre binaire `00001101110` ?
-
-3. Comment peut-on facilement reconnaître si un nombre en notation binaire est :
-   
-   - pair
-   - impair
-
-4. Quels sont les plus petit et plus grand nombres entiers que l'on peut représenter en utilisant un nombre binaire sur 8 bits
-
-5. Considérons le nombre binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` en notation en complément à deux. Construisons le nombre de `n+1` bits baptisé `M` dans lequel on ajoute un bit de poids fort mis à la valeur `0`, c'est-à-dire :math:`M=0B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre les valeurs de `N` et `M` ?
-   
-   - :math:`N > M`
-   - :math:`N < M`
-   - :math:`N = M`
-   - :math:`N \ne M`
-
-6. Considérons le nombre binaire :math:`N=B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` en notation en complément à deux. Construisons le nombre encodé sur `n+1` bits `M` dans lequel on ajoute un bit de poids fort mis à la valeur `1`, c'est-à-dire :math:`M=1B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}`. Quelle relation y-a-t-il entre `N` et `M` ?
-   
-   - :math:`N > M`
-   - :math:`N < M`
-   - :math:`N = M`
-   - :math:`N \ne M`
 
      
 

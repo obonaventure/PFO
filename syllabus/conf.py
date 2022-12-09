@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Principes de Fonctionnement des Ordinateurs [LSINC1102/LINFO1140]'
+project = 'Principes de Fonctionnement des Ordinateurs'
 copyright = '2020-2022, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
@@ -33,7 +33,8 @@ release = '2022'
 extensions = [ 'sphinxcontrib.spelling', 
                'sphinxcontrib.tikz',
                'sphinx.ext.githubpages',
-               'sphinx.ext.mathjax'
+               'sphinx.ext.mathjax',
+               #'interactive_syllabus_directives'
 ]
 
 #               'matplotlib.sphinxext.only_directives',
