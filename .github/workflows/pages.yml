@@ -12,7 +12,7 @@ jobs:
       run: sudo apt-get  install netpbm poppler-utils imagemagick
     - name: Install enchant
       run: sudo apt-get install python3-enchant
-    - name: Sphinx contrib
+    - name: Sphinx and contrib
       run: sudo pip3 install  matplotlib==3.4.0 sphinx==3.5.4 sphinxcontrib-spelling sphinxcontrib-bibtex sphinxcontrib-tikz sphinxcontrib-video jinja2==3.0.3
     - name: Checkout
       uses: actions/checkout@master
