@@ -86,6 +86,18 @@ latex_elements = {
 tikz_tikzlibraries = "circuits.logic.US,arrows,positioning,calc,quotes,backgrounds,matrix"
 tikz_proc_suite = 'ImageMagick'
 
+tikz_latex_preamble='''
+%preamble
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfkeys}
+\usepackage{bytefield}
+\usepackage{circuitikz}
+\usepackage{fontawesome}
+\\usepackage[normalem]{ulem}
+%\pgfplotsset{compat=1.16}
+'''
+
 # math
 
 
