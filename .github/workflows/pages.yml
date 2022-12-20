@@ -13,7 +13,7 @@ jobs:
     - name: Install enchant
       run: sudo apt-get install python3-enchant
     - name: Install spinx 
-      run: sudo apt-get install python-sphinx-rtd-theme python-sphinx
+      run: sudo apt-get install  sphinx-doc sphinx-common sphinx-common-rtd-theme
     - name: Sphinx and contrib
       run: sudo pip3 install matplotlib==3.4.0 sphinxcontrib-spelling sphinxcontrib-bibtex sphinxcontrib-tikz sphinxcontrib-video jinja2==3.0.3
     - name: Checkout
