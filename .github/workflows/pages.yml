@@ -13,9 +13,9 @@ jobs:
     - name: Install enchant
       run: sudo apt-get install python3-enchant
     - name: Install spinx 
-      run: sudo apt-get install  sphinx-doc sphinx-common sphinx-common-rtd-theme
+      run: sudo apt-get install  sphinx-doc sphinx-common 
     - name: Sphinx and contrib
-      run: sudo pip3 install matplotlib==3.4.0 sphinxcontrib-spelling sphinxcontrib-bibtex sphinxcontrib-tikz sphinxcontrib-video jinja2==3.0.3
+      run: sudo pip3 install matplotlib==3.4.0 sphinx-rtd-theme sphinxcontrib-spelling sphinxcontrib-bibtex sphinxcontrib-tikz sphinxcontrib-video jinja2==3.0.3
     - name: Checkout
       uses: actions/checkout@master
       with:
