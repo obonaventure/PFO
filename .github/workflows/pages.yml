@@ -10,8 +10,8 @@ jobs:
       run: sudo apt-get install latexmk
     - name: Install netpbm
       run: sudo apt-get  install netpbm poppler-utils imagemagick
-    - name: Install enchant
-      run: sudo apt-get install python3-enchant
+    - name: Install python enchant and hunspell
+      run: sudo apt-get install python3-enchant hunspell-fr
     - name: Install sphinx 
       run: sudo apt-get install  sphinx-doc sphinx-common 
     - name: Sphinxcontrib
