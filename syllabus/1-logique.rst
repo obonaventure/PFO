@@ -842,7 +842,7 @@ Le fichier `Not.cmp` reprend les résultats attendus lors de l'exécution du cir
    |   1   |   0   |
 
 
-Vous trouverez de nombreux autres exemples de fichiers de test dans l'archive relative au premier projet : `https://www.nand2tetris.org/project01 <https://www.nand2tetris.org/project01>`_ 
+Vous trouverez de nombreux autres exemples de fichiers de test dans l'archive relative au premier projet : `https://www.nand2tetris.org/project01 <https://www.nand2tetris.org/project01>`_ ainsi qu'une `présentation détaillée du langage HDL sur le site du livre <https://www.nand2tetris.org/_files/ugd/44046b_bfd91435260748439493a60a8044ade6.pdf>`_.
 
    
 

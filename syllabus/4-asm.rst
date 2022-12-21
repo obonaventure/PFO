@@ -49,8 +49,8 @@ Une autre différence entre le minuscule ordinateur et un ordinateur actuel est 
 
 Outre ces deux mémoires, notre minuscule processeur dispose de deux registres :
 
- - le premier, baptisé ``D`` est utilisé pour stocker un mot de 16 bits qui est lu depuis la mémoire ou résulte d'un calcul réalisé par l'ALU
- - le second, baptisé ``A``. Il a un double rôle. Tout d'abord, va il servir à stocker une donnée sur 16 bits comme le registre ``D``. Son deuxième rôle est de contenir une adresse dans la mémoire de données pour permettre le chargement d'une donnée depuis cette mémoire.
+ - le premier, baptisé ``D`` est utilisé pour stocker un mot de 16 bits qui est lu depuis la mémoire ou résulte d'un calcul réalisé par l'ALU. Son nom réflète le fait qu'il stocke des données (Data en anglais)
+ - le second, baptisé ``A``. Il a un double rôle. Tout d'abord, va il servir à stocker une donnée sur 16 bits comme le registre ``D``. Son deuxième rôle est de contenir une adresse dans la mémoire de données pour permettre le chargement d'une donnée depuis cette mémoire. C'est pour cette raison qu'il est appelé le registre ``A`` (comme adresse).
 
 
 Ces deux registres ``A`` et ``D`` sont schématiquement connectés à l'ALU qui est le coeur de notre minuscule processeur. Cela permet d'utiliser l'ALU pour réaliser différents calculs sur ces deux registres (:numref:`fig-alu-ad`).
@@ -83,7 +83,7 @@ Avant de construire le minuscule processeur dans le projet suivant, nous devons 
 L'instruction de type A
 _______________________
 
-L'instruction la plus simple du minuscule microprocesseur est l'instruction de type `A`. Cette instruction permet simplement de charger un nombre binaire sur 15 bits dans le registre ``A``. Dans les logiciels fournis avec le livre de référence, cette instruction s'écrit ``@`` suivi de la valeur à placer dans le registre ``A``. La valeur passée comme argument de cette instruction de type `A` est obligatoirement un entier positif. Nous verrons plus tard comment indiquer une constante négative.
+L'instruction la plus simple du minuscule microprocesseur est l'instruction de type `A` (où `A` est l'abréviation de adresse). Cette instruction permet simplement de charger un nombre binaire sur 15 bits dans le registre ``A``. Dans les logiciels fournis avec le livre de référence, cette instruction s'écrit ``@`` suivi de la valeur à placer dans le registre ``A``. La valeur passée comme argument de cette instruction de type `A` est obligatoirement un entier positif. Nous verrons plus tard comment indiquer une constante négative.
 
 .. code-block:: console
 
@@ -111,7 +111,7 @@ C'est à cause de l'encodage de l'instruction dans un mot de 16 bits que la cons
 L'instruction de type C
 _______________________
 
-Cette instruction est l'instruction "à tout faire" du minuscule processeur. C'est elle qui permet d'utiliser toutes les fonctionnalités de l'ALU mais aussi d'implémenter des instructions conditionnelles et des boucles comme nous le verrons par après.
+Cette instruction est l'instruction "à tout faire" du minuscule processeur. Son nom vient de l'initiale de Compute (calculer). C'est elle qui permet d'utiliser toutes les fonctionnalités de l'ALU mais aussi d'implémenter des instructions conditionnelles et des boucles comme nous le verrons par après.
 
 Plutôt que de présenter directement toutes les possibilités de cette instruction, nous allons la construire petit à petit sur base d'exemples illustratifs. Une première utilisation de l'instruction de type `C` est de charger des données depuis la mémoire vers un registre ou d'un registre vers la mémoire. Cette variante de l'instruction `C` s'écrit généralement sous la forme :math:`dest = calcul`. Nous verrons plus tard comment réaliser un calcul en utilisant l'ALU. Commençons par observer le fonctionnement de cette instruction. La partie gauche de l'instruction de type `C` indique l'endroit où le résultat de notre calcul doit être stocké. La première destination possible est le registre `D`. Une deuxième destination possible est le registre `A`. Enfin, la troisième destination possible pour le résultat d'un calcul de l'ALU est la mémoire. Dans le minuscule assembleur, ceci est représenté en utilisant le symbole `M`. Ce symbole est un raccourci pour représenter le mot de 16 bits en mémoire se trouvant à l'adresse contenue dans le registre `A`. Ces trois destinations peuvent être combinées entre elles. La partie gauche de l'instruction de type `C` peut contenir les symboles suivants :
 
@@ -488,6 +488,7 @@ L'exécution de toutes les instructions que nous avons vues jusque maintenant se
 
    Program
    Counter
+   Compute
    
 L'encodage de l'instruction de type `C` implique que les trois bits de poids faible (:math:`j_1 j_2 j_3`) restent disponibles. Ceux-ci vont nous permettre de supporter les instructions conditionnelles (``if ... else``) et les boucles. Pour comprendre comment ces instructions sont supportées en langage d'assemblage, nous devons d'abord comprendre comment fonctionne le :index:`compteur de programme` (ou :index:`Program Counter` - PC en anglais). Ce compteur de programme est un registre qui fait partie de notre minuscule processeur et qui contient à tout instant l'adresse de l'instruction que le minuscule processeur exécute. Reprenons le code du calcul de l'opposé (:numref:`code-oppose-asm`). Ce code contient quatre instructions. Il est stocké dans la mémoire d'instructions (:numref:`table-oppose-imem`). 
 
