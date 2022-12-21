@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Principes de Fonctionnement des Ordinateurs'
+project = 'Introduction à la programmation en assembleur'
 copyright = '2020-2024, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
@@ -136,5 +136,5 @@ html_context = {
   'github_user': 'obonaventure',
   'github_repo': 'PFO',
   'github_version': 'master',
-  'conf_py_path': '/syllabus/'
+  'conf_py_path': '/asm/'
 }

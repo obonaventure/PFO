@@ -965,3 +965,17 @@ Les incohérences du système de fichier sont plus complexes. Elles dépendent d
    Inode
    L'inode
    d'inode
+
+
+   .. note::
+
+   Pour aller au delà
+
+
+   L'explication des systèmes de stockage marque la fin de notre exploration des principes de fonctionnement des ordinateurs. Même si nous avons couvert différents aspects du fonctionnement des ordinateurs modernes, nous sommes loin d'en avoir fait le tour. Vous aurez d'autres occasions de compléter votre formation dans ce domaine passionnant dans la suite de vos études.
+
+   En deuxième année du bachelier, vous apprendrez à exploiter les processeurs multi-coeurs en utilisant notamment le langage :term:`Java` dans le cours `Informatique 2 <https://uclouvain.be/cours-2020-LEPL1402>`_. Vous apprendrez aussi à programmer en langage :term:`C` dans le cours `Projet 3 <https://uclouvain.be/cours-2020-LEPL1503>`_. De nos jours, le langage :term:`C` est le langage de programmation qui remplace l'assembleur dans la plupart des cas où il est nécessaire de contrôler finement le matériel. Le cours de `Calculabilité, logique et complexité <https://uclouvain.be/cours-2020-LINFO1123>`_ vous permettra d'apprendre les bases théoriques de l'informatique et notamment un modèle théorique du fonctionnement des ordinateurs qui est la `machine de Turing`. Le cours de `Paradigmes de programmation et concurrence <https://uclouvain.be/cours-2020-LINFO1104>`_ vous permettra de mieux comprendre comment fonctionnent les langages de programmation.
+
+   En troisième année du bachelier, le cours de `Systèmes informatiques <https://uclouvain.be/cours-2020-LINFO1252>`_ vous permettra de comprendre comment fonctionne un :term:`système d'exploitation`. Vous aurez à nouveau l'occasion d'écrire des programmes en langage C et en assembleur mais sur des processeurs réels cette fois. Le cours de `Réseaux informatiques <https://uclouvain.be/cours-2020-LINFO1341>`_ vous permettra de comprendre comment les ordinateurs connectés à Internet peuvent s'échanger de l'information.
+
+   En Master, le cours `Architecture and performance of computer systems <https://uclouvain.be/cours-2020-LINGI2241>`_ vous permettra de comprendre plus en profondeur les interactions entre le matériel et le logiciel et les facteurs qui influencent les performances d'un ordinateur. D'autres cours à option sont accessibles dans ce domaine comme `Design and Architecture of digital electronic systems <https://uclouvain.be/en-cours-2020-LELEC2531>`_ ou `Design of Embedded and real-time systems <https://uclouvain.be/cours-2020-LINGI2315>`_.
