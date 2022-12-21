@@ -1,6 +1,13 @@
 Introduction
 ============
 
+.. spelling:word-list::
+
+   coeur
+   oeuvre
+
+
+
 Les ordinateurs sont au coeur d'un nombre grandissant de services dans notre
 société qui est de plus en plus numérique. Ce cours vise à vous apprendre les principes de base de fonctionnement des dispositifs numériques que vous utilisez tous les jours. Le cours s'appuie sur l'excellent livre `The Elements of Computing Systems <https://www.nand2tetris.org>`_ écrit par Noam Nisan et Shimon Schocken et publié au MIT Press. 
 

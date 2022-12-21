@@ -1,5 +1,9 @@
 .. include:: defs.rst
-	     
+
+.. spelling:word-list::
+
+   Evolution
+   Eléments
 
 Mémoire
 =======
@@ -37,7 +41,7 @@ Un tel signal électrique ne se propage pas instantanément dans un circuit éle
    =================  ===============   =================
 
    
-Dans un circuit électronique, il n'est pas impossible que le signal dans deux parties du circuit suive des chemins de longueurs différentes. Considérons la situation représentée en :numref:`fig-and-elec`. Imaginons que le signal `C` doit parcourir un chemin plus long que celui des signaux `A` et `B`. Initialement, les signaux `A` et `B` valent `0`. Après quelque temps, les signaux `A` et `C` passent à la valeur `1`, mais le signal `C` est un peu retardé par rapport au signal `A`. La :numref:`fig-abc` présente l'évolution de ces signaux et leur valeur juste avant les portes `AND` et `OR`. Remarquez que le signal `C` est un peu retardé par rapport au signal `A`. Le même raisonemment s'applique lorsque l'on prend en compte le fait qu'une porte logique ne réagit pas instannément à une modification de son signal d'entrée.
+Dans un circuit électronique, il n'est pas impossible que le signal dans deux parties du circuit suive des chemins de longueurs différentes. Considérons la situation représentée en :numref:`fig-and-elec`. Imaginons que le signal `C` doit parcourir un chemin plus long que celui des signaux `A` et `B`. Initialement, les signaux `A` et `B` valent `0`. Après quelque temps, les signaux `A` et `C` passent à la valeur `1`, mais le signal `C` est un peu retardé par rapport au signal `A`. La :numref:`fig-abc` présente l'évolution de ces signaux et leur valeur juste avant les portes `AND` et `OR`. Remarquez que le signal `C` est un peu retardé par rapport au signal `A`. Le même raisonnement s'applique lorsque l'on prend en compte le fait qu'une porte logique ne réagit pas instantanément à une modification de son signal d'entrée.
 
 .. _fig-and-elec:
 .. tikz:: Un circuit simple à trois entrées
@@ -904,7 +908,9 @@ Analysons maintenant ce qu'il se passe si `R` passe à `1`. Dans ce cas, la sort
 
 .. avec une horloge ?
 
-   
+.. spelling:word-list::
+
+   latch
 
 
 Notre second circuit est le :index:`latch SR`. Ce circuit utilise deux portes `NOR` et a deux entrées : `R` et `S`. Une caractéristique importante de ce circuit est qu'il existe une boucle entre la sortie d'un porte `NOR` et l'entrée de l'autre porte. Par ce circuit, `R` et `S` sont les entrées tandis que `Q` et :math:`\overline{Q}` sont les sorties

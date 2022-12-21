@@ -3,12 +3,12 @@
 Glossaire
 =========
 
-   .. spelling
+.. spelling:word-list::
 
-       Moore
-       von
-       Graphics
-       inline
+     Moore
+     von
+     Graphics
+     inline
    
 
 

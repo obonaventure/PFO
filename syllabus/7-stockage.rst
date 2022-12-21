@@ -174,6 +174,14 @@ Il existe un très grand nombre de systèmes de fichiers. Une page `wikipedia d�
 
 Ces deux systèmes de fichiers ont une structure assez différente et ils ont tous les deux étés largement déployés. L'objectif principal de ces deux systèmes de fichiers est de stocker les fichiers, les répertoires mais aussi l'arborescence qui représente le système de fichiers sur un dispositif de stockage composé de blocs. 
 
+.. spelling:word-list::
+
+   sh
+   echo
+   noeud
+   d'inodes
+   
+   
 
 La partie la plus simple dans le design d'un système de fichiers est le stockage des fichiers. Dans notre exemple, nous avons cinq fichiers à stocker :
 
@@ -481,6 +489,7 @@ Grâce aux champs ``FAT`` qui se trouvent dans les répertoires, nous avons cons
    FAT
    l'inode
    timestamp
+   timestamps
    
 
    
@@ -569,7 +578,7 @@ A titre d'illustration sur l'utilisation des inodes, considérons le système de
 Un système de fichiers `ext2` est composé d'une suite de blocs. Les premiers blocs sont des blocs de contrôle qui contiennent de l'information sur le système de fichiers et sa structure. La plupart des blocs sont les blocs qui contiennent les données relatives aux fichiers et aux répertoires. Les premiers blocs d'un système de fichiers `ext2` contiennent les paramètres principaux du système de fichiers comme la taille des blocs, le nombre d'inodes, ... Une description détaillée du contenu du `Super Block` et des `FS descriptors` sort du cadre de ce cours. Après ces blocs de contrôle, un système de fichiers `ext2` contient deux bitmaps: le bitmap des block et le bitmap des inodes. Ensuite on retrouve la table des inodes. Cette table contient tous les inodes du système de fichiers. Tous les blocs de contrôle sont initialisés lors de la réaction (le formatage) du système de fichiers. La taille des bitmaps, des blocs et de la table des inodes sont fixées à ce moment. Ces tailles ne changeront jamais durant la vie du système de fichiers.
 
 .. _fig-ext2-controle:
-.. tikz:: Un système de fichiers `ext2` contient un superblock, un FS descriptor, un bitmap des blocks, un butmap des inodes, une table des inodes et des blocs de données
+.. tikz:: Un système de fichiers `ext2` contient un superblock, un FS descriptor, un bitmap des blocks, un bitmap des inodes, une table des inodes et des blocs de données
 
    \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{Super} & |[fill=red](n1)| \small{FS}  &  |[fill=red](n2)|\small{Block}  & |[fill=red](n3)|\small{Bitmap}  & |[fill=red](n4)|\small{Inode} & |[fill=red](n5)|\small{Bitmap}  & |[fill=red](n6)|\small{Inode}  & |[fill=red](n7)|\small{Table}  & \small{8} & \small{9}  \\
@@ -586,7 +595,7 @@ Dans le système de fichiers `ext2`, les entrées d'un répertoire ont une longu
 
  - le numéro de l'inode correspondant au fichier/répertoire sur 32 bits
  - un entier sur 16 bits indiquant la longueur en octets de cette entrée du répertoire
- - un entier sur 16 bits indiquand la longueur du nom de fichier/répertoire
+ - un entier sur 16 bits indiquant la longueur du nom de fichier/répertoire
  - une chaîne de caractère contenant le nom du fichier/répertoire
 
 
@@ -811,7 +820,7 @@ Commençons par la lecture des données dans un fichier. Pour accéder aux donn�
 
 Les opérations d'écriture dans un fichier sont assez similaires sauf lorsqu'il faut ajouter un nouveau bloc à un fichier existant. Dans ce cas, le système de fichier va d'abord consulter le bitmap des blocs pour trouver un bloc libre. Pour améliorer les performances du système de fichiers, il est généralement utile de placer les blocs d'un fichier dans des zones contiguës, mais si les blocs qui suivent ceux utilisés par le fichier sont déjà occupés, rien n'empêche le système de fichiers de choisir un bloc dans une autre partie du dispositif de stockage. Une fois ce bloc choisi, il faut le référencer dans l'inode du fichier et mettre à jour la longueur du fichier (en blocs et en octets). Si il reste un pointeur direct de libre dans l'inode, il suffit de le modifier pour référencer le nouveau bloc. Sinon, il peut être nécessaire d'obtenir un nouveau bloc pour stocker un pointeur indirect, doublement indirect ou triplement indirect. Dans les trois cas, cela nécessite de trouver un nouveau bloc via le bitmap des blocs, mettre à jour ce bitmap et référencer ce bloc correctement. Il faut aussi mettre à jour les dates de dernière modification et d'accès au fichier dans l'inode. 
 
-Les opérations de création de fichier sont les plus complexes. Pour créer un nouveau fichier et y stocker des données, il faut d'abord trouver un inode de libre. Cela se fait en consultant le bitmap des inodes. On peut ensuite commencer à remplir l'inode avec les informations relatives au proriétaire du fichier, ... Ce fichier peut maintenant être référencé dans un répertoire. Si le bloc qui contient le répertoire est incomplet, il suffit d'ajouter l'entrée au répertoire. Si le bloc est complet, il faut consulter le bitmap des blocs pour trouver un nouveau bloc de libre, le marquer comme occupé, et l'ajouter dans l'inode du répertoire. Ensuite, il faut trouver dans le bitmap des blocs les blocs libres nécessaires au nouveau fichier et les référencer dans l'inode de ce nouveau fichier.
+Les opérations de création de fichier sont les plus complexes. Pour créer un nouveau fichier et y stocker des données, il faut d'abord trouver un inode de libre. Cela se fait en consultant le bitmap des inodes. On peut ensuite commencer à remplir l'inode avec les informations relatives au propriétaire du fichier, ... Ce fichier peut maintenant être référencé dans un répertoire. Si le bloc qui contient le répertoire est incomplet, il suffit d'ajouter l'entrée au répertoire. Si le bloc est complet, il faut consulter le bitmap des blocs pour trouver un nouveau bloc de libre, le marquer comme occupé, et l'ajouter dans l'inode du répertoire. Ensuite, il faut trouver dans le bitmap des blocs les blocs libres nécessaires au nouveau fichier et les référencer dans l'inode de ce nouveau fichier.
 
 
 .. note:: Un même fichier peut se retrouver dans plusieurs répertoires
@@ -939,7 +948,7 @@ Tout comme pour le système de fichiers utilisant une table d'allocation, un sys
    FS
    Block
    descriptor
-
+   blocks
    
 Commençons par analyser l'impact de la perte d'un bloc. Les deux premiers blocs, le Super Block et le FS descriptor, sont critiques car ils contiennent les paramètres du système de fichiers. Ils définissent notamment le nombre de blocs sur le dispositif de stockage, le nombre d'inodes et la taille de chaque bloc. Si ces blocs deviennent inutilisables, le système de fichiers l'est aussi. Pour faire face à ce risque, la solution la plus fréquente est de stocker une copie de ces deux blocs dans une autre partie du disque. Cette copie doit évidemment être mise à jour à chaque modification des blocs primaires.
 

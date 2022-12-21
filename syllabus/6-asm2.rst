@@ -129,9 +129,12 @@ Il nous faut maintenant pouvoir faire appel à la procédure ``compte()`` après
    @compteur
    M=M+1
 
+
 .. spelling:word-list::
 
    inline
+   coeur
+   coeurs
    
 Une première approche pour inclure notre procédure dans le programme en minuscule assembleur est d'intégrer directement ces instructions `en ligne`
 (:term:`inline` en anglais). Cette technique est parfois utilisée dans certains
@@ -299,12 +302,13 @@ Le problème que nous observons est dû au fait qu'en sauvegardant l'adresse de 
    push
    pop
    stack
+   Evolution
 
 Avant d'appeler une procédure, nous devons trouver une moyen pour sauvegarder l'adresse de retour de cette procédure. Lors de son exécution, notre procédure peut aussi sauvegarder des adresses de retour, mais à la fin de son exécution nous devons pouvoir récupérer l'adresse de retour que nous avions sauvegardée. Cela correspond au fonctionnement d'une :term:`pile` (`stack` en anglais). Une pile est une structure de données permettant de stocker un nombre quelconque de données. Elle supporte deux opérations: l'ajout d'une donnée au sommet de la pile (``push`` en anglais) et le retrait de la donnée se trouvant au sommet de la pile (``pop`` en anglais).
 
 .. TODO exemple de pile avec push et pop, peut-être dessin avec des assiettes ou autre
 
-La pile la plus connue dans la vie de tous les jours est la pile d'assiettes. Lorsque l'on a besoin d'un assiette, on prend celle qui se trouve au sommet de la pile. Après avoir fait la vaiselle, on remet les assiettes propres au sommet de la pile également. Pour bien comprendre le fonctionnement d'une structure de données en pile en informatique, il suffit de se rappeler comment on manipule une pile d'assiettes...
+La pile la plus connue dans la vie de tous les jours est la pile d'assiettes. Lorsque l'on a besoin d'un assiette, on prend celle qui se trouve au sommet de la pile. Après avoir fait la vaisselle, on remet les assiettes propres au sommet de la pile également. Pour bien comprendre le fonctionnement d'une structure de données en pile en informatique, il suffit de se rappeler comment on manipule une pile d'assiettes...
    
 
 .. note:: Comment stocker une pile de mots en mémoire ?
@@ -347,7 +351,7 @@ La pile la plus connue dans la vie de tous les jours est la pile d'assiettes. Lo
 
    Outre les données, cette structure doit également stocker l'adresse de l'élément se trouvant au sommet de la pile. Après l'opération ``push(3)`` le sommet de la pile est à l'adresse ``p``. Il est à la même adresse après l'opération ``push(2)`` et atteint l'adresse ``p-1`` après l'opération ``push(5)``. 
 
-   Même si la première solution peut paraître la plus naturelle par analogie aux piles d'assietes, c'est généralement la deuxième solution qui est préférée car elle facilite la gestion de la mémoire et maximise l'espace qui est disponible pour la pile sans inutilement contraindre la mémoire utilisée par un programme.
+   Même si la première solution peut paraître la plus naturelle par analogie aux piles d'assiettes, c'est généralement la deuxième solution qui est préférée car elle facilite la gestion de la mémoire et maximise l'espace qui est disponible pour la pile sans inutilement contraindre la mémoire utilisée par un programme.
 
 
 Avant de modifier notre programme pour y intégrer une pile, il est intéressant de réfléchir à la façon dont on peut implémenter une pile d'entiers en utilisant le minuscule assembleur. Les deux opérations que nous devons supporter sont :
@@ -532,7 +536,7 @@ L'implémentation de cette fonction en minuscule assembleur est téléchargeable
 
 .. passage par valeur et passage par référence ou adresse
 
-Dans notre implémentation des fonctions ``f1`` et ``min``, nous avons utilisé la technique du :term:`passage par valeur`, c'est-à-dire que lorsqu'elle est appelée, une fonction reçoit du programme appelant les valeurs de ses argumentsr. Ces valeurs sont copiées sur la pile par le programme appelant et utilisées par la fonction. Cette technique est utilisée par de nombreux langages de programmation comme python lorsque l'on passe des valeurs d'un type primitif comme des réels ou des entiers à une fonction.
+Dans notre implémentation des fonctions ``f1`` et ``min``, nous avons utilisé la technique du :term:`passage par valeur`, c'est-à-dire que lorsqu'elle est appelée, une fonction reçoit du programme appelant les valeurs de ses arguments. Ces valeurs sont copiées sur la pile par le programme appelant et utilisées par la fonction. Cette technique est utilisée par de nombreux langages de programmation comme python lorsque l'on passe des valeurs d'un type primitif comme des réels ou des entiers à une fonction.
 
 Il existe une seconde technique pour passer les arguments à une fonction. C'est le :term:`passage par référence`. Dans ce cas, le programme appelant fournit à la fonction qu'il appelle une référence vers son argument. Cette référence est l'adresse en mémoire à laquelle la variable contenant l'argument est stockée. La différence fondamentale entre le :term:`passage par référence` et le :term:`passage par valeur` est que comme la fonction connaît l'adresse de la variable contenant son argument, elle peut modifier son contenu alors que c'est impossible avec le passage par valeur. En python, le :term:`passage par référence` est utilisé lorsque l'argument passé à une fonction est une référence à un objet ou une liste. Il est possible de mixer le passage par référence et le passage par valeur dans une même fonction avec un argument entier passé par valeur et une liste passée par référence.
 
@@ -556,7 +560,14 @@ Chacune des variables locales d'une fonction doit être stockée à une adresse 
 
 On peut éviter ces deux inconvénients en utilisant la pile comme mémoire pour stocker les variables locales d'une fonction. La pile n'utilise la RAM que durant l'exécution de la fonction, il n'y a donc pas de gaspillage de mémoire comme avec la solution précédente. Dans le cas où une invocation de la fonction ``f`` appelle la fonction ``g`` qui appelle elle-même la fonction ``f``, le bas de la pile contiendra les arguments, adresse de retour et variables de la première invocation de la fonction ``f``. Au-dessus de ces informations, on trouvera les arguments, adresses de retour et variables locales de la fonction ``g``. Enfin, les arguments, adresse de retour et variables locales de la seconde invocation de la fonction ``f`` sont au sommet de la pile. A la fin de son exécution, cette invocation de la fonction ``f`` libère la mémoire qu'elle utilise sur la pile.
 
+.. spelling:word-list::
+
+   sumn
+
+   
+
 La meilleure illustration de l'utilisation de la pile par les fonctions en assembleur est le support des fonctions récursives. En informatique, on parle de :term:`récursion` lorsqu'une fonction s'appelle elle-même. C'est le cas par exemple de la fonction ``sumn`` qui permet de calculer la somme des ``n`` premiers naturels.
+
 
 
 .. literalinclude:: python/sumn.py
@@ -649,7 +660,7 @@ Lors de son exécution, l'invocation de la fonction ``sumn`` avec ``1`` comme ar
    };
    
 
-Nous sommes maintenant dans l'éxécution de la fonction ``sumn(0)``. Celle-ci retourne la valeur ``0`` dans le registre ``D`` et retire les deux mots se trouvant au sommet de la pile. Elle retourne à l'adresse ``RETSUMN`` avec la pile dans l'état représenté à la :numref:`fig-pile-avant-sumn1`. Grâce à cette pile, la fonction ``sumn`` récupère son argument (``1``) et retourne la valeur ``1`` qui est la somme entre la valeur du registre ``D`` et son argument. A la fin de son exécution, cette invocation de la fonction ``sumn`` retire les deux mots qui se trouvaient au sommet de la pile.
+Nous sommes maintenant dans l'exécution de la fonction ``sumn(0)``. Celle-ci retourne la valeur ``0`` dans le registre ``D`` et retire les deux mots se trouvant au sommet de la pile. Elle retourne à l'adresse ``RETSUMN`` avec la pile dans l'état représenté à la :numref:`fig-pile-avant-sumn1`. Grâce à cette pile, la fonction ``sumn`` récupère son argument (``1``) et retourne la valeur ``1`` qui est la somme entre la valeur du registre ``D`` et son argument. A la fin de son exécution, cette invocation de la fonction ``sumn`` retire les deux mots qui se trouvaient au sommet de la pile.
 
 L'état de la pile est maintenant celui de la :numref:`fig-pile-avant-sumn2` et le registre ``D`` contient la valeur ``1``. Nous sommes dans la dernière partie de l'invocation de la fonction ``sumn(2)``. Celle-ci calcule son résultat (``3``) et retire les deux mots se trouvant au sommet de la pile avant de faire un saut à l'adresse ``RETSUMN``.
 
@@ -663,7 +674,7 @@ Nous sommes maintenant dans l'invocation de la fonction ``sumn(3)``. L'état de 
 
    L'explication des fonctions récursives marque la fin de notre exploration des principes de fonctionnement des ordinateurs. Même si nous avons couvert différents aspects du fonctionnement des ordinateurs modernes, nous sommes loin d'en avoir fait le tour. Vous aurez d'autres occasions de compléter votre formation dans ce domaine passionnant dans la suite de vos études.
 
-   En deuxième année du bachelier, vous apprendrez à exploiter les processeurs multi-coeurs en utilisant notamment le langage :term:`Java` dans le cours `Informatique 2 <https://uclouvain.be/cours-2020-LEPL1402>`_. Vous apprendrez aussi à programmer en langage :term:`C` dans le cours `Projet 3 <https://uclouvain.be/cours-2020-LEPL1503>`_. De nos jours, le langage :term:`C` est le langage de programmation qui remplace l'assembleur dans la plupart des cas où il est nécessaire de contrôler finement le matériel. Le cours de `Calculabilité, logique et complexité <https://uclouvain.be/cours-2020-LINFO1123>`_ vous permettra d'apprendre les bases théoriques de l'informatique et notamment un modèle théorique du fonctionnement des ordinateurs qui est la `machine de Turing`. Le cours de `Paradigmes de programmation et concurrence <https://uclouvain.be/cours-2020-LINFO1104>`_ vous permettra de mieux comprendre comment fonctionent les langages de programmation.
+   En deuxième année du bachelier, vous apprendrez à exploiter les processeurs multi-coeurs en utilisant notamment le langage :term:`Java` dans le cours `Informatique 2 <https://uclouvain.be/cours-2020-LEPL1402>`_. Vous apprendrez aussi à programmer en langage :term:`C` dans le cours `Projet 3 <https://uclouvain.be/cours-2020-LEPL1503>`_. De nos jours, le langage :term:`C` est le langage de programmation qui remplace l'assembleur dans la plupart des cas où il est nécessaire de contrôler finement le matériel. Le cours de `Calculabilité, logique et complexité <https://uclouvain.be/cours-2020-LINFO1123>`_ vous permettra d'apprendre les bases théoriques de l'informatique et notamment un modèle théorique du fonctionnement des ordinateurs qui est la `machine de Turing`. Le cours de `Paradigmes de programmation et concurrence <https://uclouvain.be/cours-2020-LINFO1104>`_ vous permettra de mieux comprendre comment fonctionnent les langages de programmation.
 
    En troisième année du bachelier, le cours de `Systèmes informatiques <https://uclouvain.be/cours-2020-LINFO1252>`_ vous permettra de comprendre comment fonctionne un :term:`système d'exploitation`. Vous aurez à nouveau l'occasion d'écrire des programmes en langage C et en assembleur mais sur des processeurs réels cette fois. Le cours de `Réseaux informatiques <https://uclouvain.be/cours-2020-LINFO1341>`_ vous permettra de comprendre comment les ordinateurs connectés à Internet peuvent s'échanger de l'information.
 
@@ -672,6 +683,6 @@ Nous sommes maintenant dans l'invocation de la fonction ``sumn(3)``. L'état de 
    
    En attendant, si vous cherchez des informations complémentaires, il existe de nombreux livres de références très complets :
 
-     - la seconde partie du livre `The Elements of Computing Systems <https://www.nand2tetris.org>`_ écrit par Noam Nisan et Shimon Schocken et publié au MIT Press poursuit son exploration des ordinateurs en développant les différentes couches logicielles dont un assembleur et une machine virtuelle qui supporte un langage un peu plus faicle à utiliser que le minuscule assembleur. Cette machine virtuelle est ensuite utilisée pour implémenter un langage de programmation orienté objet simple et un petit système d'exploitation.
+     - la seconde partie du livre `The Elements of Computing Systems <https://www.nand2tetris.org>`_ écrit par Noam Nisan et Shimon Schocken et publié au MIT Press poursuit son exploration des ordinateurs en développant les différentes couches logicielles dont un assembleur et une machine virtuelle qui supporte un langage un peu plus facile à utiliser que le minuscule assembleur. Cette machine virtuelle est ensuite utilisée pour implémenter un langage de programmation orienté objet simple et un petit système d'exploitation.
      - la série de livres `Computer Organization and Design - The Hardware/Software Interface` écrits par David Patterson et John Hennessy. Ces livres présentent le fonctionnement des ordinateurs en détaillant un microprocesseur particulier. Il en existe trois versions. La première, `Computer Organization and Design MIPS Edition <https://www.elsevier.com/books/computer-organization-and-design-mips-edition/patterson/978-0-12-820109-1>`_ se concentre sur les processeurs MIPS que l'on trouve dans différents types d'ordinateurs embarqués. La deuxième, `Computer Organization and Design RISC-V Edition <https://www.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6>`_ s'appuie sur les nouveaux processeurs RISC-V dont toutes les spécifications sont disponibles en open-source. La troisième, `Computer Organization and Design ARM Edition <https://www.elsevier.com/books/computer-organization-and-design-arm-edition/patterson/978-0-12-801733-3>`_ présente les processeurs ARM que l'on retrouve sur la plupart des smartphones de nos jours. Une ancienne édition de ce livre a été traduite en français mais n'est malheureusement plus disponible. David Patterson et John Hennessy ont également écrit le livre `Computer Architecture : A quantitative approach <https://www.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1>`_ qui fait référence dans le domaine, mais s'adresse plutôt à des étudiants de master ou des professionnels.
 

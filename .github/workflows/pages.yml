@@ -12,15 +12,16 @@ jobs:
       run: sudo apt-get  install netpbm poppler-utils imagemagick
     - name: Install enchant
       run: sudo apt-get install python3-enchant
-    - name: Install spinx 
+    - name: Install sphinx 
       run: sudo apt-get install  sphinx-doc sphinx-common 
-    - name: Sphinx and contrib
+    - name: Sphinxcontrib
       run: sudo pip3 install matplotlib==3.4.0 sphinx-rtd-theme sphinxcontrib-spelling sphinxcontrib-bibtex sphinxcontrib-tikz sphinxcontrib-video jinja2==3.0.3
     - name: Checkout
       uses: actions/checkout@master
       with:
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
         submodules: 'true' 
-    - name: Build and Commit
+    - name: Build 
       run: sphinx-build  -NT --keep-going -b html syllabus /tmp
-
+    - name: Spellcheck  
+      run: sphinx-build  -b spelling syllabus /tmp

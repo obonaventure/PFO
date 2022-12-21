@@ -3,6 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. spelling:word-list::
+
+   coeur
+   Equal
+   Echange
+   Breakpoint
+   Breakpoints
+   
+   
 Langage d'assemblage
 ====================
 
@@ -1458,7 +1467,7 @@ Il existe une seconde façon de stocker les chaînes de caractères. C'est celle
 
 .. _fig-helloc:
 
-.. tikz:: Représentation en mémoire de la chaîne de caractères Hello! avec mrqueur de fin
+.. tikz:: Représentation en mémoire de la chaîne de caractères Hello! avec marqueur de fin
 
 	  
     

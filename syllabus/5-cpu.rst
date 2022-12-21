@@ -936,7 +936,18 @@ Sur base de la loi de Moore, on pourrait penser que l'industrie informatique con
    Neumann
    Harvard
    Pentium
-   
+   Fetch
+   Decode
+   Execute
+   intel
+   l'intel
+   hyperthreading
+   coeurs
+   coeur
+   multicoeurs
+   Evolution
+   l'hyperthreading
+   L'hyperthreading
 
 Le minuscule processeur utilise une horloge pour rythmer son fonctionnement. Toutes les instructions qu'il supporte doivent s'exécuter durant un cycle d'horloge, que ce soit l'instruction ``M=A+M`` qui nécessite une lecture en mémoire, une écriture en mémoire et une addition ou l'instruction ``D=0`` qui est nettement plus simple. Cette hypothèse facilite grandement la réalisation du minuscule ordinateur, mais les microprocesseurs réels ont des instructions qui ne prennent pas toutes le même temps. Certaines s'exécutent en un seul cycle d'horloge, comme une addition entre deux registres. D'autres utilisent plusieurs cycles d'horloge voire des dizaines de cycles d'horloge comme des opérations de division ou de multiplication ou des opérations de calcul avec des réels représentés en virgule flottante.
 
