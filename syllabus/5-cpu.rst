@@ -930,7 +930,7 @@ La complexité d'un microprocesseur se mesure d'abord grâce au nombre de transi
 Sur base de la loi de Moore, on pourrait penser que l'industrie informatique continue son évolution sans difficulté depuis les début des années 1970s et qu'il en sera toujours de même. Ce n'est pas tout à fait correct. Il y a certaines contraintes technologiques qui ont un impact sur l'architecture des ordinateurs et l'évolution de leurs performances. L'analyse de cette évolution et des techniques qui permettent d'améliorer les performances des ordinateurs sort du cadre de ce cours introductif. Il y a cependant certains points sur lesquels il est important que vous soyez déjà conscientisés.
 
 
-.. spelling::
+.. spelling:word-list::
 
    von
    Neumann
@@ -985,7 +985,7 @@ La vitesse de l'horloge d'un ordinateur a souvent été présentée, notamment d
     \end{semilogyaxis}
 
     
-.. spelling::
+.. spelling:word-list::
 
    intel
    hyperthreading
@@ -1007,7 +1007,7 @@ La plupart des microprocesseurs actuels utilisent plusieurs coeurs. En voici que
  - l'`AMD Epyc <https://en.wikipedia.org/wiki/Epyc>`_ supporte 32 coeurs
  - l'`Apple A14 Bionic <https://en.wikipedia.org/wiki/Apple_A14>`_, qui équipe les iPhones 12, contient six coeurs de calcul
 
-.. spelling::
+.. spelling:word-list::
 
    AMD
    SPARC
@@ -1024,7 +1024,7 @@ La plupart des microprocesseurs actuels utilisent plusieurs coeurs. En voici que
 A côté du microprocesseur principal, les ordinateurs actuels utilisent des microprocesseurs spécialisés pour certaines opérations. En termes de performances, les applications les plus demandeuses sont souvent les applications graphiques. Les premières cartes graphiques permettaient d'afficher des pixels individuels à l'écran comme nous l'avons fait avec le minuscule ordinateur. Au fil des années, les besoins ont augmenté et les cartes graphiques ont commencé à supporter des instructions qui permettent d'afficher des lignes, des caractères puis des objets 3-D etc. Aujourd'hui les cartes graphiques performantes sont équipées de :term:`GPU` ou Graphics Processing Units. Un GPU peut être vu comme un petit ordinateur spécialisée dans les calculs nécessaires pour afficher des informations à l'écran. Ces GPUs contiennent des dizaines ou des centaines de coeurs qui supportent en langage d'assemblage spécialisé. Ils contiennent parfois autant de mémoire RAM que l'ordinateur dans lequel ils sont installés.
 
 
-.. spelling::
+.. spelling:word-list::
 
    Graphics
    Processing

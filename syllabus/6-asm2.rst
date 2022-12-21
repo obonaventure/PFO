@@ -129,7 +129,7 @@ Il nous faut maintenant pouvoir faire appel à la procédure ``compte()`` après
    @compteur
    M=M+1
 
-.. spelling::
+.. spelling:word-list::
 
    inline
    
@@ -294,7 +294,7 @@ Ces instructions vont recharger la valeur stockée à l'adresse de retour, c'est
 
 Le problème que nous observons est dû au fait qu'en sauvegardant l'adresse de retour dans la procédure ``compte()`` pour supporter l'appel à la procédure ``oppose()``, on écrase l'adresse qui devait permettre à la procédure ``compte()`` de retourner au bon endroit du programme appelant. Pour supporter une procédure qui appelle une autre procédure, nous avons besoin de stocker deux adresses de retour. Mais il est aussi possible qu'une procédure appelle une procédure qui elle-même appelle une autre procédure, ... En toute généralité la succession des appels de procédure n'est pas nécessairement bornée. De plus, une procédure ``p1()`` peut appeler une procédure ``p2()``, mais cette procédure ``p2()`` peut aussi être appelée par la procédure ``p4()`` qui elle-même est une procédure appelée par ``p5()`` qui est appelée par la procédure ``p1()``. Il suffit pour s'en convaincre de regarder le nombre d'appels à des fonctions de type ``print`` qu'un programme peut contenir.
 
-.. spelling::
+.. spelling:word-list::
 
    push
    pop
@@ -460,7 +460,7 @@ Le programme complet est repris ci-dessous. Il est téléchargeable depuis :down
 
 Grâce à cette pile, il est possible d'écrire des programmes qui contiennent un nombre quelconque de procédures qui s'appellent l'une l'autre et dans un ordre quelconque. La pile grandira au fur et à mesure des appels successifs à des procédures et rétrécira chaque fois qu'une procédure se termine. Il est important de noter que pour que ce système fonctionne correctement il est nécessaire que chaque procédure manipule correctement la pile. Si le sommet de la pile se situe à l'adresse ``A`` au début de l'exécution d'une procédure, à la fin de celle-ci la pile doit contenir exactement les mêmes informations. Si une procédure laissait la pile avec un élément en plus ou un élément en moins lorsqu'elle retourne à l'adresse de retour dans le programme appelant, alors le programme complet ne fonctionnerait plus correctement. Pour s'en rendre compte, il suffit de prendre le programme ci-dessous et de l'exécuter après avoir par exemple remplacé une des instructions qui modifie la pile dans les fonctions ``compte`` ou ``oppose``. Il faut être très rigoureux lorsque l'on écrit des programmes en langage assembleur qui manipulent la pile.
 
-.. spelling::
+.. spelling:word-list::
 
    Stack
    overflow

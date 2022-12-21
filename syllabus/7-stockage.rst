@@ -67,9 +67,7 @@ Un fichier est simplement une séquence d'octets qui est identifié par un nom. 
    
 Les systèmes d'exploitation permettent aux logiciels d'accéder aux données qui sont stockées dans les fichiers à l'intérieur des répertoires. Chaque système d'exploitation contient des fonctions qui permettent aux applications d'accéder simplement au contenu des fichiers. A titre d'exemple, python fournit différentes fonctions qui permettent de manipuler les fichiers et répertoires. Avant de pouvoir utiliser un fichier, un programme doit l'ouvrir en utilisant la fonction ``open()``. Lors de l'appel à cette fonction, le système d'exploitation vérifie notamment si le fichier existe et si le programme dispose des permissions nécessaires pour accéder au fichier. Les fonctions les plus connues pour accéder à un tel fichier sont ``read()`` et ``write()``. Ces deux fonctions accèdent au fichier de façon linéaire. Lorsque un programme ouvre un fichier, le système d'exploitation associe à ce fichier ouvert une "tête de lecture". Cette "tête de lecture" est un entier qui indique la position du fichier à laquelle la prochaine opération ``read()`` et ``write()`` sera réalisée. A l'ouverture du fichier, la "tête de lecture" indique le début du fichier (c'est-à-dire la position ``0``). Après avoir lu ``n`` octets, cette "tête de lecture" vaut ``n`` et référence donc le n+1 ième octet du fichier. Si le programme appelle la fonction ``write()`` à ce moment, les données seront écrites à partir du n+1 ième octet. Outre les fonctions ``read()`` et ``write()``, python supporte des fonctions qui permettent de modifier directement la tête de lecture associée à un fichier ouvert. C'est notamment le cas de la fonction ``seek()`` qui permet de déplacer la "tête de lecture" de façon absolue ou relative. Pour la lecture de fichiers contenant du texte, la fonction ``seek()`` est peu utilisée. Par contre, ``seek()`` est très importante pour des logiciels qui doivent manipuler des fichiers contenant des images, des sons ou même des bases de données. Un système de fichier doit pouvoir fournir un support efficace aux applications qui accèdent à des fichiers de façon séquentielle en utilisant ``read()``/``write()`` mais aussi d'autres applications qui combinent ces deux fonctions avec ``seek()`` pour un accès direct aux fichiers. En python, le module ``os`` fournit différentes fonctions qui permettent d'accéder directement aux répertoires comme ``os.scandir()`` par exemple.
 
-.. todo::
-
-   exemples lseek dans un fichier donné
+.. todo exemples lseek dans un fichier donné
 
 .. spelling:word-list::
 
@@ -782,20 +780,6 @@ Nous pouvons maintenant revenir à notre système de fichiers d'exemple. Celui-c
 
    \draw[->,dashed,color=black] (n13.south) -- (sub.north);
 
-.. oldtikz::
-   
-   \draw[*->,color=green] (i10.east) -- (n37.south);
-   \draw[*->,color=yellow] ($ (i3.east) + (-0.2cm,0) $) -- (n30.south);
-   \draw[*->,color=yellow] ($ (i3.east) + (-0.4cm,0) $) -- (n34.south);
-
-   \draw[*->,color=cyan] ($ (i5.east) + (-0.6cm,0) $) -- (n39.south);
-   \draw[*->,color=cyan] ($ (i5.east) + (-0.5cm,0) $) -- (n35.south);
-   \draw[*->,color=cyan] ($ (i5.east) + (-0.4cm,0) $) -- (n36.south);	  
-   \draw[*->,color=cyan] ($ (i5.east) + (-0.3cm,0) $) -- (n33.south);
-   \draw[*->,color=cyan] ($ (i5.east) + (-0.2cm,0) $) -- (n38.south);
-
-   \draw[*->,color=orange] ($ (i6.east) + (-0.2cm,0) $) -- (n31.south);
-   \draw[*->,color=orange] ($ (i6.east) + (-0.4cm,0) $) -- (n32.south);
    
 
 Il nous reste maintenant à expliquer le rôle des deux blocs qui contiennent les bitmaps. Dans un système de fichiers de type `ext2`, il est nécessaire de savoir si un bloc de données est utilisé par un fichier/répertoire ou libre. Il en va de même pour les inodes. Une première solution pour conserver cette information serait de maintenir une liste chaînée avec les numéros des blocs de données libres ou occupés. Malheureusement, une telle liste prendrait de la place sur le dispositif de stockage et pourrait être difficile à manipuler. Une solution plus efficace pour conserver cette information est d'utiliser un `bitmap`. Le bitmap des inodes est une structure de données simple qui utilise un bit pour indiquer si un inode est libre ou occupé. La structure contient autant de bits qu'il n'y a d'inodes dans le système de fichiers. Dans notre système de fichiers d'exemple, nous avons une dizaine d'inodes et 32 blocs. Si l'on s'en réfère à la :numref:`fig-ext2-full`, le bitmap des inodes contiendrait la chaîne de bits suivante, en supposant que ``1`` corresponde à un inode occupé et que le bit de poids fort corresponde à l'inode ``0`` :
@@ -965,7 +949,7 @@ Si le bitmap des blocs est affecté par une erreur, la situation est un peu diff
 
 Les incohérences du système de fichier sont plus complexes. Elles dépendent de l'ordre dans lequel les opérations de modification au système de fichiers sont réalisées et également du moment auquel l'ordinateur est arrêté. Pour récupérer ces incohérences, les logiciels spécialisés procèdent généralement en deux phases. Tout d'abord, ils doivent lire tous les blocs de contrôle (Super Block, FS descriptor, Inode Bitmap, Block Bitmap et Inode Table) du système de fichiers. Ensuite, il faut vérifier la cohérence entre d'abord le bitmap des inodes et l'information lue dans la table des inodes. En cas d'incohérence, ce sont les inodes qui seront considérés comme valides. L'étape suivante est de comparer le bitmap des blocs avec les blocs référencés dans les inodes. La troisième étape sera d'analyser l'arborescence des répertoires et fichiers. Cette structure doit être un arbre et non un graphe contenant des cycles. Si un cycle est détecté, il devra être supprimé généralement avec l'aide de l'utilisateur. En comparant la liste des inodes et les inodes référencés dans les répertoires, il est possible que l'on trouve un ou des inodes qui ne sont pas repris dans l'arborescence. Ces fichiers et répertoires seront recréés avec un nom générique et placé dans le répertoire ``/lost+found``. L'administrateur du système de fichiers pourra consulter le contenu de ces fichiers pour déterminer si ils doivent être conservés ou peuvent être effacés du système de fichiers.
 
-.. spelling::
+.. spelling:word-list::
 
    inode
    inodes
