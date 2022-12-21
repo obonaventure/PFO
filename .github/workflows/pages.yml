@@ -22,9 +22,5 @@ jobs:
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
         submodules: 'true' 
     - name: Build and Commit
-      uses: obonaventure/pages@master
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
+      run: cd syllabus ; sphinx-build  -anWNT --keep-going -b html . /tmp
+
