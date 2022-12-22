@@ -197,21 +197,21 @@ Si l'on suppose que le système de fichiers utilise des blocs de 512 octets, le 
 .. _fig-blocs-fs-1:
 .. tikz:: Blocs contenant les données des fichiers
 
-   \matrix[matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix[matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  \small{2}  & \small{3}  & \small{4} & \small{5}  & \small{6}  & \small{7}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=cyan] (n30)| \small{/b} & |[fill=cyan](n31)| \small{i}  &  |[fill=cyan](n32)| \small{n}  & |[fill=cyan](n33)| \small{/s}  & |[fill=cyan](n34)| \small{h} & |[fill=orange](n35)| \small{/bin/e}  & |[fill=orange](n36)| \small{cho}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=yellow](n38)| \small{f} & |[fill=yellow](n39)| \small{1}  \\
+   |[fill=cyan] (n30)| \small{/b} & |[fill=cyan](n31)| \small{i}  &  |[fill=cyan](n32)| \small{n}  & |[fill=cyan](n33)| \small{/s}  & |[fill=cyan](n34)| \small{h} & |[fill=orange](n35)| \small{/bin/e}  & |[fill=orange](n36)| \small{cho}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=magenta](n38)| \small{f} & |[fill=magenta](n39)| \small{1}  \\
    };
 
 .. _fig-blocs-fs-2:
 .. tikz:: Autre organisation possible des blocs contenant les données des fichiers
 	     
-   \matrix[matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix[matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  \small{2}  & \small{3}  & \small{4} & \small{5}  & \small{6}  & \small{7}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=yellow](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=yellow](n34)| \small{f} & |[fill=cyan](n35)| \small{i}  & |[fill=cyan](n36)| \small{n}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=cyan](n38)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
+   |[fill=magenta](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=magenta](n34)| \small{f} & |[fill=cyan](n35)| \small{i}  & |[fill=cyan](n36)| \small{n}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=cyan](n38)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
    };
 
 .. ajouter d'autres exemples ou questions inginious QCM pour voir si un schéma correspond bien à un FS
@@ -223,18 +223,18 @@ Sur base de ces exemples, on remarque aisément qu'un fichier correspondant à u
 .. _fig-blocs-fs-3:   
 .. tikz:: Liste chaînée et autre organisation des blocs contenant les données des fichiers
 	     
-   \matrix[matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix[matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  \small{2}  & \small{3}  & \small{4} & \small{5}  & \small{6}  & \small{7}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=yellow](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=yellow](n34)| \small{f} & |[fill=cyan](n35)| \small{i}  & |[fill=cyan](n36)| \small{n}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=cyan](n38)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
+   |[fill=magenta](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=magenta](n34)| \small{f} & |[fill=cyan](n35)| \small{i}  & |[fill=cyan](n36)| \small{n}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=cyan](n38)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
    };
    \draw[*->, color=cyan] (n39.south) to [bend left=60]  (n35.250);
    \draw[->, color=cyan] (n35.290) to [bend right=60]  (n36.250);
    \draw[->, color=cyan] (n36.290) to [bend left=60]  (n33.250);
    \draw[->, color=cyan] (n33.290) to [bend right=60]  (n38.250);
    \draw[*->, color=orange] (n31.south) to [bend right=60]  (n32.south);
-   \draw[*->, color=yellow] (n34.south) to [bend left=60]  (n30.south);
+   \draw[*->, color=magenta] (n34.south) to [bend left=60]  (n30.south);
 
 
 
@@ -246,18 +246,18 @@ Le système de fichiers doit stocker les listes ordonnées correspondant à chac
 .. _fig-blocs-fs-4:   
 .. tikz:: Ajout d'une référence vers le bloc suivant dans chaque bloc
 	     
-   \matrix[matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix[matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  \small{2}  & \small{3}  & \small{4} & \small{5}  & \small{6}  & \small{7}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=yellow,text height=0.7cm, text width=1cm](n30)| {\small{1}\\-1} & |[fill=orange,text height=0.7cm, text width=1cm](n31)| {\small{/bin/e}\\32}  &  |[fill=orange,text height=0.7cm, text width=1cm](n32)| {\small{cho}\\-1} & |[fill=cyan,text height=0.7cm, text width=1cm](n33)| {\small{/s}\\38}  & |[fill=yellow,text height=0.7cm, text width=1cm](n34)| {\small{f}\\30} & |[fill=cyan,text height=0.7cm, text width=1cm](n35)| {\small{i}\\36}  & |[fill=cyan,text height=0.7cm, text width=1cm](n36)| {\small{n}\\33}  & |[fill=green,text height=0.7cm, text width=1cm](n37)| {\small{/t\ldots{}le}\\-1}  & |[fill=cyan,text height=0.7cm, text width=1cm](n38)| {\small{h}\\-1} & |[fill=cyan,text height=0.7cm, text width=1cm](n39)| {\small{/b}\\35}  \\
+   |[fill=magenta,text depth=0.7cm, text width=1cm](n30)| {\small{1}\\-1} & |[fill=orange,text depth=0.7cm, text width=1cm](n31)| {\small{/bin/e}\\32}  &  |[fill=orange,text depth=0.7cm, text width=1cm](n32)| {\small{cho}\\-1} & |[fill=cyan,text depth=0.7cm, text width=1cm](n33)| {\small{/s}\\38}  & |[fill=magenta,text depth=0.7cm, text width=1cm](n34)| {\small{f}\\30} & |[fill=cyan,text depth=0.7cm, text width=1cm](n35)| {\small{i}\\36}  & |[fill=cyan,text depth=0.7cm, text width=1cm](n36)| {\small{n}\\33}  & |[fill=green,text depth=0.7cm, text width=1cm](n37)| {\small{/t\ldots{}le}\\-1}  & |[fill=cyan,text depth=0.7cm, text width=1cm](n38)| {\small{h}\\-1} & |[fill=cyan,text depth=0.7cm, text width=1cm](n39)| {\small{/b}\\35}  \\
    };
    \draw[*->, color=cyan] (n39.south) to [bend left=45]  (n35.250);
    \draw[->, color=cyan] (n35.290) to [bend right=45]  (n36.250);
    \draw[->, color=cyan] (n36.290) to [bend left=45]  (n33.250);
    \draw[->, color=cyan] (n33.290) to [bend right=45]  (n38.250);
    \draw[*->, color=orange] (n31.south) to [bend right=60]  (n32.south);
-   \draw[*->, color=yellow] (n34.south) to [bend left=45]  (n30.south);
+   \draw[*->, color=magenta] (n34.south) to [bend left=45]  (n30.south);
 
 
 Malheureusement, cette approche souffre de plusieurs problèmes. Tout d'abord, elle réduit la taille des blocs. Un bloc contient :math:`k` octets de moins où :math:`k` est le nombre d'octets nécessaire pour encoder un numéro de blocs (typiquement 4 pour un disque dur). De plus, en stockant la liste chaînée directement dans les blocs, on force le système de fichiers à lire tous les blocs qui composent un fichier pour pouvoir y faire des accès directs. Considérons un fichier qui est édité par l'utilisateur ou créé par un programme. Lorsque la taille de ce fichier grandit, le système de fichiers doit allouer un nouveau bloc au fichier et l'ajouter à la liste chaînée. Si le fichier rétrécit suite à une opération d'édition, le système de fichiers va devoir "remonter" la liste chaînée pour retrouver les blocs à retirer. Cela peut nécessiter de reparcourir tout le fichier depuis son premier bloc ce qui sera coûteux en nombre d'accès au dispositif de stockage. Sur des dispositifs lents comme des disques souples ou durs, cela peut avoir un impact très important au niveau des performances. Pour ces raisons, les systèmes de fichiers ont choisi d'autres astuces pour stocker les listes chaînées qui représentent les différents fichiers et répertoires.
@@ -270,14 +270,14 @@ La table d'allocation des fichiers (File Allocation Table - FAT en anglais) est 
 .. _fig-fs-fat:
 .. tikz:: Les listes chaînées correspondant à des fichiers peuvent être stockées dans une table d'allocation
 
-   \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  \small{2}  & \small{3}  & \small{4} & \small{5}  & \small{6}  & \small{7}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=yellow](n30a)| \small{1} & |[fill=orange](n31a)| \small{/bin/e}  &  |[fill=orange](n32a)| \small{cho}  & |[fill=cyan](n33a)| \small{/s}  & |[fill=yellow](n34a)| \small{f} & |[fill=cyan](n35a)| \small{i}  & |[fill=cyan](n36a)| \small{n}  & |[fill=green](n37a)| \small{/t\ldots{}le}  & |[fill=cyan](n38a)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
+   |[fill=magenta](n30a)| \small{1} & |[fill=orange](n31a)| \small{/bin/e}  &  |[fill=orange](n32a)| \small{cho}  & |[fill=cyan](n33a)| \small{/s}  & |[fill=magenta](n34a)| \small{f} & |[fill=cyan](n35a)| \small{i}  & |[fill=cyan](n36a)| \small{n}  & |[fill=green](n37a)| \small{/t\ldots{}le}  & |[fill=cyan](n38a)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
    };
 
-   \matrix(fat) [below =of n30a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fat) [below =of n30a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    \textbf{index} & \textbf{next bloc} \\
    ... & \\
    \tiny{$30$} & |[draw](n30)| \small{-1} \\
@@ -296,7 +296,7 @@ La table d'allocation des fichiers (File Allocation Table - FAT en anglais) est 
    \draw[->, color=cyan] (n36.340) to [bend right=45]  (n33.20);
    \draw[->, color=cyan] (n33.340) to [bend left=45]  (n38.20);
    \draw[*->, color=orange] (n31.east) to [bend left=60]  (n32.east);
-   \draw[*->, color=yellow] (n34.east) to [bend right=45]  (n30.east);
+   \draw[*->, color=magenta] (n34.east) to [bend right=45]  (n30.east);
 
    
 Cette table d'allocation représente de façon compacte l'ensemble des listes chaînées qui correspondent à nos quatre fichiers. La :numref:`fig-fs-fat` représente à la fois l'index des lignes de la table et le numéro du bloc stocké à chaque ligne. Cette table indique pour le bloc d'index ``i`` le numéro du bloc qui le suit dans le fichier auquel il appartient. La valeur de ``-1`` est réservée pour indiquer qu'un bloc est le dernier bloc d'un fichier. On pourrait aussi réserver d'autres valeurs comme par exemple ``-2`` pour indiquer que le bloc n'est actuellement pas utilisé pour stocker des données ou un répertoire ou ``-3`` pour indiquer que le bloc a été marqué comme invalide par le dispositif de stockage et qu'il ne doit donc jamais être utilisé.
@@ -425,14 +425,14 @@ Grâce aux champs ``FAT`` qui se trouvent dans les répertoires, nous avons cons
 .. tikz:: Le système de fichiers complet et sa table d'allocation des fichiers. La FAT occupe les blocs 2 à 9. Les répertoires sont dans les blocs 10 à 15. Les fichiers occupent les blocs 30 à 39.
 
 
-   \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  |[fill=magenta](n2)|\small{2}  & |[fill=magenta](n3)| \small{3}  & |[fill=magenta](n4)| \small{4} & |[fill=magenta](n5)| \small{5}  & |[fill=magenta](n6)| \small{6}  & |[fill=magenta](n7)| \small{7}  & |[fill=magenta](n8)| \small{8} & |[fill=magenta](n9)| \small{9}  \\
    |[fill=gray]| \small{10} & |[fill=gray]|\small{11}  &  |[fill=gray]|\small{12}  & |[fill=gray]| \small{13}  & |[fill=gray]| \small{14} & |[fill=gray]| \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=yellow](n30a)| \small{1} & |[fill=orange](n31a)| \small{/bin/e}  &  |[fill=orange](n32a)| \small{cho}  & |[fill=cyan](n33a)| \small{/s}  & |[fill=yellow](n34a)| \small{f} & |[fill=cyan](n35a)| \small{i}  & |[fill=cyan](n36a)| \small{n}  & |[fill=green](n37a)| \small{/t\ldots{}le}  & |[fill=cyan](n38a)| \small{h} & |[fill=cyan](n39a)| \small{/b}  \\
+   |[fill=magenta](n30a)| \small{1} & |[fill=orange](n31a)| \small{/bin/e}  &  |[fill=orange](n32a)| \small{cho}  & |[fill=cyan](n33a)| \small{/s}  & |[fill=magenta](n34a)| \small{f} & |[fill=cyan](n35a)| \small{i}  & |[fill=cyan](n36a)| \small{n}  & |[fill=green](n37a)| \small{/t\ldots{}le}  & |[fill=cyan](n38a)| \small{h} & |[fill=cyan](n39a)| \small{/b}  \\
    };
 
-   \matrix(fat1) [below =of n30a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fat1) [below =of n30a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    \textbf{index} & \textbf{next bloc} \\
    ... & \\
    \tiny{$10$} & |[draw](n10)| \small{-1} \\
@@ -446,7 +446,7 @@ Grâce aux champs ``FAT`` qui se trouvent dans les répertoires, nous avons cons
    \tiny{$18$} & |[draw](n18)| \small{-1} \\
    \tiny{$19$} & |[draw](n19)| \small{-1} \\
    };
-   \matrix(fat2) [below =of n33a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fat2) [below =of n33a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    \tiny{$20$} & |[draw](n20)| \small{-1} \\
    \tiny{$21$} & |[draw](n21)| \small{-1} \\
    \tiny{$22$} & |[draw](n22)| \small{-1} \\
@@ -458,7 +458,7 @@ Grâce aux champs ``FAT`` qui se trouvent dans les répertoires, nous avons cons
    \tiny{$28$} & |[draw](n28)| \small{-1} \\
    \tiny{$29$} & |[draw](n29)| \small{-1} \\
    };
-   \matrix(fat3) [below =of n35a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fat3) [below =of n35a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    \tiny{$30$} & |[draw](n30)| \small{-1} \\
    \tiny{$31$} & |[draw](n31)| \small{32} \\
    \tiny{$32$} & |[draw](n32)| \small{-1} \\
@@ -475,7 +475,7 @@ Grâce aux champs ``FAT`` qui se trouvent dans les répertoires, nous avons cons
    \draw[->, color=cyan] (n36.340) to [bend right=45]  (n33.340);
    \draw[->, color=cyan] (n33.20) to [bend left=45]  (n38.east);
    \draw[*->, color=orange] (n31.east) to [bend left=60]  (n32.east);
-   \draw[*->, color=yellow] (n34.east) to [bend right=45]  (n30.east);
+   \draw[*->, color=magenta] (n34.east) to [bend right=45]  (n30.east);
 
 
 .. note:: Vérification d'un système de fichiers corrompu
@@ -523,27 +523,27 @@ Un `inode` est une zone du dispositif de stockage qui contient la liste des bloc
 .. _fig-inode-basic:
 .. tikz:: Les inodes stockent les listes chaînées correspondant à chaque fichier 
 
-   \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{0} & |[fill=red](n1)| \small{1}  &  \small{2}  & \small{3}  & \small{4} & \small{5}  & \small{6}  & \small{7}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
-   |[fill=yellow](n30a)| \small{1} & |[fill=orange](n31a)| \small{/bin/e}  &  |[fill=orange](n32a)| \small{cho}  & |[fill=cyan](n33a)| \small{/s}  & |[fill=yellow](n34a)| \small{f}\
+   |[fill=magenta](n30a)| \small{1} & |[fill=orange](n31a)| \small{/bin/e}  &  |[fill=orange](n32a)| \small{cho}  & |[fill=cyan](n33a)| \small{/s}  & |[fill=magenta](n34a)| \small{f}\
    & |[fill=cyan](n35a)| \small{i}  & |[fill=cyan](n36a)| \small{n}  & |[fill=green](n37a)| \small{/t\ldots{}le}  & |[fill=cyan](n38a)| \small{h} & |[fill=cyan](n39a)| \small{/b}  \\
    };
 
-   \matrix(inode1) [below =of n30a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(inode1) [below =of n30a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    \textbf{f1} \\
    |[draw](inode11)| \small{34} \\
    |[draw](inode12)| \small{30} \\
     };   
 
-   \matrix(inode2) [below =of n32a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(inode2) [below =of n32a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    \textbf{/bin/echo} \\
   |[draw](inode21)| \small{31} \\
   |[draw](inode22)| \small{32} \\
     };  
     
-  \matrix(inode3) [below =of n34a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+  \matrix(inode3) [below =of n34a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
   \textbf{/bin/sh}\\
   |[draw](inode31)| \small{39} \\
   |[draw](inode32)| \small{35} \\
@@ -551,7 +551,7 @@ Un `inode` est une zone du dispositif de stockage qui contient la liste des bloc
   |[draw](inode34)| \small{33} \\
   |[draw](inode35)| \small{38} \\
     };  
-  \matrix(inode4) [below =of n36a, matrix of nodes, nodes={text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+  \matrix(inode4) [below =of n36a, matrix of nodes, nodes={text depth=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
   \textbf{/tmp/rep/sub/file} \\
   |[draw](inode41)| \small{37} \\
     };
@@ -567,8 +567,8 @@ Un `inode` est une zone du dispositif de stockage qui contient la liste des bloc
   \draw[->, color=orange] (inode21.west) to [bend left=60]  (n31a.south);
   \draw[->, color=orange] (inode22.east) to [bend left=60]  (n32a.south);
 
-  \draw[->, color=yellow] (inode11.east) to [bend right=45]  (n34a.south);
-  \draw[->, color=yellow] (inode12.west) to [bend left=45]  (n30a.south);  
+  \draw[->, color=magenta] (inode11.east) to [bend right=45]  (n34a.south);
+  \draw[->, color=magenta] (inode12.west) to [bend left=45]  (n30a.south);  
   
   \draw[->, color=green] (inode41) to [bend right=45]  (n37a.south);  
 
@@ -580,7 +580,7 @@ Un système de fichiers `ext2` est composé d'une suite de blocs. Les premiers b
 .. _fig-ext2-controle:
 .. tikz:: Un système de fichiers `ext2` contient un superblock, un FS descriptor, un bitmap des blocks, un bitmap des inodes, une table des inodes et des blocs de données
 
-   \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
+   \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.8cm, text width=1.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M){
    |[fill=red](n0)| \small{Super} & |[fill=red](n1)| \small{FS}  &  |[fill=red](n2)|\small{Block}  & |[fill=red](n3)|\small{Bitmap}  & |[fill=red](n4)|\small{Inode} & |[fill=red](n5)|\small{Bitmap}  & |[fill=red](n6)|\small{Inode}  & |[fill=red](n7)|\small{Table}  & \small{8} & \small{9}  \\
    \small{10} & \small{11}  &  \small{12}  & \small{13}  & \small{14} & \small{15}  & \small{16}  & \small{17}  & \small{18} & \small{19}  \\
    \small{20} & \small{21}  &  \small{22}  & \small{23}  & \small{24} & \small{25}  & \small{26}  & \small{27}  & \small{28} & \small{29}  \\
@@ -664,7 +664,7 @@ Les concepteurs des systèmes de fichiers qui utilisent des inodes sont confront
 .. _fig-inode-indirect:
 .. tikz:: Un inode référençant un fichier de 16 blocs via un bloc indirect
    
-   \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (3,3){
+   \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.8cm, text width=1.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (3,3){
    |[fill=red](n0)| \small{Super} & |[fill=red](n1)| \small{FS}  &  |[fill=red](n2)|\small{Block}  & |[fill=red](n3)|\small{Bitmap}  & |[fill=red](n4)|\small{Inode} & |[fill=red](n5)|\small{Bitmap}  & |[fill=red](n6)|\small{Inode}  & |[fill=red](n7)|\small{Table}  & \small{8} & \small{9}  \\
    |(n10)| \small{10} & |(n11)| \small{11}  & |(n12)| \small{12}  & |(n13)| \small{13}  & |(n14)| \small{14} & |(n15)| \small{15}  & |(n16)| \small{16}  & |(n17)| \small{17}  & |(n18)| \small{18} & |(n19)| \small{19}  \\
    |(n20)| \small{20} & |[fill=pink](n21)| \small{21}  & |[fill=pink](n22)| \small{22}  & |[fill=pink](n23)| \small{23}  & |[fill=pink](n24)| \small{24} & |[fill=pink](n25)| \small{25}  & |[fill=pink](n26)| \small{26}  & |[fill=pink](n27)| \small{27}  & |[fill=pink](n28)| \small{28} & |[fill=pink](n29)| \small{29}  \\
@@ -672,7 +672,7 @@ Les concepteurs des systèmes de fichiers qui utilisent des inodes sont confront
    };
 
 
-   \node [matrix of nodes, nodes={draw,text height=0.4cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (-6,0) {
+   \node [matrix of nodes, nodes={draw,text depth=0.4cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (-6,0) {
    \small{\textbf{inode}} \\
    |(mode)| \small{mode}\\
    |(user)| \small{user}\\
@@ -713,20 +713,20 @@ Nous pouvons maintenant revenir à notre système de fichiers d'exemple. Celui-c
 .. _fig-ext2-full:
 .. tikz:: Notre système de fichiers d'exemple en format `ext2`
 
-   \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (3,3) {
+   \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.8cm, text width=1.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (3,3) {
    |[fill=red](n0)| \small{Super} & |[fill=red](n1)| \small{FS}  &  |[fill=red](n2)|\small{Block}  & |[fill=red](n3)|\small{Bitmap}  & |[fill=red](n4)|\small{Inode} & |[fill=red](n5)|\small{Bitmap}  & |[fill=red](n6)|\small{Inode}  & |[fill=red](n7)|\small{Table}  & |[fill=gray](n8)| \small{8} & |[fill=gray](n9)| \small{9}  \\
    |[fill=gray](n10)| \small{10} & |[fill=gray](n11)|\small{11}  & |[fill=gray](n12)| \small{12}  & |[fill=gray](n13)|\small{13}  & |(n14)|\small{14} & |(n15)| \small{15}  & |(n16)|\small{16}  & |(n17)|\small{17}  & |(n18)|\small{18} & |(n19)| \small{19}  \\
    |(n20)| \small{20} & |(n21)|\small{21}  & |(n22)| \small{22}  & |(n23)|\small{23}  & |(n24)|\small{24} & |(n25)| \small{25}  & |(n26)|\small{26}  & |(n27)|\small{27}  & |(n28)|\small{28} & |(n29)| \small{29}  \\
-   |[fill=yellow](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=yellow](n34)| \small{f}\
+   |[fill=magenta](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=magenta](n34)| \small{f}\
    & |[fill=cyan](n35)| \small{i}  & |[fill=cyan](n36)| \small{n}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=cyan](n38)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
    };
 
-   \node [matrix of nodes, nodes={draw,text height=0.4cm, text width=2.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (-6.5,0) {
+   \node [matrix of nodes, nodes={draw,text depth=0.4cm, text width=2.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (-6.5,0) {
    |(itable)|\small{\textbf{inode table}} \\
    |(i0)| \small{0:}\textcolor{red}{8}\\
    |(i1)| \small{1:}\textcolor{red}{9}\\
    |(i2)|\small{2:}\textcolor{red}{10}\\
-   |(i3)| \small{3:}\textcolor{yellow}{34,30}\\
+   |(i3)| \small{3:}\textcolor{magenta}{34,30}\\
    |(i4)| \small{4:}\textcolor{red}{11} \\
    |(i5)| \small{5:}\textcolor{cyan}{39,35,36,33,38}\\
    |(i6)| \small{6:}\textcolor{orange}{31,32}\\
@@ -876,20 +876,20 @@ Les opérations de création de fichier sont les plus complexes. Pour créer un 
   .. _fig-ext2-full-bis:
   .. tikz:: Notre système de fichiers d'exemple en format `ext2` avec deux liens pour le fichier ``echo``
 
-     \matrix(fs) [matrix of nodes, nodes={draw,text height=0.7cm, text width=1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (3,3) {
+     \matrix(fs) [matrix of nodes, nodes={draw,text depth=0.8cm, text width=1.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (3,3) {
      |[fill=red](n0)| \small{Super} & |[fill=red](n1)| \small{FS}  &  |[fill=red](n2)|\small{Block}  & |[fill=red](n3)|\small{Bitmap}  & |[fill=red](n4)|\small{Inode} & |[fill=red](n5)|\small{Bitmap}  & |[fill=red](n6)|\small{Inode}  & |[fill=red](n7)|\small{Table}  & |[fill=gray](n8)| \small{8} & |[fill=gray](n9)| \small{9}  \\
      |[fill=gray](n10)| \small{10} & |[fill=gray](n11)|\small{11}  & |[fill=gray](n12)| \small{12}  & |[fill=gray](n13)|\small{13}  & |(n14)|\small{14} & |(n15)| \small{15}  & |(n16)|\small{16}  & |(n17)|\small{17}  & |(n18)|\small{18} & |(n19)| \small{19}  \\
      |(n20)| \small{20} & |(n21)|\small{21}  & |(n22)| \small{22}  & |(n23)|\small{23}  & |(n24)|\small{24} & |(n25)| \small{25}  & |(n26)|\small{26}  & |(n27)|\small{27}  & |(n28)|\small{28} & |(n29)| \small{29}  \\
-     |[fill=yellow](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=yellow](n34)| \small{f}\
+     |[fill=magenta](n30)| \small{1} & |[fill=orange](n31)| \small{/bin/e}  &  |[fill=orange](n32)| \small{cho}  & |[fill=cyan](n33)| \small{/s}  & |[fill=magenta](n34)| \small{f}\
      & |[fill=cyan](n35)| \small{i}  & |[fill=cyan](n36)| \small{n}  & |[fill=green](n37)| \small{/t\ldots{}le}  & |[fill=cyan](n38)| \small{h} & |[fill=cyan](n39)| \small{/b}  \\
      };
 
-     \node [matrix of nodes, nodes={draw,text height=0.4cm, text width=2.1cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (-6.5,0) {
+     \node [matrix of nodes, nodes={draw,text depth=0.4cm, text width=2.3cm}, nodes in empty cells,column sep=-\pgflinewidth,row sep=-\pgflinewidth](M) at (-6.5,0) {
      |(itable)|\small{\textbf{inode table}} \\
      |(i0)| \small{0:}\textcolor{red}{8}\\
      |(i1)| \small{1:}\textcolor{red}{9}\\
      |(i2)|\small{2:}\textcolor{red}{10}\\
-     |(i3)| \small{3:}\textcolor{yellow}{34,30}\\
+     |(i3)| \small{3:}\textcolor{magenta}{34,30}\\
      |(i4)| \small{4:}\textcolor{red}{11} \\
      |(i5)| \small{5:}\textcolor{cyan}{39,35,36,33,38}\\
      |(i6)| \small{6\textbf{[ln=3]}:}\textcolor{orange}{31,32}\\
