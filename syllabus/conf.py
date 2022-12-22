@@ -136,5 +136,5 @@ html_context = {
   'github_user': 'obonaventure',
   'github_repo': 'PFO',
   'github_version': 'master',
-  'conf_py_path': '/'
+  'conf_py_path': '/syllabus/'
 }

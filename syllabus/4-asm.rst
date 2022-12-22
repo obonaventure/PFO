@@ -49,7 +49,7 @@ Une autre différence entre le minuscule ordinateur et un ordinateur actuel est 
 
 Outre ces deux mémoires, notre minuscule processeur dispose de deux registres :
 
- - le premier, baptisé ``D`` est utilisé pour stocker un mot de 16 bits qui est lu depuis la mémoire ou résulte d'un calcul réalisé par l'ALU. Son nom réflète le fait qu'il stocke des données (Data en anglais)
+ - le premier, baptisé ``D`` est utilisé pour stocker un mot de 16 bits qui est lu depuis la mémoire ou résulte d'un calcul réalisé par l'ALU. Son nom reflète le fait qu'il stocke des données (Data en anglais)
  - le second, baptisé ``A``. Il a un double rôle. Tout d'abord, va il servir à stocker une donnée sur 16 bits comme le registre ``D``. Son deuxième rôle est de contenir une adresse dans la mémoire de données pour permettre le chargement d'une donnée depuis cette mémoire. C'est pour cette raison qu'il est appelé le registre ``A`` (comme adresse).
 
 
