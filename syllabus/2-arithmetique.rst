@@ -761,7 +761,7 @@ Enfin, pour implémenter l'opération `OR` en utilisant l'ALU, on se souviendra 
 Compléments d'arithmétique
 ==========================
 
-Avant d'aborder d'autres opérations arithmétiques que l'addition et la division, il est intéressant de voir comment python supportent les nombres en notation binaire. Python supporte à la fois les conversions de décimal en binaire et vice-versa ainsi que les fonctions booléennes.
+Avant d'aborder d'autres opérations arithmétiques que l'addition et la soustraction, il est intéressant de voir comment python supportent les nombres en notation binaire. Python supporte à la fois les conversions de décimal en binaire et vice-versa ainsi que les fonctions booléennes.
 
 En python, on peut facilement entrer un nombre en représentation binaire en le préfixant par `0b` et l'inverse avec la fonction `bin` comme dans l'exemple ci-dessous.
 
@@ -787,7 +787,7 @@ Multiplication des naturels
 
 Dans le chapitre précédent, nous avons vu les opérations de base qui sont l'addition et la soustraction. Pour supporter la multiplication, nous pourrions construire une table de vérité et utiliser des portes `AND`, `OR` et `NOT`. Malheureusement, ce serait assez fastidieux pour supporter une multiplication sur 32 bits. Nous allons travailler comme pour l'addition, c'est-à-dire essayer de séparer la multiplication en une suite de calculs simples. Pour l'addition, nous avions pu travailler sur des opérations sur un bit. Malheureusement nous ne pourrons pas faire de même pour la multiplication. Par contre, il est assez facile de se rendre compte qu'une multiplication est une série d'additions. Comme nous savons déjà comment construire ces additions, nous allons pouvoir nous appuyer sur elles pour construire des circuits permettant de multiplier deux nombres entiers.
 
-L'opération de multiplication :math:`a \times b` prend deux arguments. Le premier, :math:`a` est appelé le multiplicateur. Le second, :math:`b` est appelé le multiplicande. Le résultat de la multiplication est appelé le produit. La multiplication se définit sur base de l'addition :
+L'opération de multiplication :math:`a \times b` prend deux arguments. Le premier, :math:`a` est appelé le multiplicande. Le second, :math:`b` est appelé le multiplicateur. Le résultat de la multiplication est appelé le produit. La multiplication se définit sur base de l'addition :
 
     :math:`a \times b = \overbrace{b + b + ... + b}^{a~fois}`
 
@@ -909,7 +909,7 @@ _________
 
    Le langage python ne souffre pas de ce problème car ce langage utilise un nombre variable de bits pour stocker les nombres entiers. Il ajuste le nombre de bits nécessaire en fonction du nombre à stocker. On peut observer ce comportement en utilisant la fonction `sys.getsizeof <https://docs.python.org/3/library/sys.html#sys.getsizeof>`_ du module `sys <https://docs.python.org/3/library/sys.html>`_. Cette fonction retourne la zone mémoire occupée par un type primitif ou un objet en python.
 
-   Grâce à cette fonction, on peut observer qu'un programme python utilise `28` octets pour stocker un entier mais que la zone mémoire nécessaire augmente avec la valeur de cet entier. Au-delà de :math:`2^{30}`, un entier occupe 32 bytes en python et la représentation du nombre :math:`2^{900}` nécessite `148` octets en mémoire.
+   Grâce à cette fonction, on peut observer qu'un programme python utilise `28` octets pour stocker un entier mais que la zone mémoire nécessaire augmente avec la valeur de cet entier. Au-delà de :math:`2^{30}`, un entier occupe 32 bytes en python et la représentation du nombre :math:`2^{900}` nécessite `148` octets en mémoire (bytes = octets).
 
    Cette adaptation dynamique de la taille des entiers dans python permet de réaliser des calculs exacts avec les nombres entiers, quel que soit le nombre considéré. Tous les langages de programmation ne sont pas aussi précis. Vous verrez l'an prochain qu'en :index:`Java` et en :index:`C` par exemple les entiers sont stockés sur un nombre fixe de bits, ce qui vous posera différents problèmes liés à des dépassements de capacité.
 
@@ -1217,7 +1217,7 @@ Toutes les opérations arithmétiques peuvent être réalisées avec la notation
 
 La première étape pour réaliser cette addition est de ramener les deux nombres à la même puissance de dix. Nous devons donc ramener :math:`2.789 \times 10^{-1}` sous la forme :math:`x \times 10^{2}`. Notre addition est donc :math:`9.998 \times 10^2 + 0.003 \times 10^{2}` où :math:`0.003 \times 10^{2}` est l'arrondi de :math:`2.789 \times 10^{-1}`. Cette opération a provoqué une première perte de précision.
 
-Nous pouvons maintenant additionner les mantisses de nos deux nombres: :math:`9.998 + 0.003 = 10.001`. Le résultat de notre addition est :math:`10.001 \times 10^{2}`, soit :math:`1.0001 \times 10^{3}`. Malheureusement, ce résultat contient cinq chiffres décimaux alors que notre représentation ne permet qu'en stocker 4. Nous devons donc à nouveau arrondir la mantisse. Le résultat final de notre addition en virgule flottante :math:`9.998 \times 10^2 + 1.789 \times 10^{-2} = 1.000 \times 10^{3}`. Le résultat obtenu par ce calcul est à comparer au résultat exact: :math:`1000.0789`.
+Nous pouvons maintenant additionner les mantisses de nos deux nombres: :math:`9.998 + 0.003 = 10.001`. Le résultat de notre addition est :math:`10.001 \times 10^{2}`, soit :math:`1.0001 \times 10^{3}`. Malheureusement, ce résultat contient cinq chiffres décimaux alors que notre représentation ne permet qu'en stocker 4. Nous devons donc à nouveau arrondir la mantisse. Le résultat final de notre addition en virgule flottante :math:`9.998 \times 10^2 + 2.789 \times 10^{-1} = 1.000 \times 10^{3}`. Le résultat obtenu par ce calcul est à comparer au résultat exact: :math:`1000.0789`.
 
 En pratique, l'ordinateur utilisera la représentation binaire des nombres pour réaliser les opérations mathématiques, mais des problèmes similaires vont se poser: la mantisse et l'exposant contiennent chacun un nombre finis de bits. A chaque étape d'un calcul, il faut potentiellement réaliser un arrondi pour que le résultat tienne dans la représentation en virgule flottante choisie. En simple précision, sachant que l'on utilise des nombres encodés sur 32 bits, on peut représenter au maximum :math:`2^{32} = 4294967296` réels différents. Vu la façon dont séquences de bits sont encodées, on remarque aisément que la moitié de ces nombres sont dans l'intervalle :math:`[-1,1]` et l'autre moitié sert à représenter des réels dont la valeur absolue est comprise entre :math:`1` et :math:`2^{127}`. Dans cet intervalle, nous ne pouvons représenter que :math:`2^{30}` réels différents parmi l'infinité de réels qui existent.  
 
