@@ -11,22 +11,28 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    :caption: Table des matières
 
    introduction   
+
+   01-info-asm
+   02-if-loop
+   
+   4-asm
+
+   6-asm2
+
+   
    1-logique
 
    2-arithmetique
       
    3-memoire
 
-   4-asm
 
    5-cpu
    
-   6-asm2
 
    7-stockage
 
-   projets
-   
+      
    glossary
 
 Indices et tables
