@@ -1,0 +1,893 @@
+.. include:: defs.rst
+
+
+
+
+Représentation de l'information
+===============================	     
+
+Représentation binaire de l'information 
+---------------------------------------
+
+Dans un ordinateur, toutes les informations peuvent être stockées sous la forme d'une séquence de bits. La longueur de la séquence est fonction de la quantité d'information à stocker. Notre premier exemple concerne les caractères. Il est important de pouvoir représenter les différents caractères des langues écrites de façon compacte et non-ambiguë pour pouvoir stocker et manipuler du texte sur un ordinateur. Le principe est très simple. Il suffit de construire une table qui met en correspondance une séquence de bits et le caractère qu'elle représente. 
+
+Parmi les tables d'encodage des caractères les plus simples, la plus connue est certainement la table US-ASCII dont la définition est notamment reprise dans :rfc:`20`. Cette table associe une séquence de 7 bits (`b7` à `b1`) à un caractère particulier. Pour des raisons historiques, certains de ces caractères sont des caractères dits "de contrôle" qui ne sont pas imprimables. Ils permettaient de contrôler le fonctionnement de terminaux ou d'imprimantes. Par exemple, les caractères `CR` et/ou `LF` correspondent au retour de charriot et au passage à la ligne sur un écran ou une imprimante.  
+
+
+
+   .. code-block:: console 
+      :name: table-ascii 
+      :caption: Table des caractères ASCII 
+                
+      |----------------------------------------------------------------------|
+        B  \ b7 ------------>| 0   | 0   | 0   | 0   | 1   | 1   | 1   | 1   |
+         I  \  b6 ---------->| 0   | 0   | 1   | 1   | 0   | 0   | 1   | 1   |
+          T  \   b5 -------->| 0   | 1   | 0   | 1   | 0   | 1   | 0   | 1   |
+           S                 |-----------------------------------------------|
+                     COLUMN->| 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   |
+      |b4 |b3 |b2 |b1 | ROW  |     |     |     |     |     |     |     |     |
+      +----------------------+-----------------------------------------------+
+      | 0 | 0 | 0 | 0 | 0    | NUL | DLE | SP  | 0   | @   | P   |   ` |   p |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 0 | 0 | 1 | 1    | SOH | DC1 | !   | 1   | A   | Q   |   a |   q |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 0 | 1 | 0 | 2    | STX | DC2 | "   | 2   | B   | R   |   b |   r |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 0 | 1 | 1 | 3    | ETX | DC3 | #   | 3   | C   | S   |   c |   s |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 0 | 0 | 4    | EOT | DC4 | $   | 4   | D   | T   |  d  |   t |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 0 | 1 | 5    | ENQ | NAK | %   | 5   | E   | U   |  e  |   u |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 1 | 0 | 6    | ACK | SYN | &   | 6   | F   | V   |  f  |   v |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 0 | 1 | 1 | 1 | 7    | BEL | ETB | '   | 7   | G   | W   |  g  |   w |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 0 | 0 | 8    | BS  | CAN | (   | 8   | H   | X   |  h  |   x |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 0 | 1 | 9    | HT  | EM  | )   | 9   | I   | Y   |  i  |   y |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 1 | 0 | 10   | LF  | SUB | *   | :   | J   | Z   |  j  |   z |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 0 | 1 | 1 | 11   | VT  | ESC | +   |  ;  | K   | [   |  k  |   { |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 0 | 0 | 12   | FF  | FS  | ,   | <   | L   | \   |  l  |   | |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 0 | 1 | 13   | CR  | GS  | -   | =   | M   | ]   |  m  |   } |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 1 | 0 | 14   | SO  | RS  | .   | >   | N   | ^   |  n  |   ~ |
+      |---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|
+      | 1 | 1 | 1 | 1 | 15   | SI  | US  | /   | ?   | O   | _   |  o  | DEL |
+      +----------------------+-----------------------------------------------+
+
+   
+   
+La table US-ASCII (:numref:`table-ascii`) définit les représentations binaires suivantes: 
+
+ - `01100000` correspond au caractère représentant le chiffre `0`
+ - `01101001` correspond au caractère représentant le chiffre `9`
+ - `10000011` correspond au caractère représentant la lettre `A` (majuscule)  
+ - `01000000` correspond au caractère représentant un espace 
+
+Cette table avait l'inconvénient majeur de ne contenir que les représentations des caractères non-accentués de l'alphabet latin. Elle permet d'écrire du texte en anglais et dans d'autres langues européennes qui utilisent peu d'accents, mais ne permet évidemment pas de représenter tous les caractères des langues écrites sur notre planète. Au fil des années, ce problème a été résolu avec d'autres tables de correspondance dont celles qui sont adaptées aux accents utilisés par les langues européennes. Aujourd'hui, l'encodage standard des caractères se fait en utilisant le format `Unicode <https://home.unicode.org>`_. Une description détaillée d'Unicode sort du cadre de ce cours d'introduction, mais sachez qu'en mars 2020, la version 13.0 d'Unicode permettait de représenter 143859 caractères différents correspondant à 154 formes d'écritures. Unicode permet de représenter quasiment toutes les langues écrites connues sur notre planète. Des chercheurs ont même proposé un format Unicode permettant de supporter le Klingon, c'est-à-dire la langue écrite inventée pour la série de films Star Trek. 
+
+.. ajouter un graphique avec des statistiques issues de https://en.wikipedia.org/wiki/Unicode pour montrer l'évolution dans le temps 
+
+Avoir une représentation binaire pour les caractères permet de les stocker en mémoire, sur disque ou de les transmettre à travers un réseau. C'est important, mais il faut aussi pouvoir permettre à un humain de lire des textes produits par un ordinateur, que ce soit sur papier ou écran. Il existe de très nombreuses solutions qui permettent d'afficher ou d'imprimer des caractères. Dans ce cours d'introduction, nous nous contentons d'une solution très simple qui fonctionne en noir et blanc. Nous pourrons ajouter les couleurs lorsque nous aurons vu comment représenter des nombres dans le chapitre suivant. 
+
+Un écran et une imprimante permettent d'afficher des points à n'importe quelle position. On peut aisément se représenter un écran comme un rectangle composé de pixels. Chacun des points de cet écran est identifié par une abscisse et une ordonnée qui sont toutes les deux entières. Ainsi, un écran 1024x768 peut afficher 1024 points selon l'axe des x et 768 points selon l'axe des y. 
+
+Sur un tel écran, on peut facilement afficher des caractères. Il suffit d'avoir pour chaque caractère une table qui contient la représentation graphique de chacun des caractère à afficher sous la forme de pixels. A titre d'exemple, supposons que l'on veut afficher chaque caractère dans un carré de 8x8 pixels. Dans ce cas, on peut stocker la représentation graphique d'un caractère en noir en blanc sous la forme d'une suite de 8 bytes. Par exemple, les huit octets ci-dessous contiennent une représentation graphique du caractère `1`. 
+
+.. code-block:: console 
+
+   00001000 
+   00011000 
+   00101000 
+   00001000 
+   00001000 
+   00001000 
+   00001000 
+   00111110 
+
+
+
+.. source: https://tex.stackexchange.com/questions/157080/can-tikz-create-pixel-art-images/279697 
+
+Une représentation graphique, fortement agrandie, de ce caractère est présentée dans la :numref:`fig-pixel-1`. 
+
+
+.. _fig-pixel-1: 
+.. tikz:: Un caractère sous la forme de pixels 
+	  
+   \def\pixels{
+   {0,0,0,0,1,0,0,0}, 
+   {0,0,0,1,1,0,0,0}, 
+   {0,0,1,0,1,0,0,0}, 
+   {0,0,0,0,1,0,0,0}, 
+   {0,0,0,0,1,0,0,0}, 
+   {0,0,0,0,1,0,0,0}, 
+   {0,0,0,0,1,0,0,0}, 
+   {0,0,1,1,1,1,1,0},%
+   }
+   \definecolor{pixel 1}{HTML}{000000}
+   \definecolor{pixel 0}{HTML}{FFFFFF}
+   \foreach \line [count=\y] in \pixels {
+   \foreach \pix [count=\x] in \line {
+   \draw[fill=pixel \pix] (\x,-\y) rectangle +(1,1); 
+   }
+   }
+
+	  
+	  
+.. présenter l'écran ou l'imprimante bitmap et pixel, uniquement en noir et blanc 
+
+.. parler de couleurs primaire et rgb, cela nécessite des nombres également 
+
+.. Pour le son, ce serait plus facile avec des nombres 
+
+Représentation des nombres naturels
+-----------------------------------
+
+Commençons par analyser comment représenter les nombres pour effectuer des opérations arithmétiques. Pour simplifier la présentation, nous travaillerons surtout avec des quartets dans ce chapitre. Il y a seize quartets différents : 
+
+ - `0000`
+ - `0001`
+ - `0010`
+ - `0011`
+ - `0100`
+ - `0101`
+ - `0110`
+ - `0111`
+ - `1000`
+ - `1001`
+ - `1010`
+ - `1011`
+ - `1100`
+ - `1101`
+ - `1110`
+ - `1111`    
+
+Un tel :index:`quartet`, peut se représenter de façon symbolique: :math:`B_{3}B_{2}B_{1}B_{0}` où les symboles :math:`B_{i}` peuvent prendre les valeurs `0` ou `1`. Dans un tel quartet, le symbole :math:`B_{3}` est appelé le :index:`bit de poids fort` tandis que le symbole :math:`B_{0}` est appelé le :index:`bit de poids faible`.
+
+Cette représentation des quartets est similaire à la représentation que l'on utilise pour les nombres décimaux. Un nombre en représentation décimale peut aussi s'écrire :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}`. Dans cette représentation, les :math:`C_{i}` sont les chiffres de `0` à `9`. :math:`C_{0}` est le chiffre des unités, :math:`C_{1}` le chiffre correspondant aux dizaines, :math:`C_{2}` celui qui correspond aux centaines, ... Numériquement, on peut écrire que la représentation décimale :math:`C_{3}C_{2}C_{1}C_{0}` correspond au nombre :math:`C_{3}*1000 + C_{2}*100 + C_{1}*10 + C_{0}` ou encore :math:`C_{3}*10^{3} + C_{2}*10^{2} + C_{1}*10^{1} + C_{0}*10^{0}` en se rappelant que :math:`10^{0}` vaut 1.
+
+En toute généralité, la suite de chiffres :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} C_{i} \times 10^{i}`.
+
+A titre d'exemple, le nombre sept cent trente six s'écrit en notation décimale `736`, ce qui équivaut bien à :math:`7*10^{2}+3*10^{1}+6*10^{0}`. 
+
+Pour représenter les nombres naturels en notation binaire, nous allons utiliser le même principe. Un nombre en notation binaire :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` représente le nombre naturel :math:`B_{n-1}*2^{n-1} + B_{n-2}*2^{n-2} + ... + B_{2}*2^{2} + B_{1}*2^{1} + B_{0}*2^{0}`. En appliquant cette règle aux quartets, on obtient aisément :
+
+ - `0000` correspond au nombre :math:`0*2^{3}+0*2^{2}+0*2^{1}+0*2^{0}`, soit `0` en notation décimale 
+ - `0001` correspond au nombre :math:`0*2^{3}+0*2^{2}+0*2^{1}+1*2^{0}`, soit `1` en notation décimale 
+ - `0010` correspond au nombre :math:`0*2^{3}+0*2^{2}+1*2^{1}+0*2^{0}`, soit `2` en notation décimale 
+ - `0011` correspond au nombre :math:`0*2^{3}+0*2^{2}+1*2^{1}+1*2^{0}`, soit `3` en notation décimale 
+ - `0100` correspond au nombre :math:`0*2^{3}+1*2^{2}+0*2^{1}+0*2^{0}`, soit `4` en notation décimale 
+ - `0101` correspond au nombre :math:`0*2^{3}+1*2^{2}+0*2^{1}+1*2^{0}`, soit `5` en notation décimale 
+ - `0110` correspond au nombre :math:`0*2^{3}+1*2^{2}+1*2^{1}+0*2^{0}`, soit `6` en notation décimale 
+ - `0111` correspond au nombre :math:`0*2^{3}+1*2^{2}+1*2^{1}+1*2^{0}`, soit `7` en notation décimale 
+ - `1000` correspond au nombre :math:`1*2^{3}+0*2^{2}+0*2^{1}+0*2^{0}`, soit `8` en notation décimale 
+ - `1001` correspond au nombre :math:`1*2^{3}+0*2^{2}+0*2^{1}+1*2^{0}`, soit `9` en notation décimale 
+ - `1010` correspond au nombre :math:`1*2^{3}+0*2^{2}+1*2^{1}+0*2^{0}`, soit `10` en notation décimale 
+ - `1011` correspond au nombre :math:`1*2^{3}+0*2^{2}+1*2^{1}+1*2^{0}`, soit `11` en notation décimale 
+ - `1100` correspond au nombre :math:`1*2^{3}+1*2^{2}+0*2^{1}+0*2^{0}`, soit `12` en notation décimale 
+ - `1101` correspond au nombre :math:`1*2^{3}+1*2^{2}+0*2^{1}+1*2^{0}`, soit `13` en notation décimale 
+ - `1110` correspond au nombre :math:`1*2^{3}+1*2^{2}+1*2^{1}+0*2^{0}`, soit `14` en notation décimale 
+ - `1111` correspond au nombre :math:`1*2^{3}+1*2^{2}+1*2^{1}+1*2^{0}`, soit `15` en notation décimale 
+
+En toute généralité, la suite de bits :math:`B_{n-1}B_{n-2}...B_{2}B_{1}B_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} B_{i} \times 2^{i}`.
+   
+Cette technique peut s'appliquer à des nombres binaires contenant un nombre quelconque de bits. Pour convertir efficacement un nombre binaire en son équivalent décimal, il est intéressant de connaître les principales puissances de 2:
+
+ - :math:`2^{0}=1`
+ - :math:`2^{1}=2`
+ - :math:`2^{2}=4`
+ - :math:`2^{3}=8`
+ - :math:`2^{4}=16`
+ - :math:`2^{5}=32`
+ - :math:`2^{6}=64`
+ - :math:`2^{7}=128`
+ - :math:`2^{8}=256`
+ - :math:`2^{9}=512`
+ - :math:`2^{10}=1024`
+ - :math:`2^{16}=65536`
+ - :math:`2^{20}=1048576` ou un peu plus d'un million
+ - :math:`2^{30}=1073741824` ou un peu plus d'un milliard
+ - :math:`2^{32}=4294967296` ou un peu plus de 4 milliards
+
+Cette représentation des nombres peut se généraliser. La notation binaire utilise des puissances de `2` tandis que la notation décimale des puissances de `10`.  On peut faire de même avec d'autres puissances. Ainsi, la suite de symboles :math:`S_{n-1}S_{n-2}...S_{2}S_{1}S_{0}` en base `k` où les symboles :math:`S_{i}` ont une valeur comprises entre `0` et :math:`k-1`, correspond au naturel :math:`\sum_{i=0}^{i=n-1}S_{i} \times k^{i}`.
+
+En pratique, outre les notations binaires, deux notations sont couramment utilisées :
+
+ - l'octal (ou base `8`)
+ - l'hexadécimal (ou base `16`)
+
+En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les symboles sont des chiffres de `0` à `9` et les lettres de `A` à `F` sont utilisées pour représenter les valeurs de `0` à 15.
+
+.. note::
+
+   Il est parfois intéressant d'entrer un nombre en binaire, octal ou hexadécimal dans un langage de programmation. En python3, cela se fait en préfixant le nombre avec `0b` pour du binaire, `0o` pour de l'octal et `0x` pour de l'hexadécimal. Ainsi, les lignes ci-dessous stockent toutes la valeur `23` dans la variable ``n``.
+
+   .. code-block:: python
+
+      n = 23  # décimal
+      n = 0b10111  # binaire
+      n = 0o27 # octal
+      n = 0x17
+
+   La notation adoptée dans python3 est bien plus claire que celle utilisée dans d'anciennes versions de python et des langages de programmation comme le `C`. Dans ces langages, il suffit de commencer un nombre par le chiffre zéro pour indiquer qu'il est en octal. C'était une source de très nombreuses confusions.
+
+   .. code-block:: python
+
+      # En python2, ces deux lignes ne sont pas équivalentes
+      n = 23  # décimal
+      n = 023 # octal -> valeur décimale 19
+
+.. spelling:word-list::
+   
+   von Neumann
+
+      
+Architecture de von Neumann 
+*******************************
+
+
+.. spelling:word-list::
+   
+   coeur 
+   Equal 
+   Echange 
+   Breakpoint 
+   Breakpoints 
+
+
+
+   
+   
+Langage d'assemblage 
+====================
+
+
+Avec la mémoire et l'ALU nous avons les briques de base qui vont nous permettre de construire un micro-processeur qui sera capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neumann`. 
+
+Cette architecture est composée d'un :index:`processeur` (:index:`CPU` en anglais) ou unité de calcul et d'une mémoire. Le processeur est un circuit électronique qui est capable d'effectuer de nombreuses tâches : 
+
+ - lire de l'information en mémoire 
+ - écrire de l'information en mémoire 
+ - réaliser des calculs 
+
+L'architecture des ordinateurs est basée sur l'architecture dite de Von Neumann. Suivant cette architecture, un ordinateur est composé d'un processeur qui exécute un programme se trouvant en mémoire. Ce programme manipule des données qui sont aussi stockées en mémoire. 
+
+.. expliquer von neuman 
+
+Un assembleur simple
+====================
+
+
+
+Notre processeur contient quatre registres que vous pouvez utiliser
+pour stocker des données. Ils sont identifiés par les lettres ``A``,
+``B``, ``C`` et ``D``. Chacun de ces registres peut stocker un bloc de
+16 bits de données. Comme dans tout stockage binaire de l'information,
+c'est au programmeur de décider ce que représente un bloc de bits. Il
+peut s'agir d'un caractère, d'un nombre ou de tout autre type
+d'information.
+
+Notre ordinateur comprend aussi une mémoire RAM qui permet elle aussi
+de stocker des données et des instructions. Toutes les informations
+stockées dans la RAM sont sous forme binaire. Tout comme pour les
+registres, c'est au programmeur de décider si une information se
+trouvant en mémoire représente un caractère, un nombre ou une
+instruction.
+
+
+Notre processeur simple supporte quelques dizaines d'instructions que
+nous allons découvrir petit à petit. La première instruction est
+baptisée :index:`MOV`. L'instruction ``MOV`` prend deux arguments:
+une destination et une source. Sa syntaxe de base est donc:
+``MOV dest, src``. La destination est un identifiant de registre (``A``,
+``B``, ``C`` ou ``D``) et la source peut être un identifiant de
+registre ou une constante. Cette constante peut être spécifiée en
+notation binaire, décimale, octal ou hexadécimale. Lorsque l'on
+spécifie une constante, c'est généralement la notation décimale qui
+est utilisée, mais parfois il est intéressant d'utiliser une des
+autres notations.
+
+L'instruction ``MOV`` permet de placer un bloc de 16 bits dans
+un registre ou de déplacer un bloc de 16 bits d'un registre à l'autre.
+
+Dans l'assembleur que nous utilisons, chaque instruction est
+représenté par un mot clé en majuscules suivi de ses arguments sur une
+ligne. Le caractère ``;`` est utilisé pour marquer le début d'un
+commentaire. Une ligne qui débute par le point virgule n'est donc
+pas considérée. Il en va de même pour tous les caractères qui
+suivent le point virgule sur une ligne quelconque.
+
+.. code-block:: nasm
+   :linenos:
+      
+   MOV A,1       
+   MOV B,2
+   MOV A,B
+   
+Dans l'exemple ci-dessus, la première ligne place la représentation
+binaire du nombre naturel ``1``, c'est-à-dire ``000000000000001``
+dans le registre ``A``. La deuxième ligne contient l'instruction qui
+permet de placer la représentation binaire du nombre naturel 2 dans le
+registre ``B``. La troisième instruction permet elle de copier les 16
+bits qui se trouvent dans le registre ``B`` (c'est-à-dire la valeur
+``2``) dans le registre ``A``. 
+
+L'instruction ``MOV``, et toutes les instructions de l'assembleur que
+nous utilisons, permettent de spécifier leurs arguments numérique en
+notation, binaire, décimale, octale et hexadécimale. Dans le cours,
+nous privilégierons la notation décimale qui est la plus courante,
+mais les autres notations sont parfois utiles lorsque l'on veut
+stocker un blocs de 16 bits bien particulier. Les quatre instructions
+ci-dessous placent toute la valeur vingt trois dans le registre ``D``.
+
+.. code-block:: nasm
+   :linenos:
+      
+   MOV D, 23d        ; en notation décimale       
+   MOV D, 0x17      ; en notation hexadécimale
+   MOV D, 0o27      ; en notation octale  
+   MOV D, 10111b  ; en notation binaire
+
+
+Notre processeur peut également réaliser des opérations arithmétiques
+sur les données stockées dans ses registres. Les opérations
+arithmétiques les plus simples sont :index:`INC` et :index:`DEC`. Elles prennent
+toutes les deux comme argument un identifiant de
+registre. L'instruction ``INC X`` incrémente le nombre entier stocké
+dans le registre ``X`` d'une unité. L'instruction ``DEC X`` décrémente
+d'une unité la valeur entière stockée dans le registre ``X``.
+
+A titre d'exemple, considérons la séquence d'instructions suivante.
+
+
+.. code-block:: nasm
+   :linenos:
+      
+   ; première solution
+   MOV A, 7  
+   ; deuxième solution
+   MOV B, 6  
+   INC B
+   ; troisième solution
+   MOV C, 8  
+   DEC C
+   ; quatrième solution
+   MOV D, 7 
+   DEC D
+   INC D
+
+Après l'exécution de ces instructions, les quatre registres de notre
+processeur contiennent tous la valeur entière ``7``. La première
+ligne est, évidemment, la meilleure solution pour placer cette valeur
+dans le registre ``A``, mais les autres aboutissent au même résultat.
+
+Notre processeur peut aussi additionner et soustraire les valeurs
+entières stockées dans des registres. L'instruction :index:`ADD` prend
+deux arguments. Le premier est le registre qui est la destination du
+résultat. Le second est un registre ou une constante. Cette
+instruction calcule la somme entre ses deux arguments et place le
+résultat dans le premier argument. L'instruction :index:`SUB` prend
+également deux arguments. Elle stocke dans son premier argument
+le résultat de l'opération ``arg1 - arg2``.
+
+
+.. code-block:: nasm
+      
+   MOV A, 7  
+   MOV B, 3  
+   ADD A, B
+
+La séquence d'instructions ci-dessus place dans le registre ``A`` la
+somme entre la valeur stockée dans ce registre et celle se trouvant
+dans le registre ``B``, c'est-à-dire la valeur ``10``.
+
+.. code-block:: nasm
+      
+   MOV A, 7  
+   MOV B, 3  
+   SUB A, B
+
+La séquence d'instruction ci-dessus place dans le registre ``A`` le
+résultat de l'opération ``7 - 3``, c'est-à-dire la valeur ``4``.
+
+Il est intéressant de noter que comme l'instruction ``ADD`` ne prend
+que deux arguments, il n'est pas possible, en une seule instruction,
+de calculer la somme entre deux registres et de la placer dans un
+troisième. Cela nécessite deux instructions comme dans la séquence
+ci-dessous qui place dans le registre ``C`` la somme entre les valeurs
+stockées dans les registres ``A`` et ``B``.
+
+.. code-block:: nasm
+      
+   MOV A, 9  
+   MOV B, 12  
+   ADD A, B
+   MOV C, A
+
+
+Il est important de noter qu'après exécution de la séquence
+d'instructions ci-dessus, la valeur qui était stockée dans le registre
+``A`` est perdue. Si cette valeur était importante pour la suite du
+programme, alors il est préférable d'utiliser la séquence
+d'instructions qui suit qui elle utilise le registre ``C`` comme intermédiaire.
+
+
+.. code-block:: nasm
+      
+   MOV A, 9  
+   MOV B, 12  
+   MOV C, A
+   ADD C, B
+  
+ 
+.. expliquer le carry et le bit zéro ou plus tard ?
+
+
+Notre microprocesseur est aussi capable de réaliser des opérations
+de multiplication et de division. Cependant, ces opérations, qui sont
+nettement plus complexes à implémenter que les additions et soustractions,
+ne peuvent que porter sur la valeur se trouvant dans le registre ``A``.
+Il est donc nécessaire de d'abord placer la valeur à multiplier ou
+diviser dans ce registre avant de pouvoir réaliser l'opération.
+
+En utilisant l'instruction :index:`MUL`, il est possible de multiplier
+une valeur entière stockée dans le registre ``A`` par une constante.
+
+
+.. code-block:: nasm
+      
+   MOV A, 9  
+   MUL 3
+
+
+Après exécution du code ci-dessus, le registre ``A`` contient la
+valeur décimale ``27``. Il est aussi possible de multiplier la
+valeur entière stockée dans le registre ``A`` par la valeur se
+trouvant dans un autre registre.
+   
+.. code-block:: nasm
+      
+   MOV A, 9  
+   MOV B, 2
+   MUL B
+
+Après exécution des instructions ci-dessus, le registre ``A``
+contient la valeur décimale ``18``. Le registre ``B`` contient
+lui toujours la valeur ``2``.
+
+
+L'instruction :index:`DIV` s'utilise de façon similaire. Il est
+possible de diviser la valeur se trouvant dans le registre ``A``
+par une constante entière.
+
+.. code-block:: nasm
+      
+   MOV A, 24  
+   DIV 3
+
+Après exécution de ces instructions, le registre ``A``
+contient la valeur ``8``. Tout comme pour l'instruction
+de multiplication, il est possible de diviser la
+valeur stockée dans le registre ``A`` par une valeur
+entière se trouvant dans un autre registre.
+
+.. code-block:: nasm
+      
+   MOV A, 35  
+   MOV B, 7
+   DIV B
+
+Après exécution de ces instructions, le registre ``A``
+contient la valeur ``5``. Il est important de noter
+que notre processeur calcule le quotient de la division
+entière entre le dividende stocké dans le registre
+``A`` et le diviseur qui peut être une constante ou
+se trouver dans un autre registre. En python, la
+séquence d'instructions ci-dessous permet également
+de calculer le quotient de cette division entière.
+
+
+.. code-block:: python
+
+
+   a=35
+   b=7
+   a=a//b
+
+   
+Notre langage d'assemblage ne contient pas d'instruction
+permettant de calculer le reste d'une division entière. Si
+vous avez besoin de cette opération, vous devrez la
+programmer en utilisant les autres instructions du langage. 
+
+
+Un dernière instruction qui se sera utile par après est
+l'instruction :index:`HLT`. Cette instruction permet
+d'arrêter l'exécution du processeur. Il faut pousser sur
+`Reset` pour redémarrer le processeur.
+
+
+Interaction avec la mémoire RAM
+===============================
+
+.. spelling:word-list::
+
+   RAM
+   Random
+   Access
+   Memory
+   Read
+   Only
+
+A côté des instructions de calcul telles que celles qui
+viennent d'être présentées, notre microprocesseur simple
+est aussi capable d'interagir avec la mémoire. Il existe
+plusieurs type de mémoire dans un ordinateur. Les deux
+plus simples sont les :index:`Random Access Memory`
+(:index:`RAM`) et les :index:`Read-Only Memory`
+(:index:`ROM`).
+
+Comme son nom l'indique, une mémoire :index:`ROM` est une mémoire dont le contenu ne peut qu'être lu. Le contenu de cette mémoire est écrit lors de la construction du circuit et elle ne peut jamais être modifiée. Ces mémoires sont utilisées pour stocker des données ou des programmes qui ne changent jamais, comme par exemple le code qui permet de faire démarrer un ordinateur et de lancer son système d'exploitation. Une mémoire :index:`ROM` peut se représenter comme dans la :numref:`fig-rom`.
+
+
+.. _fig-rom:
+.. tikz:: Une mémoire ROM
+          
+   [
+      node distance=0.1cm
+   ]
+
+   \node (addr) at (0,0) {\small Addr};
+   \node (rom) [draw,right =of addr, align=center] {
+   R\\
+   O\\
+   M
+   };
+   \node (out) [right =of rom] {\small out};
+   \draw [->] (addr) -- (rom.west);
+   \draw [->] (rom.east) -- (out);
+
+
+Une caractéristique important des mémoires de type :index:`ROM` est que
+leur contenu est préservé même lorsque la mémoire est mise hors tension. 
+Certaines mémoires de type :index:`ROM` sont dites programmables car il
+est possible d'effacer et de modifier leur contenu. C'est le cas par
+exemple des :index:`EPROM` ou des :index:`EEPROM`. La programmation d'un
+tel circuit se fait en utilisant un dispositif spécialisé. 
+
+Une mémoire :index:`ROM` peut être vue comme un tableau permettant de
+stocker des données (dans notre ordinateur des blocs de 16 bits). Chaque
+élément du tableau est identifié par une adresse. A titre d'exemple, considérons
+une mémoire :index:`ROM` qui permet de stocker 4 blocs de 16 bits.
+
+.. _table-rom4:
+
+.. table:: Mémoire ROM permettant de stocker 4 blocs de 16 bits
+   :align: center
+
+   ======= ===================
+   Adresse Valeur
+   ------- -------------------
+   0b11    0b1100100100100111
+   0b10    0b0000000000000001
+   0b01    0b0000000000000000
+   0b00    0b1111111111111111
+   ======= ===================
+
+
+
+La mémoire :index:`ROM` représentée dans la table :numref:`table-rom4`
+contient quatre blocs de 16 bits. Le microprocesseur peut accéder à
+chacun de ces blocs en indiquant à la mémoire l'adresse à laquelle
+il est stocké. Ainsi, la donnée stockée à l'adresse ``0b01`` en mémoire
+:index:`ROM`, que l'on pourrait schématiser par la notation
+``ROM[0b01]``, est la valeur ``0b0000000000000001`` ou ``1`` en notation
+décimale.
+
+Une mémoire :index:`ROM` utilise un nombre de bits d'adresse qui dépend de
+sa capacité. Une mémoire permettant de stocker :math:`2^{n}` blocs de données
+utilisera des adresses qui sont stockées sur `n` bits. Il faut cependant
+noter que dans la plupart des ordinateurs, les mémoires sont organisées de
+façon à associer une adresse à chaque octet ou bloc de 8 bits. 
+
+.. spelling:word-list::
+
+   endian
+   little
+   big
+
+
+Lorsque l'on doit stocker un bloc de 16 bits dans une mémoire dont l'unité
+de stockage est l'octet (8 bits), il faut se mettre d'accord sur la convention
+utilisée pour stocker les bits de poids fort et les bits de poids faible.
+Considérons la séquence de bits ``0b01000000 00000001``. Cette séquence de
+bits correspond à la valeur entière ``8193``. Dans une mémoire permettant
+de stocker deux octets, elle peut être stockée de deux façons différentes.
+La première convention, baptisée :index:`big-endian` stocke l'octet de poids
+fort (``0b01000000```) à l'adresse la plus petite comme illustré dans la
+table :numref:`table-rom2-big`. C'est la convention qui est utilisée par
+notre assembleur ainsi que par certains ordinateurs actuels. Gardez cette
+convention en tête lorsque vous analysez le contenu d'une mémoire.
+
+
+.. _table-rom2-big:
+
+.. table:: Mémoire de deux octets contenant la séquence ``0b01000000 00000001``
+	   en utilisant la convention `big-endian` 
+   :align: center
+
+   ======= ===================
+   Adresse Valeur
+   ------- -------------------
+   0b1     0b00000001
+   0b0     0b01000000
+   ======= ===================
+
+
+L'autre convention, baptisée :index:`little-endian`, est de stoker les bits
+de poids fort à l'adresse la plus élevée comme représenté dans :numref:`table-rom2-little`.
+Cette convention est utilisée par certains ordinateurs actuels.
+   
+.. _table-rom2-little:
+
+.. table:: Mémoire de deux octets contenant la séquence ``0b01000000 00000001``
+	   en utilisant la convention `little-endian`
+   :align: center
+
+   ======= ===================
+   Adresse Valeur
+   ------- -------------------
+   0b1     0b01000000
+   0b0     0b00000001
+   ======= ===================
+
+   
+
+Une mémoire :index:`RAM` a une organisation similaire. Chaque zone de
+mémoire permettant de stocker un octet est identifié par une adresse.
+Tout comme dans une mémoire :index:`ROM`, le nombre de bits utilisé
+pour représenter chaque adresse dépend de la capacité de la mémoire.
+
+
+Dans une mémoire :index:`RAM`, outre les entrées relatives aux adresses, il faut aussi avoir
+une entrée `load` (parfois appelée `read/write`) pour déterminer si la mémoire doit lire ou
+écrire une donnée et une entrée `data` permettant de charger des données dans la `RAM`. Le 
+nombre de bits d'adresses dépend uniquement de la capacité de la mémoire. En général, une
+adresse correspond à un octet stocké en mémoire. L'entrée `data` quant à elle peut permettre
+de charger des octets, des mots de 16, 32 bits ou encore plus. La :numref:`fig-ram`
+représente une mémoire :index:`RAM` de façon schématique.
+
+.. _fig-ram:
+.. tikz:: Une mémoire RAM
+          
+   [
+      node distance=0.1cm
+   ]
+
+   \node (empty) at (0,0) {};
+   \node (addr) at (-0.5,-0.5) {\small Addr};
+   \node (data) at (-0.5,0.5) [text=green] {\small Data};
+   \node (ram) [draw,right =of empty, align=center] {
+   R\\
+   A\\
+   M
+   };
+   \node (load) [above =of ram,text=blue] {\small load};
+   \node (out) [right =of ram] {\small out};
+   \draw [->] (addr.east) -- (ram.225);
+   \draw [->,color=green] (data.east) -- (ram.135);
+   \draw [->] (ram.east) -- (out);
+   
+   \draw [->,color=blue] (load) -- (ram.north);   
+
+Cette mémoire :index:`RAM` peut être utilisée par notre microprocesseur
+comme mémoire permettant de stocker à la fois les instructions et
+les données. Tant les instructions que les données seront stockées sous
+la forme de séquences de bits. Nous analyserons plus tard comment représenter
+chaque instruction comme une séquence de bits. Pour le moment, concentrons-nous
+sur l'utilisation de la mémoire :index:`RAM` pour stocker des données
+qui seront utilisées par nos programmes.
+
+Le langage d'assemblage nous permet de précharger en mémoire :index:`RAM`
+des constantes qui pourront ensuite être utilisées dans notre programme.
+Le mot clé :index:`DB` permet de stocker en mémoire une constante.
+
+A titre d'exemple, le code ci-dessous stocke l'octet ``0b0000011`` à
+l'adresse ``0`` en mémoire et l'octet ``0b00000111`` à l'adresse ``1``.
+
+.. code-block:: nasm
+
+   DB 3
+   DB 7
+
+
+En pratique, le mot clé ``DB`` sera rarement utilisé de cette façon.
+Dans un programme, on utilisera ce mot clé pour définir des constantes
+ou alors pour fixer la valeur initiale de certaines variables. Dans ces
+deux cas d'utilisation, il est important pour le programmeur de pouvoir
+connaître l'adresse où chacune de ces variables ou constantes sont
+stockées. L'assembleur que nous utilisons permet d'associer une
+étiquette (`label` en anglais) à certaines adresses mémoire. Ces
+étiquettes peuvent ensuite être utilisées par les instructions du
+programme et elles sont automatiquement traduites par l'assembleur en
+l'adresse correspondante. Pour définir une étiquette, il suffit
+d'écrire sur une ligne une chaîne de caractères suivie par le caractère
+``:`` et ensuite l'instruction en assembleur (souvent ``DB``). 
+
+Les instructions de l'assembleur telles que ``MOV`` peuvent
+utiliser des étiquettes de deux façons différentes. Tout d'abord,
+si une étiquette apparaît dans une instruction en assembleur, elle
+est automatiquement remplacée par l'adresse mémoire à laquelle elle
+correspond. Si cette étiquette est placée entre crochets (``[``  et
+``]``), alors le processeur ira chercher la donnée qui se trouve en
+mémoire à l'adresse de l'étiquette.
+
+Le programme ci-dessous définit deux étiquettes: `x` et `y`. Il
+initialise la valeur stockée à l'adresse `x` à ``3`` et celle
+stockée à l'adresse `y` à ``7`` via les deux "instructions"
+``DB``. La première instruction place dans le registre
+``A`` la valeur qui se trouve en mémoire à l'adresse de l'étiquette
+`x`, c'est-à-dire la valeur ``3``. La deuxième instruction
+place dans le registre ``B`` la valeur qui se trouve en mémoire
+à l'adresse de l'étiquette `y`, c'est-à-dire la valeur ``7``.
+Ensuite, l'instruction ``ADD`` place la valeur ``10`` dans le registre
+``A``. 
+
+.. code-block:: nasm
+
+   MOV A, [x]
+   MOV B, [y]
+   ADD A, B
+   MOV C, x
+   MOV D, y
+   HLT
+   ;  Variables et données du programme
+   x: DB 3
+   y: DB 7
+
+
+Lorsque le programme ci-dessus est transformé en langage machine et
+stocké en mémoire, l'instruction :index:`HLT` se trouve à l'adresse
+``18```. L'étiquette `x` correspond à l'adresse ``19`` et `y` à
+l'adresse ``20``.
+
+
+Nous pouvons maintenant lister tous les arguments possibles de
+l'instruction :index:`MOV`:
+
+ - ``MOV reg1, reg2`` (``reg1`` et ``reg2`` sont des identifiants
+   de registres) : place dans ``reg1`` la valeur se trouvant actuellement
+   dans ``reg2``. Le contenu de ``reg2`` n'est pas modifié
+ - ``MOV reg, cst`` (``reg`` est un identifiant de registre et ``cst`` une
+   constante) : place dans le registre ``reg`` la valeur ``cst``
+ - ``MOV reg, adr`` (``reg`` est un identifiant de registre et
+   ``adr`` une adresse en mémoire ou une étiquette) : place dans ``reg``
+   l'adresse ``adr``
+ - ``MOV reg, [adr]`` (``reg`` est un identifiant de registre et
+   ``adr`` une adresse en mémoire ou une étiquette) : place dans ``reg``
+   la valeur se trouvant en mémoire à l'adresse ``adr``
+ - ``MOV [adr], reg`` (``reg`` est un identifiant de registre et
+   ``adr`` une adresse en mémoire ou une étiquette) : place la valeur
+   se trouvant dans le registre ``reg`` en mémoire à l'adresse ``adr``
+   
+Les instructions ``ADD`` et ``SUB`` prennent les mêmes arguments que l'instruction
+``MOV``. Les instructions ``INC`` et ``DEC`` ne prennent qu'un registre comme
+argument.
+
+Les instructions ``MUL`` et ``DIV`` supportent elles trois types d'arguments:
+
+ - ``MUL reg`` (``reg`` est un identifiant de registre) : place dans le
+   registre ``A`` le résultat du produit entre la valeur se trouvant dans
+   le registre ``reg`` et le registre ``A``.
+ - ``MUL cst`` (``cst`` est une valeur entière) : place dans le
+   registre ``A`` le résultat du produit entre la valeur entière passée
+   en argument et le registre ``A``.
+ - ``MUL [adr]`` (``adr`` est une adresse en mémoire ou une étiquette) :
+   place dans le registre ``A`` le résultat du produit entre la valeur
+   se trouvant à l'adresse passée en argument et le registre ``A``.
+
+
+L'instruction ``DIV`` prend également ces trois types d'arguments.   
+
+Avec ces instructions qui permettent de manipuler des données se trouvant
+en mémoire, il est possible de gérer des variables et de réaliser des opérations
+arithmétiques sur ces variables en mémoire. A titre d'exemple, considérons
+le programme python ci-dessous.
+
+.. code-block:: python
+
+   x=3
+   y=5
+   z=x+2*y
+
+
+Lors de son exécution, ce programme place dans la variable ``z`` la
+valeur ``13``. Pour écrire un programme équivalent en assembleur, nous
+devons d'abord réserver une zone mémoire pour stocker chacune des
+trois variables. Cela se fait en utilisant les trois lignes en
+fin de programme avec le mot-clé ``DB``. Nous initialisons la variable
+``z`` à la valeur ``0``. Ces zones mémoire étant définies et initialisées,
+nous pouvons d'abord calculer l'expression :math:`2*y` et stocker son
+résultat dans le registre ``A``. Ensuite, il suffit d'ajouter
+le contenu de la variable ``x`` au résultat obtenu et de sauver le
+résultat de l'addition à l'adresse de la variable ``z``.
+   
+
+.. code-block:: nasm
+
+   MOV A, [y]     ; place la valeur de la variable y dans A
+   MUL 2          ; multiplie le contenu de A par 2
+   ADD A, [x]     ; ajoute au contenu de A la valeur de la variable x
+   MOV [z], A     ; sauvegarde du résultat du calcul dans la variable z
+   HLT
+   ;  Variables et données du programme
+   x: DB 3
+   y: DB 5	 
+   z: DB 0
+   
+
+   
+En mathématiques, on sait que les expressions :math:`x*x-y*y` et
+:math:`(x-y)*(x+y)` sont équivalents. Vérifions en python et
+en assembleur que c'est bien le cas lorsque la variable ``x``
+vaut ``9`` et la variable ``y`` vaut ``2``.
+
+.. code-block:: python
+
+   x=9
+   y=2
+   z1=x*x-y*y
+   z2=(x-y)*(x+y)
+
+
+Pour traduire ces lignes de python en assembleur, nous
+devons découper les expressions mathématiques en sous-expressions
+qui sont réalisables avec les instructions ``ADD``, ``SUB`` et ``MUL``.
+Commençons par l'expression :math:`x*x-y*y`. Nous pouvons d'abord
+calculer les deux carrés et les stocker dans deux registres avant
+de réaliser la soustraction.
+   
+   
+.. code-block:: nasm
+
+   MOV A, [y]     ; place la valeur de la variable y dans A
+   MUL A          ; multiplie le contenu de A par lui-même
+   MOV B, A   	  ; sauvegarde du résultat dans	le registre B
+   MOV A, [x]     ; place la valeur de la variable x dans A
+   MUL A          ; multiplie le contenu de A par lui-même
+   SUB A, B       ; soustraction des deux carrés
+   MOV [z1], A    ; sauvegarde du résultat du calcul dans la variable z1
+   MOV A, [x]     ; place la valeur de la variable x dans A
+   SUB A, [y]     ; calcul de x-y
+   MOV B, [x]     ; place la valeur de la variable x dans B
+   ADD B, [y]     ; calcul de x+y
+   MUL B
+   MOV [z2], A 	  ; sauvegarde du résultat du calcul dans la variable z2
+   HLT
+   ;  Variables et données du programme
+   x: DB 9
+   y: DB 2
+   z1: DB 0
+   z2: DB 0		
+
+
+
+
+Instructions logiques
+---------------------
+
+
+Introduire AND, OR, XOR et NOT qui sont supportés ainsi que SHL et SHR
+   
+
+
+
+Instructions de manipulation de bits
+------------------------------------
+
