@@ -4,31 +4,18 @@
    contain the root `toctree` directive.
 
 Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
-======================================================================
+**********************************************************************
 
 .. toctree::
    :maxdepth: 2
    :caption: Table des matières
 
-   introduction   
-
+   00-intro
    01-info-asm
    02-if-loop
+   03-fct-proc
    
    
-   1-logique
-
-   2-arithmetique
-      
-   3-memoire
-
-
-   5-cpu
-   
-
-   7-stockage
-
-      
    glossary
 
 Indices et tables

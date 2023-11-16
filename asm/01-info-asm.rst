@@ -223,25 +223,6 @@ En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les sym
       n = 23  # décimal
       n = 023 # octal -> valeur décimale 19
 
-.. spelling:word-list::
-   
-   von Neumann
-
-      
-Architecture de von Neumann 
-*******************************
-
-
-.. spelling:word-list::
-   
-   coeur 
-   Equal 
-   Echange 
-   Breakpoint 
-   Breakpoints 
-
-
-
    
    
 Langage d'assemblage 
@@ -261,7 +242,7 @@ L'architecture des ordinateurs est basée sur l'architecture dite de Von Neumann
 .. expliquer von neuman 
 
 Un assembleur simple
-====================
+--------------------
 
 
 
@@ -514,7 +495,7 @@ d'arrêter l'exécution du processeur. Il faut pousser sur
 
 
 Interaction avec la mémoire RAM
-===============================
+-------------------------------
 
 .. spelling:word-list::
 
@@ -883,11 +864,185 @@ Instructions logiques
 ---------------------
 
 
-Introduire AND, OR, XOR et NOT qui sont supportés ainsi que SHL et SHR
+Le fonctionnement des ordinateurs s'appuie sur quelques principes très simples, mais qui sont utilisés à une très grande échelle. Le premier principe est que toute l'information peut s'encoder sous une forme binaire, c'est-à-dire une suite de bits. Un bit est l'unité de représentation de l'information. Un bit peut prendre deux valeurs:
+
+ - ``0``
+ - ``1``
+
+On peut associer une signification à ces bits. Il est par exemple courant de considérer que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois porter à confusion. 
+
+Avec ces deux valeurs booléennes, il est intéressant de définir des opérations. Une opération booléenne est une fonction qui prend en entrée 0, 1 ou plusieurs bits et retourne un résultat.
+
+Fonctions booléennes
+--------------------
+
+La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x` contient les différentes valeurs possibles de l'entrée `x` et la valeur du résultat pour chacune des valeurs possibles de `x`.
+
+
+=== ===========
+x   identité(x) 
+--- -----------
+0   0 
+1   1
+=== ===========
+
+
+Cette fonction n'est pas très utile en pratique. Elle nous permet d'illustrer une table de vérité simple dans laquelle il y a une valeur binaire en entrée et une valeur binaire également en sortie.
+
+Une fonction plus intéressante est l'inverseur, aussi dénommée `NOT` en anglais. Cette fonction prend comme entrée un bit. Si le bit d'entrée vaut `1`, elle retourne `0`. Tandis que si le bit d'entrée vaut `0`, elle retourne `1`. Cette fonction sera très fréquemment utilisée pour construire des circuits électroniques utilisés dans les ordinateurs. 
+
+=== ======
+x   NOT(x)
+--- ------
+0   1 
+1   0
+=== ======
+
+Il y a encore deux fonctions que l'on peut construire avec une seule entrée binaire. La première, baptisée `Toujours0`, retourne toujours la valeur ``0``, quelle que soit son entrée. La seconde, baptisée `Toujours1` retourne toujours la valeur ``1``. Voici leurs tables de vérité.
+
+=== ============
+x   Toujours0(x) 
+--- ------------
+0   0 
+1   0 
+=== ============
+
+
+
+=== ============
+x   Toujours1(x) 
+--- ------------
+0   1 
+1   1
+=== ============
+
+
+La logique booléenne devient nettement plus intéressante lorsque l'on considère des fonctions qui prennent plus d'une entrée.
+
+
+Fonctions booléennes à deux entrées 
+------------------------------------
+
+Plusieurs fonctions booléennes classiques existent. Les premières correspondent
+à la conjonction (`et`) et à la disjonction (`ou`) en logique. Commençons par
+la fonction `AND`. Celle-ci correspond à la table de vérité suivante:
+
+=== = ========
+x   y AND(x,y) 
+--- - --------
+0   0 0 
+0   1 0 
+1   0 0 
+1   1 1 
+=== = ========
+
+
+Cette table comprend quatre lignes qui correspondent à toutes les combinaisons possibles des deux entrées de la fonction. On remarque aisément que la fonction `AND(x,y)` retourne la valeur ``1`` uniquement lorsque ses deux entrées ont la valeur ``1``. Si une des deux entrées de la fonction `AND(x,y)` a la valeur
+``0``, alors sa sortie est nécessairement ``0``. Cette fonction est bien l'équivalent de la conjonction logique si l'on applique la convention que ``0`` représente la valeur `Faux`.
+
+La fonction `OR(x,y)`, quant à elle, est l'équivalent de la disjonction logique. Sa table de vérité est reprise ci-dessous.
+
+
+=== = ========
+x   y OR(x,y) 
+--- - --------
+0   0 0 
+0   1 1 
+1   0 1 
+1   1 1 
+=== = ========
+
+
+On remarque aisément que la fonction `OR(x,y)` correspond bien à la disjonction logique lorsque `1` représente la valeur `Vrai`. Cette fonction `OR(x,y)` ne retourne la valeur ``0`` que si ses deux entrées valent ``0``. Dans tous les autres cas, elle retourne la valeur ``1``.
+
+Ces fonctions peuvent être combinées entre elles. Un premier exemple est d'appliquer un inverseur (opération `NOT` au résultat de la fonction `AND`). Cette fonction booléenne s'appelle généralement `NAND` (`NOT AND`) et sa table de vérité est la suivante. On pourra dire que :math:`NAND(x,y) \iff NOT(AND(x,y))`. 
+
+=== = =========
+x   y NAND(x,y) 
+--- - ---------
+0   0 1 
+0   1 1 
+1   0 1 
+1   1 0 
+=== = =========
+
+
+De même, la fonction `NOR` s'obtient en inversant le résultat de la fonction `OR`. On pourra dire que :math:`NOR(x,y) \iff NOT(OR(x,y))`. 
+
+
+=== = ========
+x   y NOR(x,y) 
+--- - --------
+0   0 1 
+0   1 0 
+1   0 0 
+1   1 0 
+=== = ========
+
+Il est important de noter que `NOR(x,y)` n'est pas équivalent à la fonction `OR(NOT(x),NOT(y))`. La table de vérité de cette dernière fonction est reprise ci-dessous.
+
+= = ======  ====== =================
+x y NOT(x)  NOT(y) OR(NOT(x),NOT(y)) 
+- - ------  ------ -----------------
+0 0   1        1          1
+0 1   1        0          1
+1 0   0        1          1
+1 1   0        0          0
+= = ======  ====== =================
+
+ 
+Il existe d'autres fonctions booléennes à deux entrées qui sont utiles en pratique. Parmi celles-ci, on retrouve la fonction `XOR(x,y)` qui retourne la valeur `1` uniquement si une seule de ses entrées a la valeur `1`. Sa table de vérité est reprise ci-dessous. On remarquera qu'elle diffère de celle des autres fonctions booléennes que nous avons déjà présenté.
+
+
+=== = ========
+x   y XOR(x,y) 
+--- - --------
+0   0 0 
+0   1 1 
+1   0 1 
+1   1 0 
+=== = ========
+
+
+Ces opérations logiques peuvent être réalisées bit à bit sur des blocs de 16 bits tels que ceux qui sont stockés dans les registres de notre processeur ou en mémoire. On peut aisément définir l'opération ``NOT`` sur le mot de 16 bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}` comme suit:
+
+:math:`NOT(b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0})=not(b_{15})not(b_{14})not(b_{13})not(b_{12})not(b_{11})not(b_{10})not(b_{9})not(b_{8})not(b_{7})not(b_{6})not(b_{5})not(b_{4})not(b_{3})not(b_{2})not(b_{1})not(b_{0})` où :math:`not(...)` est l'opération NOT appliquée à un bit définie plus haut.
+
+
+De la même façon, on peut définir les opérations qui prennent deux arguments telles que ``OR`` ou ``AND`` comme suit:
+
+:math:`OR(a_{15}a_{14}a_{13}a_{12}a_{11}a_{10}a_{9}a_{8}a_{7}a_{6}a_{5}a_{4}a_{3}a_{2}a_{1}a_{0},b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0})=or(a_{15},b_{15})or(a_{14},b_{14})or(a_{13},b_{13})or(a_{12},b_{12})or(a_{11},b_{11})or(a_{10},b_{10})or(a_{9},b_{9})or(a_{8},b_{8})or(a_{7},b_{7})or(a_{6},b_{6})or(a_{5},b_{5})or(a_{4},b_{4})or(a_{3},b_{3})or(a_{2},b_{2})or(a_{1},b_{1})or(a_{0},b_{0})` où :math:`or(...)` est l'opération OR appliquée à un bit définie plus haut.
+
+Ces opérations logiques exsitent sous trois formes en fonction de leurs arguments:
+
+ - ``OR reg1, reg2``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans les registres ``reg1`` et ``reg2``
+ - ``OR reg1, [adr]``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans le registre ``reg1`` et en mémoire à l'adresse ``adr``
+ - ``OR reg1, c``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans le registre ``reg1`` et la constance ``c``
+
+ 
+Ces instructions permettent d'utiliser ces opérations logiques sur des blocs de 16 bits. En pratique, elles s'avèrent aussi très utile lorsque l'on souhaite fixer des valeurs à certains bits en particulier. Considérons par exemple le bloc de 16 bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}` qui est actuellement stocké dans le registre ``A``.
+
+Si l'on souhaite forcer le bit de poids faible à la valeur ``0`` sans changer aucun des autres bits de ce bloc, il suffit d'exécuter l'instruction ``AND A, 1111111111111110b``. Le lecteur attentif vérifiera aisément que :math:`AND(b,1)` vaut :math:`b` et que :math:`AND(b,0)` vaut toujours :math:`0`, quelle que soit la valeur du bit :math:`b`.
+
+L'instruction ``OR`` permet elle de forcer la valeur d'un bit à ``1``. Ainsi ``OR A, 1000000000000000b`` forcera la valeur du bit de poids fort du registre ``A`` à ``1`` sans changer les valeurs des autres registres. 
    
+
+Le langage python supporte également les opérations booléennes bit à bit. Les principales sont listées ci-dessous:
+
+   - En python `AND(a,b)` s'écrit ``a & b``
+   - En python `OR(a,b)` s'écrit ``a | b``
+   - En python `NOT(a)` s'écrit ``~ a``
+   - En python `XOR(a,b)` s'écrit ``a ^ b``
 
 
 
 Instructions de manipulation de bits
 ------------------------------------
+
+Notre processeur supporte également des opérations de décalage à gauche (:index:`SHL`) et à droite (:index:`SHR`). Ces instructions prennent deux arguments comme les opérations arithmétiques. En pratique, ces instructions sont généralement utilisées avec une constante comme second argument.
+
+L'instruction ``SHL reg, n`` décale de n positions les bits se trouvant dans le registre ``reg`` vers la gauche. A titre d'exemple, si le registre ``B`` contient les bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}`, alors après exécution de l'instruction ``SHL B, 3`` ce registre contiendra les bits :math:`b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}000`. De façon équivalente, si on exécute ``SHR B, 5`` sur les bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}`, on obtient :math:`00000b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}`. 
+
+Il est aussi possible de demander à python d'effectuer des décalages à gauche et à droite. Ainsi, ``x << p`` décale la représentation binaire de ``x`` de `p` positions vers la gauche. De la même façon, ``y >> p`` décale la représentation binaire de ``y`` de `p` positions vers la droite.    
+
 
