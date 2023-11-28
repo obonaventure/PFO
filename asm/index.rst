@@ -14,6 +14,7 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    01-info-asm
    02-if-loop
    03-fct-proc
+   04-list
    
    
    glossary
