@@ -1,10 +1,20 @@
-
+Les structures de données
+=========================
 
 
 Le langage python permet de supporter différents types de structure de données dont
-les piles, les queues et les listes. Il est intéresant de comprendre comment ces
+les piles, les queues et les listes. Il est intéressant de comprendre comment ces
 différentes structures de données sont stockées en mémoire avant de les implémenter
 en assembleur. Commençons par la pile qui joue un rôle majeur en informatique.
+
+.. spelling:word-list::
+
+   last
+   in
+   first
+   out
+
+
 
 Une :index:`pile` est une structure de données qui permet de stocker des informations
 et de les récupérer dans l'ordre inverse d'arrivée (dernier arrivé, premier servi ou
@@ -171,7 +181,7 @@ stockés en mémoire. La pile est initialisée en plaçant la valeur ``0``, corr
 au pointeur ``NULL``, à l'adresse (:math:`p`) correspondant au pointeur de sommet
 de pile. Ensuite, nous ajoutons ``7`` sur la pile avec l'opération
 ``p.append(7)``. L'élément correspond se trouve à l'adresse :math:`x` sur la
-:numref:`
+:numref:`fig-pile-chain-7`.
 
 .. _fig-pile-chain-7:
 .. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.append(7)``
@@ -191,7 +201,7 @@ de pile. Ensuite, nous ajoutons ``7`` sur la pile avec l'opération
 
 
 La :numref:`fig-pile-chain-9` représente l'état de la pile en mémoire après exécution
-de l'opration ``p.append(9)`` en supposant que l'élément correspondant soit
+de l'opération ``p.append(9)`` en supposant que l'élément correspondant soit
 stocké en mémoire à l'adresse :math:`z`.
 	  
 .. _fig-pile-chain-9:
@@ -323,11 +333,16 @@ représentée en mémoire avec son marqueur de fin.
 	 \draw[thick,red,->] (p3_next.east) to [bend right] (p1_val.east);
 	 \draw[thick,red,->] (p1_val.west) to [bend right] (l0.west);
 
+.. spelling:word-list::
 
+   true
+   false
+
+	 
 	
 conventions du C
 
-- false est toujours 0, true est n'importe quelle valeur qui n'est pas zéro
+- ``false`` est toujours 0, ``true`` est n'importe quelle valeur qui n'est pas zéro
 - NULL pas d'adresse: 0
 
   
@@ -407,7 +422,7 @@ conventions du C
 
 
    
-.. tikz:: Elément de la liste contenant la valeur 17 et Entête de la liste initialisée
+.. tikz:: Élément de la liste contenant la valeur 17 et Entête de la liste initialisée
 
    \matrix(m) [matrix of nodes]
    {
@@ -465,7 +480,7 @@ conventions du C
 
 
 
-.. tikz:: Ajout du noeud contenant la valeur ``9`` en tête de liste
+.. tikz:: Ajout du nœud contenant la valeur ``9`` en tête de liste
 
       \matrix(m0) [matrix of nodes, text width=60pt] at (0,2)
       {
@@ -499,7 +514,7 @@ conventions du C
       \draw[thick,red,->] (l1_next.east) to [bend left=20] (l2_val.east);
    
 
-.. tikz:: Ajout du noeud 77 en find de liste
+.. tikz:: Ajout du nœud 77 en fin de liste
 
    \matrix(m0) [matrix of nodes, text width=60pt] at (0,2)
    {

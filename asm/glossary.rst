@@ -22,7 +22,7 @@ Glossaire
    architecture de type Harvard
    architecture Harvard
    
-      Organisation d'un ordinateur qui utilise des mémoires séparées pour les programmes et les données. Cette architecture avait été proposé pour l'ordinateur Mark I conçu à l'université de Harvard. La plupart des ordinateurs actuels utilisent l'architecture de von Neuman. Voir https://en.wikipedia.org/wiki/Harvard_architecture
+      Organisation d'un ordinateur qui utilise des mémoires séparées pour les programmes et les données. Cette architecture avait été proposé pour l'ordinateur Mark I conçu à l'université de Harvard. La plupart des ordinateurs actuels utilisent l'architecture de von Neumann. Voir https://en.wikipedia.org/wiki/Harvard_architecture
 
    architecture de von Neumann   
       Organisation d'un ordinateur qui utilise une mémoire pour stocker à la fois les programmes et les données. Cette architecture est utilisée par la plupart des ordinateurs actuels. Voir https://en.wikipedia.org/wiki/Von_Neumann_architecture

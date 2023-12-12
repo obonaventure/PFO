@@ -69,6 +69,10 @@ La table US-ASCII (:numref:`table-ascii`) définit les représentations binaires
  - `10000011` correspond au caractère représentant la lettre `A` (majuscule)  
  - `01000000` correspond au caractère représentant un espace 
 
+.. spelling:word-list::
+
+   Klingon
+   
 Cette table avait l'inconvénient majeur de ne contenir que les représentations des caractères non-accentués de l'alphabet latin. Elle permet d'écrire du texte en anglais et dans d'autres langues européennes qui utilisent peu d'accents, mais ne permet évidemment pas de représenter tous les caractères des langues écrites sur notre planète. Au fil des années, ce problème a été résolu avec d'autres tables de correspondance dont celles qui sont adaptées aux accents utilisés par les langues européennes. Aujourd'hui, l'encodage standard des caractères se fait en utilisant le format `Unicode <https://home.unicode.org>`_. Une description détaillée d'Unicode sort du cadre de ce cours d'introduction, mais sachez qu'en mars 2020, la version 13.0 d'Unicode permettait de représenter 143859 caractères différents correspondant à 154 formes d'écritures. Unicode permet de représenter quasiment toutes les langues écrites connues sur notre planète. Des chercheurs ont même proposé un format Unicode permettant de supporter le Klingon, c'est-à-dire la langue écrite inventée pour la série de films Star Trek. 
 
 .. ajouter un graphique avec des statistiques issues de https://en.wikipedia.org/wiki/Unicode pour montrer l'évolution dans le temps 
@@ -228,8 +232,16 @@ En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les sym
 Langage d'assemblage 
 ====================
 
+.. spelling:word-list::
 
-Avec la mémoire et l'ALU nous avons les briques de base qui vont nous permettre de construire un micro-processeur qui sera capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neumann`. 
+   Von
+   Neumann
+   John
+
+
+
+
+Nous pouvons commencer à programmer un micro-processeur qui est capable d'exécuter de petits programmes. Ce micro-processeur répond à ce que l'on appelle l':index:`architecture de Von Neumann`. 
 
 Cette architecture est composée d'un :index:`processeur` (:index:`CPU` en anglais) ou unité de calcul et d'une mémoire. Le processeur est un circuit électronique qui est capable d'effectuer de nombreuses tâches : 
 
@@ -878,6 +890,16 @@ Fonctions booléennes
 
 La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x` contient les différentes valeurs possibles de l'entrée `x` et la valeur du résultat pour chacune des valeurs possibles de `x`.
 
+.. spelling:word-list::
+
+   NOT
+   AND
+   OR
+   XOR
+   NAND
+   NOR
+
+
 
 === ===========
 x   identité(x) 
@@ -1013,7 +1035,7 @@ De la même façon, on peut définir les opérations qui prennent deux arguments
 
 :math:`OR(a_{15}a_{14}a_{13}a_{12}a_{11}a_{10}a_{9}a_{8}a_{7}a_{6}a_{5}a_{4}a_{3}a_{2}a_{1}a_{0},b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0})=or(a_{15},b_{15})or(a_{14},b_{14})or(a_{13},b_{13})or(a_{12},b_{12})or(a_{11},b_{11})or(a_{10},b_{10})or(a_{9},b_{9})or(a_{8},b_{8})or(a_{7},b_{7})or(a_{6},b_{6})or(a_{5},b_{5})or(a_{4},b_{4})or(a_{3},b_{3})or(a_{2},b_{2})or(a_{1},b_{1})or(a_{0},b_{0})` où :math:`or(...)` est l'opération OR appliquée à un bit définie plus haut.
 
-Ces opérations logiques exsitent sous trois formes en fonction de leurs arguments:
+Ces opérations logiques existent sous trois formes en fonction de leurs arguments:
 
  - ``OR reg1, reg2``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans les registres ``reg1`` et ``reg2``
  - ``OR reg1, [adr]``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans le registre ``reg1`` et en mémoire à l'adresse ``adr``

@@ -426,6 +426,14 @@ peut se réécrire de la façon suivante pour supprimer la disjonction logique.
 Les boucles
 -----------
 
+.. spelling:word-list::
+
+   while
+   for
+
+
+
+
 Après les opérations arithmétiques et logiques et les instructions conditionnelles, il nous
 reste à voir comment supporter les boucles. Python supporte deux types principaux de boucles :
 
@@ -433,6 +441,8 @@ reste à voir comment supporter les boucles. Python supporte deux types principa
  - les boucles ``for``
 
 
+
+   
 Les boucles ``while`` sont les boucles les plus générales. Une boucle ``for`` est
 généralement une boucle d'un type particulier qui est écrite de façon compacte.
 Nous nous focaliserons  sur les boucles ``while`` dans cette section. Une boucle
@@ -786,7 +796,7 @@ qui *suit* l'adresse qui est dans le registre ``C``. Enfin, l'instruction
 ``MOV D, [C-2]`` placera dans le registre ``D`` le bloc de 16 bits qui se trouve en mémoire
 à l'adresse qui *précède* celle qui est dans le registre ``C``. 
 
-Nous pouvons donc écrire les instructions suivantes pour comparer les coordonées
+Nous pouvons donc écrire les instructions suivantes pour comparer les coordonnées
 ``y`` 
 
 
@@ -879,10 +889,10 @@ attention aux instructions que l'on écrit et d'être systématique. Notre progr
 va parcourir le tableau du nombre de jours dans chaque mois. Pour cela, nous aurons besoin
 de conserver l'indice du tableau ``mois`` qui est en cours de traitement. Nous
 choisissons d'utiliser le registre ``C`` pour stocker cette information. Il est
-initiliasé à ``0`` avant d'entrer dans la boucle. Connaissant cet indice, il est possible
+initialisé à ``0`` avant d'entrer dans la boucle. Connaissant cet indice, il est possible
 de calculer l'adresse du `Cème` élément du tableau ```mois``. Pour cela, il suffit de
 calculer la somme entre l'adresse du tableau et le double de l'indice ``C`` puisque chaque
-entier prend 16 bits et donc deux adresses en mémoire. Nous choissons d'utiliser le registre
+entier prend 16 bits et donc deux adresses en mémoire. Nous choisissons d'utiliser le registre
 ``A`` pour stocker cette adresse car c'est le seul registre qui supporte l'opération de
 multiplication. Nous aurions pu aussi prendre le registre ``D`` et remplacer l'instruction
 ``MUL 2`` par ``ADD D, D`` qui donne le même résultat et en pratique est généralement
@@ -1086,6 +1096,8 @@ Utilisation des chaînes de caractères
 -------------------------------------
 
 Notre minuscule assembleur utilise un mot de 16 bits pour représenter chaque caractère. Une chaîne de caractères peut être vue comme un tableau de caractères. Elle sera donc composée de caractères consécutifs qui sont stockés en mémoire. En assembleur, nous pouvons stocker une chaînes de caractères en mémoire en utilisant directement le mot clé ``DB`` comme suit.
+
+
 .. code-block:: nasm
 		
    hello: DB "Hello World!" 
@@ -1260,6 +1272,12 @@ En python, les listes jouent un rôle très important. Elles permettent de stock
 informations dont le nombre n'est pas fixé a priori et leur taille s'adapte dynamiquement
 à l'exécution du programme. Il y a différentes solutions qui permettent d'organiser de telles listes.
 
+.. spelling:word-list::
+
+   ArrayList
+   l'ArrayList
+
+
 Une première approche est d'utiliser un tableau, généralement dénommé :index:`ArrayList`
 dont la taillé évolue au fur et à mesure de son remplissage. En assembleur, on peut facilement
 construire un tableau d'une taille quelconque. Il suffit de réserver la zone mémoire
@@ -1322,7 +1340,7 @@ représentée ci-dessous.
 Lorsque l'on veut ajouter un élément à une :index:`ArrayList` qui est pleine, il
 faut trouver une nouvelle zone de mémoire qui est libre et a une taille supérieure à celle
 de notre :index:`ArrayList`. Il faut y copier le contenu de l'ArrayList de façon à
-avoir suffisament d'espace pour faire grandir la liste par après. Cela demande une gestion
+avoir suffisamment d'espace pour faire grandir la liste par après. Cela demande une gestion
 de la mémoire qui sort du cadre de ce cours introductif.
 
 Une autre approche pour gérer une liste est d'utiliser une structure chaînée. Tout

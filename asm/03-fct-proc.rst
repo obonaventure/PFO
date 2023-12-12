@@ -116,21 +116,23 @@ qui correspondent aux différentes assignations de cette variable.
 
    
    
-Nous devons également assigner une zone mémoire pour stocker la variable ``compteur``. Supposons que celle-ci soit stockée aux adresses ``16`` et ``17`` . La :numref:`fig-mem-init` présente le contenu initial de notre mémoire.
+Nous devons également assigner une zone mémoire pour stocker la variable ``compteur``. Supposons que celle-ci soit stockée aux adresses ``16`` et ``17``. La :numref:`fig-mem-init` présente le contenu initial de notre mémoire.
 
-   .. _fig-mem-init:
+.. _fig-mem-init:
+.. tikz:: Contenu initial de la mémoire
 
-   .. tikz:: Contenu de la mémoire
+	  [cell/.style={rectangle,draw=black},
+	  space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=-\pgflinewidth,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
 
-   [cell/.style={rectangle,draw=black},
-   space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=-\pgflinewidth,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
+	  \matrix (first) [space, column 1/.style={font=\ttfamily},column 2/.style={nodes={cell,minimum width=2em}}, column 3/.style={align=left}]
+	  {
+	  17   & 0 & \emph{variable }\texttt{compteur} \\
+	  16  & 0 &   \\
+	  15   & 0 &  \\
+	  14   & 0 &  \emph{variable} \texttt{a} \\} ;
 
-   \matrix (first) [space, column 1/.style={font=\ttfamily},column 2/.style={nodes={cell,minimum width=2em}}, column 3/.style={align=left}]
-   {
-   17   & 0 & \emph{variable }\texttt{compteur}\\   16  & 0 &   \\
-   15   & 0 &  \\   \\   14   & 0 &  \\ \emph{variable }\texttt{a}  };};
-
-   % source https://www.latex4technics.com/?note=3zrf
+   
+.. % source https://www.latex4technics.com/?note=3zrf
        
 
 Il nous faut maintenant pouvoir faire appel à la procédure ``compte()`` après l'exécution des lignes ``1`` et ``3``. Le corps de cette procédure peut s'écrire en trois instructions en assembleur. 
@@ -199,7 +201,7 @@ une partie de la mémoire et d'y faire appel en exécutant un saut inconditionne
    JMP retour
    
 
-Malheureusement, ce n'est pas suffisant. Après la première exécution de la procédure ``compte``, l'exécution doit reprendre à l'adresse ``LIGNE3`` tandis qu'après la seconde exécution de la même procédure, il faut poursuivre l'exécution du programme principal à partir de l'adresse ``LIGNE5``. Pour résoudre ce problème, nous devons rendre le code de la procédure plus générique. Notre procédure doit pouvoir retourner à l'adresse qui suit celle à partir de laquelle elle a été appelée. Dans notre assembleur, comme dans la plupart des assembleurs, cela se fait en utilisant deux instructions spéciales: :index:`CALL` pour appeler une procédure et :index:`RET` pour terminer l'exécution d'une procédure *et* retourner à l'adresse qui suit celle de l'appel. Cette adresse est appelée l':term:`adresse de retour`. L'instruction :index:`CALL` la sauvegarde en mémoire et ensuite fait un saut à l'addresse qui est son unique argument. L'exécution d'une procédure se déroule comme suit:
+Malheureusement, ce n'est pas suffisant. Après la première exécution de la procédure ``compte``, l'exécution doit reprendre à l'adresse ``LIGNE3`` tandis qu'après la seconde exécution de la même procédure, il faut poursuivre l'exécution du programme principal à partir de l'adresse ``LIGNE5``. Pour résoudre ce problème, nous devons rendre le code de la procédure plus générique. Notre procédure doit pouvoir retourner à l'adresse qui suit celle à partir de laquelle elle a été appelée. Dans notre assembleur, comme dans la plupart des assembleurs, cela se fait en utilisant deux instructions spéciales: :index:`CALL` pour appeler une procédure et :index:`RET` pour terminer l'exécution d'une procédure *et* retourner à l'adresse qui suit celle de l'appel. Cette adresse est appelée l':term:`adresse de retour`. L'instruction :index:`CALL` la sauvegarde en mémoire et ensuite fait un saut à l'adresse qui est son unique argument. L'exécution d'une procédure se déroule comme suit:
 
  1. Sauvegarde de l'adresse de retour en mémoire
  2. Appel de la procédure (via l'instruction ``JMP``)
@@ -234,6 +236,14 @@ Il est intéressant d'observer l'évolution du processeur et de la mémoire dura
 
 Le code de la procédure s'exécute et se termine par l'instruction ``RET``. Celle-ci a également trois effets comme l'instruction ``CALL``. Tout d'abord, elle lit en mémoire la valeur qui se trouve à l'adresse stockée dans le registre ``SP``. Cette valeur est l'adresse qu'il faut placer dans le compteur de programme pour retourner à l'adresse qui suit celle de l'appel de la procédure (l'étiquette ``ligne3`` dans notre exemple). L'instruction ``RET`` modifié également la valeur stockée dans le registre ``SP`` en l'incrémentant de deux unités.
 
+.. spelling:word-list::
+
+   stack
+   PUSH
+   POP
+   MOV
+
+
 
 Le registre ``SP`` n'est pas utilisé par les instructions habituelles telles que ``MOV`` ou ``ADD``. Il ne sert que pour les instructions ``CALL`` et ``RET``. Grâce à ce registre, il est possible de maintenir en mémoire une structure de données appelée une :index:`pile` (ou :index:`stack` en anglais). Cette pile est stockée en mémoire et à tout moment l'adresse du sommet de la pile se trouve dans le registre ``SP``. 
 
@@ -247,40 +257,38 @@ La pile la plus connue dans la vie de tous les jours est la pile d'assiettes. Lo
 .. note:: Comment stocker une pile de mots en mémoire ?
 
 	  
-   La solution la plus simple pour stocker et manipuler une pile de mots
-   en minuscule assembleur est d'utiliser une zone de mémoire contiguë. Une première approche est d'utiliser l'adresse ``p`` pour stocker l'élément se trouvant en bas de la pile et d'ajouter les éléments suivants aux adresses ``p+1``,  ``p+2``, ... Pour illustrer cette approche, la :numref:`fig-stack-up` présente l'évolution d'une pile initialement vide lors de l'exécution de la séquence ``push(3) ; pop ; push(2) ; push(5)`` d'opérations. Avec cette approche, le sommet de la pile est toujours l'élément dont l'adresse est numériquement la plus élevée.
+   La solution la plus simple pour stocker et manipuler une pile de mots en minuscule assembleur est d'utiliser une zone de mémoire contiguë. Une première approche est d'utiliser l'adresse ``p`` pour stocker l'élément se trouvant en bas de la pile et d'ajouter les éléments suivants aux adresses ``p+1``,  ``p+2``, ... Pour illustrer cette approche, la :numref:`fig-stack-up` présente l'évolution d'une pile initialement vide lors de l'exécution de la séquence ``push(3) ; pop ; push(2) ; push(5)`` d'opérations. Avec cette approche, le sommet de la pile est toujours l'élément dont l'adresse est numériquement la plus élevée.
 
    .. _fig-stack-up:
+   .. tikz:: Évolution de la pile vers les adresses numériquement croissantes
 
-   .. tikz:: Evolution de la pile vers les adresses numériquement croissantes
+          [cell/.style={rectangle,draw=black},
+	  space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
 
-      [cell/.style={rectangle,draw=black},
-      space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
+	  \matrix (first) [space, column 1/.style={font=\ttfamily,minimum width=3em},column 2/.style={nodes={cell,minimum width=2em}}, column 3/.style={nodes={cell,minimum width=2em}}, column 4/.style={nodes={cell,minimum width=2em}},column 5/.style={nodes={cell,minimum width=2em}}, column 6/.style={nodes={cell,minimum width=2em}}]
+	  {
+	  p+2   &  &  &  &   &   &\\
+	  p+1  &  &   &  &   & 5 &\\
+	  p   &  &  3 &  & 2 & 2 &\\};
 
-      \matrix (first) [space, column 1/.style={font=\ttfamily,minimum width=3em},column 2/.style={nodes={cell,minimum width=2em}}, column 3/.style={nodes={cell,minimum width=2em}}, column 4/.style={nodes={cell,minimum width=2em}},column 5/.style={nodes={cell,minimum width=2em}}, column 6/.style={nodes={cell,minimum width=2em}}]
-      {
-      p+2   &  &  &  &   &   &\\
-      p+1  &  &   &  &   & 5 &\\
-      p   &  &  3 &  & 2 & 2 &\\};
 
    Outre les données, une telle structure doit également stocker l'adresse de l'élément se trouvant au sommet de la pile. Après l'opération ``push(3)`` le sommet de la pile est à l'adresse ``p``. Il est à la même adresse après l'opération ``push(2)`` et atteint l'adresse ``p+1`` après l'opération ``push(5)``. 
    
-   Une seconde approche est d'utiliser l'adresse ``p`` pour stocker le premier élément de la pile et d'ajouter les éléments suivants aux adresses ``p-1``,  ``p-2``, ... La :numref:`fig-stack-up` illustre l'évolution d'un telle pile lors de l'exécution des opérations suivantes: ``push(3) ; pop ; push(2) ; push(5)``. Avec cette approche, l'élément se trouvant au sommet de la pile est celui dont l'adresse est numériquement la plus basse.
+   Une seconde approche est d'utiliser l'adresse ``p`` pour stocker le premier élément de la pile et d'ajouter les éléments suivants aux adresses ``p-1``,  ``p-2``, ... La :numref:`fig-stack-down` illustre l'évolution d'un telle pile lors de l'exécution des opérations suivantes: ``push(3) ; pop ; push(2) ; push(5)``. Avec cette approche, l'élément se trouvant au sommet de la pile est celui dont l'adresse est numériquement la plus basse.
 
 
    .. _fig-stack-down:
+   .. tikz:: Évolution de la pile vers les adresses numériquement décroissantes
 
-   .. tikz:: Evolution de la pile vers les adresses numériquement décroissantes
+	     [cell/.style={rectangle,draw=black},
+	     space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
 
-      [cell/.style={rectangle,draw=black},
-      space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
-
-      \matrix (first) [space, column 1/.style={font=\ttfamily},column 2/.style={nodes={cell,minimum width=2em}}, column 3/.style={nodes={cell,minimum width=2em}}, column 4/.style={nodes={cell,minimum width=2em}},column 5/.style={nodes={cell,minimum width=2em}}, column 6/.style={nodes={cell,minimum width=2em}}]
-      {
-      p     &  & 3  &  & 2 & 2  &\\
-      p-1   &  &    &  &   & 5 &\\
-      p-2   &  &    &  &   &  &\\};
-      
+	     \matrix (first) [space, column 1/.style={font=\ttfamily},column 2/.style={nodes={cell,minimum width=2em}}, column 3/.style={nodes={cell,minimum width=2em}}, column 4/.style={nodes={cell,minimum width=2em}},column 5/.style={nodes={cell,minimum width=2em}}, column 6/.style={nodes={cell,minimum width=2em}}]
+	     {
+	     p     &  & 3  &  & 2 & 2  &\\
+	     p-1   &  &    &  &   & 5 &\\
+	     p-2   &  &    &  &   &  &\\};
+   
 
    Outre les données, cette structure doit également stocker l'adresse de l'élément se trouvant au sommet de la pile. Après l'opération ``push(3)`` le sommet de la pile est à l'adresse ``p``. Il est à la même adresse après l'opération ``push(2)`` et atteint l'adresse ``p-1`` après l'opération ``push(5)``. 
 
@@ -306,11 +314,10 @@ observons l'exécution du code assembleur ci-dessous:
    POP D
 		
 
-La première instructions, ``PUSH 7`` place la valeur ``7`` au sommet de la pile. La deuxième place la valeur ``3`` en mémoire à l'adresse ``122``. La troisième instruction place la valeur qui se trouve à l'adresse ``122``, c'est-à-dire ``3`` au sommet de la pile. La quatrième isntruction, ``MOV A, 4`` place la valeur ``4`` dans le registre ``A``. La cinquième instruction sauve le contenu du registre ``A`` sur la pile. La figure :numref:`fig-stack-ex` présente l'état de la pile à ce moment. Dans cette figure, `sp` est l'adresse qui se trouve dans le registre ``SP``.
+La première instructions, ``PUSH 7`` place la valeur ``7`` au sommet de la pile. La deuxième place la valeur ``3`` en mémoire à l'adresse ``122``. La troisième instruction place la valeur qui se trouve à l'adresse ``122``, c'est-à-dire ``3`` au sommet de la pile. La quatrième instruction, ``MOV A, 4`` place la valeur ``4`` dans le registre ``A``. La cinquième instruction sauve le contenu du registre ``A`` sur la pile. La figure :numref:`fig-stack-ex` présente l'état de la pile à ce moment. Dans cette figure, `sp` est l'adresse qui se trouve dans le registre ``SP``.
 
 .. _fig-stack-ex:
-
-   .. tikz:: Etat de la pile après l'exécution des trois instructions ``PUSH``.
+.. tikz:: État de la pile après l'exécution des trois instructions ``PUSH``.
 
       [cell/.style={rectangle,draw=black},
       space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
@@ -325,12 +332,11 @@ La première instructions, ``PUSH 7`` place la valeur ``7`` au sommet de la pile
 
 
 
-La première instruction ``POP`` va placer la valeur ``4`` dans le registre ``B``. La deuxième isntruction ``POP`` stocke la valeur ``3`` dans le registre ``C``. La figure :numref:`fig-stack-ex2` présente l'état de la pile en mémoire à cet isntant. 
+La première instruction ``POP`` va placer la valeur ``4`` dans le registre ``B``. La deuxième instruction ``POP`` stocke la valeur ``3`` dans le registre ``C``. La figure :numref:`fig-stack-ex2` présente l'état de la pile en mémoire à cet instant. 
 
       
 .. _fig-stack-ex2:
-
-   .. tikz:: Etat de la pile après l'exécution de deux instructions ``POP``.
+.. tikz:: État de la pile après l'exécution de deux instructions ``POP``.
 
       [cell/.style={rectangle,draw=black},
       space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
@@ -347,8 +353,7 @@ Durant son exécution, la mémoire d'un de nos programmes en assembleur comprend
 
    
 .. _fig-memoire:
-
-   .. tikz:: Organisation de la mémoire de données d'un programme
+.. tikz:: Organisation de la mémoire de données d'un programme
 
       \draw (2,0) -- (4,0) -- (4,3) ;
       \draw[dashed] (4,3) -- (4,4);
@@ -432,7 +437,7 @@ On peut résoudre ce problème de deux façons en utilisant la pile. La premièr
 	      
 Lorsque l'on exécute ce programme, la variable ``x`` contient bien la valeur ``124`` comme en python. Notez l'ordre dans lequel les valeurs des registres sont stockées (``A`` puis ``B`` puis ``C`` puis ``D``) et ensuite récupérées sur la pile (``D`` puis ``C`` puis ``B`` puis ``A``).
 
-Cette approche fonctionne, mais elle implique parfois des instructions inutiles. Dans notre exemple, la procédure ``compte`` n'utilise que le registre ``A``. Il est donc inutile de sauver les valeurs stockées dans les trois autres registres, mais le programme appelant ne connait pas cette caractéristique de notre procédure. Une meilleure approche est de laisser à la procédure appelée la responsabilité de préserver les valeurs des registres qu'elle modifie. C'est cette approche que nous utilisons dans l'exemple suivant.
+Cette approche fonctionne, mais elle implique parfois des instructions inutiles. Dans notre exemple, la procédure ``compte`` n'utilise que le registre ``A``. Il est donc inutile de sauver les valeurs stockées dans les trois autres registres, mais le programme appelant ne connaît pas cette caractéristique de notre procédure. Une meilleure approche est de laisser à la procédure appelée la responsabilité de préserver les valeurs des registres qu'elle modifie. C'est cette approche que nous utilisons dans l'exemple suivant.
 
 .. code-block:: nasm
 
@@ -488,7 +493,7 @@ Commençons par la première question. Avant d'appeler une fonction, il est néc
  - dans des registres, avec un argument par registre
  - en mémoire
 
-La première solution a l'avantage d'être simple et rapide. Il suffit d'exécuter une instruction ``MOV`` pour placer la valeur d'un argument au bon endroit. Malheureusement, notre processeur ne dispose que de quatre registes au total. Nous ne pourrons donc jamais supporter plus de quatre arguments.
+La première solution a l'avantage d'être simple et rapide. Il suffit d'exécuter une instruction ``MOV`` pour placer la valeur d'un argument au bon endroit. Malheureusement, notre processeur ne dispose que de quatre registres au total. Nous ne pourrons donc jamais supporter plus de quatre arguments.
 
 La seconde solution est plus générale. Nous utilisons déjà la pile pour récupérer l'adresse de retour et on peut facilement envisager de placer des arguments sur la pile avant l'exécution d'une fonction. Il suffit pour cela d'utiliser l'instruction ``PUSH`` pour chaque argument à pousser sur la pile. La fonction pourra elle récupérer chaque argument en faisant appel à ``POP`` dans l'ordre inverse de celui du programme appelant.
 
@@ -526,7 +531,7 @@ La fonction ``f2`` fait elle deux appels à la fonction ``f1``. Pour chacun de c
 
 Nous pouvons maintenant analyser une fonction qui prend deux arguments comme celle qui calcule le minimum entre deux entiers.
 
-Analysons d'abord comment la fonction doit être appelée depuis un programme. Son premier argument doit se trouver dans le registre ``D`` et le second doit être sur la pile avant d'exécuter l'instruction ``CALL min``. Le premier argument pourra être calculé ou mis dans le registre ``D`` via une instruction ``MOV``. Le second argument est lui placé sur la pile grâce à une instruction ``PUSH``. A ce moment, la fonction ``min`` peut être appelée via l'insruction ``CALL min``. Au retour de la fonction ``min``, le registre ``A`` contiendra le minimum des deux arguments. Le programme pourra traiter cette valeur minimale comme il le souhaite. Cependant, comme le programme a modifié la pile avant d'appeler la fonction, il ne doit pas oublier de remettre la pile dans son état initial. Cela peut se faire de deux façons:
+Analysons d'abord comment la fonction doit être appelée depuis un programme. Son premier argument doit se trouver dans le registre ``D`` et le second doit être sur la pile avant d'exécuter l'instruction ``CALL min``. Le premier argument pourra être calculé ou mis dans le registre ``D`` via une instruction ``MOV``. Le second argument est lui placé sur la pile grâce à une instruction ``PUSH``. A ce moment, la fonction ``min`` peut être appelée via l'instruction ``CALL min``. Au retour de la fonction ``min``, le registre ``A`` contiendra le minimum des deux arguments. Le programme pourra traiter cette valeur minimale comme il le souhaite. Cependant, comme le programme a modifié la pile avant d'appeler la fonction, il ne doit pas oublier de remettre la pile dans son état initial. Cela peut se faire de deux façons:
 
  - en utilisant une instruction ``POP`` qui copie la valeur se trouvant au sommet de la pile et incrémente 
  - en incrémentant simplement le pointeur de sommet de pile (``SP``) de deux unités
@@ -550,7 +555,7 @@ Nous pouvons maintenant écrire la fonction qui calcule le minimum entre les val
 
 .. _fig-stack-min:
 
-   .. tikz:: Etat de la pile au début de l'exécution de la fonction ``min``
+.. tikz:: État de la pile au début de l'exécution de la fonction ``min``
 
       [cell/.style={rectangle,draw=black},
       space/.style={minimum height=1.5em,matrix of nodes,row sep=-\pgflinewidth,column sep=0.5cm,column 1/.style={font=\ttfamily}},text depth=0.5ex,text height=2ex,nodes in empty cells]
@@ -561,7 +566,7 @@ Nous pouvons maintenant écrire la fonction qui calcule le minimum entre les val
       sp    & \emph{adresse retour}  \\};
 
 
-Pour accéder au second argument, il n'est pas intéressant d'utiliser une instruction ``POP`` car celle-ci ne permet que d'accéder à l'élement au sommet de la pile, c'est-à-dire l'adresse de retour. Par contre, comme nous savons que l'élément suivant sur la pile se trouve juste au-dessus de cet élément, il nous suffit d'utiliser l'instruction ``MOV A, [SP+2]``. Cette instruction charge dans le registre ``A`` la valeur qui se trouve en mémoire à l'adresse correspondant à celle qui est stockée dans le registre ``SP`` plus deux unités. Comme un mot de 16 bits en mémoire consomme deux adresse, c'est bien l'adresse de l'élément suivant sur la pile et donc notre second argument. Nous plaçons cet argument dans le registre ``A`` car la fonction peut modifier ce registre à sa guise. Ensuite, il suffit de comparer les valeurs se trouvant dans les registres ``A`` et ``D`` et retourner le minimum dans le registre ``A``. L'instruction ``RET`` utilise l'adresse de retour qui se trouve au sommet de la pile. 
+Pour accéder au second argument, il n'est pas intéressant d'utiliser une instruction ``POP`` car celle-ci ne permet que d'accéder à l'élément au sommet de la pile, c'est-à-dire l'adresse de retour. Par contre, comme nous savons que l'élément suivant sur la pile se trouve juste au-dessus de cet élément, il nous suffit d'utiliser l'instruction ``MOV A, [SP+2]``. Cette instruction charge dans le registre ``A`` la valeur qui se trouve en mémoire à l'adresse correspondant à celle qui est stockée dans le registre ``SP`` plus deux unités. Comme un mot de 16 bits en mémoire consomme deux adresse, c'est bien l'adresse de l'élément suivant sur la pile et donc notre second argument. Nous plaçons cet argument dans le registre ``A`` car la fonction peut modifier ce registre à sa guise. Ensuite, il suffit de comparer les valeurs se trouvant dans les registres ``A`` et ``D`` et retourner le minimum dans le registre ``A``. L'instruction ``RET`` utilise l'adresse de retour qui se trouve au sommet de la pile. 
       
 
 .. code-block:: nasm
