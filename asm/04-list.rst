@@ -158,33 +158,104 @@ est assez facile à réaliser, mais il faut aussi modifier toutes les instructio
 du programme qui utilisent l'adresse de la pile puisque celle-ci change et cela
 c'est beaucoup plus difficile à réaliser.
 
-C'est pour cette raison que la plupart des implémentations d'une pile utilisent
-une :index:`structure chaînée`. Dans une pile, il est nécessaire de connaître à
-tout moment l'élément qui se trouve au sommet de la pile. Cela se fait généralement
-en stockant en mémoire l'adresse du bloc de mémoire qui contient cet élément.
+
+En python, il est possible d'implémenter une pile en utilisant des références.
+
+.. code-block:: python
+
+   # Définition de la classe Node
+   class Node:
+	def __init__(self, value):
+	    self.value = value
+	    self.next = None
+
+   # Définition de la classe Stack
+   class Stack:
+        # Initialisation
+        def __init__(self):
+	    self.top = None
+	    
+	# Méthode pour empiler un élément sur la pile
+	def push(self, value):
+	    new_node = Node(value)
+	    if self.top is None:
+	        self.top = new_node else:
+		new_node.next = self.top
+	    self.top = new_node
+
+	# Méthode pour dépiler un élément de la pile
+	def pop(self):
+	    if self.top is None:
+		return None
+	    else:
+	        popped_node = self.top
+		self.top = self.top.next
+		popped_node.next = None
+		return popped_node.value
+
+	# Méthode pour vérifier si la pile est vide
+	def is_empty(self):
+	    return self.top is None
+
+Dans cet exemple, nous utilisons une classe ``Node`` pour représenter chaque nœud de la liste chaînée, et une classe ``Stack`` pour encapsuler les opérations de la pile.
+
+La méthode ``push()`` permet d'empiler un nouvel élément sur le dessus de la pile en créant un nouveau nœud et en modifiant les références pour pointer vers le nouveau nœud.
+
+La méthode ``pop()`` permet de dépiler l'élément du dessus de la pile en ajustant les références pour pointer vers le nœud suivant.
+
+La méthode ``is_empty()`` vérifie si la pile est vide en vérifiant si le pointeur `top` est ``None``.
+
+
+Cette implémentation peut s'utiliser comme suit.
+
+.. code-block:: python
+	    
+   # Exemple d'utilisation de la pile
+   stack = Stack()
+   stack.push(1)
+   stack.push(2)
+   stack.push(3)
+   print(stack.pop()) # Résultat: 3
+   print(stack.pop()) # Résultat: 2
+   print(stack.is_empty()) # Résultat: False
+
+
+Dans l'exemple d'utilisation, nous empilons les éléments 1, 2 et 3 sur la pile à l'aide de la méthode ``push()``. Ensuite, nous déplions les deux premiers éléments de la pile à l'aide de la méthode ``pop()``. Finalement, nous utilisons la méthode ``is_empty()`` pour vérifier si la pile est vide.
+
+Cette implémentation de la pile utilise une :index:`structure chaînée`. Dans une pile,
+il est nécessaire de connaître à tout moment l'élément qui se trouve au sommet de la
+pile. Notre code python garde une référence vers le sommet de la pile via
+la variable ``self.top``. Celle-ci a comme valeur ``None`` à la création de la
+pile ou lorsqu'elle est vide.
+
 Dans de nombreux langages de programmation on appelle cette adresse un
 :index:`pointeur`. Lorsque l'on créée une pile, celle-ci est vide et le
 pointeur du sommet de pile ne peut pas indiquer l'adresse d'un élément de la
-pile. On utilise en général la valeur ``NULL`` pour indiquer un pointeur qui
+pile. En assembleur on utilise la valeur ``NULL`` pour indiquer un pointeur qui
 ne pointe vers rien. En mémoire, ce pointeur ``NULL`` correspondra à l'adresse
 ``0``.
 
-Pour stocker les éléments de notre pile de naturels, nous aurons besoin de
-deux zones de mémoire. La première contiendra le naturel et la seconde un pointeur
-(c'est-à-dire l'adresse) vers l'élément suivant sur la pile. Nous utiliserons une
+En assembleur, nous pouvons également stocker l'équivalent de l'information
+contenue dans chaque instance de la classe ``Node``, c'est-à-dire :
+
+ - la valeur (le naturel) stockée en mémoire
+ - l'adresse de l'instance suivante de la classe ``Node`` sur la pile ou ``None`` si
+   on est en fin de pile.
+
+Nous utiliserons une
 notation pointée pour faire référence à ces deux parties d'un élément d'une pile.
-Si ``e`` est notre élément, alors ``e.val`` sera la valeur du naturel de cet élément
-et ``e.ptr`` sera l'adresse stockée dans le pointeur et donc l'adresse de l'élément
+Si ``e`` est notre élément, alors ``e_val`` sera la valeur du naturel de cet élément
+et ``e_ptr`` sera l'adresse l'adresse de l'élément
 suivant sur la pile. Sur base de cette notation, nous pouvons reprendre
 notre exemple en python et analyser comment les différents éléments sont
 stockés en mémoire. La pile est initialisée en plaçant la valeur ``0``, correspondant
 au pointeur ``NULL``, à l'adresse (:math:`p`) correspondant au pointeur de sommet
 de pile. Ensuite, nous ajoutons ``7`` sur la pile avec l'opération
-``p.append(7)``. L'élément correspond se trouve à l'adresse :math:`x` sur la
+``p.push(7)``. L'élément correspond se trouve à l'adresse :math:`x` sur la
 :numref:`fig-pile-chain-7`.
 
 .. _fig-pile-chain-7:
-.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.append(7)``
+.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.push(7)``
 
 	  \matrix(m1) [matrix of nodes, text width=60pt] at (0,0)
 	  {
@@ -200,12 +271,23 @@ de pile. Ensuite, nous ajoutons ``7`` sur la pile avec l'opération
 	  \draw[thick,red,->] (pile.west) to [bend left] (p1_val.west);
 
 
+En assembleur, une telle structure chaînée peut être écrite en mémoire
+en utilisant les instructions suivantes.
+
+.. code-block:: nasm
+
+   p: DB n1_val   ; le pointeur vers le sommet de la pile
+   n1_val: DB 7   ; le premier naturel stocké sur la pile
+   n1_ptr: DB 0   ; pointeur NULL, pas de successeur
+
+	  
+
 La :numref:`fig-pile-chain-9` représente l'état de la pile en mémoire après exécution
-de l'opération ``p.append(9)`` en supposant que l'élément correspondant soit
+de l'opération ``p.push(9)`` en supposant que l'élément correspondant soit
 stocké en mémoire à l'adresse :math:`z`.
 	  
 .. _fig-pile-chain-9:
-.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.append(9)``
+.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.push(9)``
 	  
 
 	  \matrix(m1) [matrix of nodes, text width=60pt] at (0,0)
@@ -229,14 +311,24 @@ stocké en mémoire à l'adresse :math:`z`.
 	  \draw[thick,red,->] (pile.west) to [bend right] (p2_val.west);
 	  \draw[thick,red,->] (p2_next.east) to [bend right] (p1_val.east);
 
+En assembleur, une telle structure chaînée peut être écrite en mémoire
+en utilisant les instructions suivantes.
+
+.. code-block:: nasm
+
+   p: DB n2_val        ; le pointeur vers le sommet de la pile
+   n1_val: DB 7        ; le deuxième naturel stocké sur la pile
+   n1_ptr: DB 0        ; pointeur NULL, pas de successeur
+   n2_val: DB 9        ; le premier naturel stocké sur la pile
+   n2_ptr: DB n1_val   ; pointeur vers le successeur
 
 Après avoir récupéré la valeur ``9`` du sommet de la pile, on y ajoute ensuite
-deux éléments via les opérations ``pile.append(3)`` et ``pile.append(1)``.
+deux éléments via les opérations ``pile.push(3)`` et ``pile.push(1)``.
 A ce moment, la pile contient trois éléments comme représenté dans la
 :numref:`fig-pile-chain-31`.
 
 .. _fig-pile-chain-31:
-.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.append(3)`` suivi de ``pile.append(1)``
+.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.push(3)`` suivi de ``pile.push(1)``
 	
 
 	  \matrix(m1) [matrix of nodes, text width=60pt] at (0,0)
@@ -279,12 +371,12 @@ A titre d'exemple, considérons la pile de prénoms suivante en python:
 
 .. code-block:: console
 
+   # Exemple d'utilisation de la pile
+   pile = Stack()
+   pile.push("Louise")
+   pile.push("Claire")
+   pile.push("Dominique")
 		
-   >>> p=[]
-   >>> p.append("Louise")
-   >>> p.append("Claire")
-   >>> p.append("Dominique")
-   
 
 Si la chaîne de caractères ``Louise`` est stockée à l'adresse :math:`l`, la chaîne
 ``Claire`` à`l'adresse :math:`c` et la chaîne ``Dominique`` à l'adresse :math:`d`,
@@ -292,7 +384,7 @@ alors en mémoire cette pile peut être organisée comme dans :numref:`fig-pile-
 représentée en mémoire avec son marqueur de fin.
 
 .. _fig-pile-chain-prenoms:
-.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de ``pile.append(3)`` suivi de ``pile.append(1)``
+.. tikz:: Stockage d'une pile dans une structure chaînée après exécution de pile.push("Louise") suivi de pile.push("Claire") et pile.push("Dominique")
 
          \matrix(m1) [matrix of nodes, text width=60pt] at (0,0)
 	 {
@@ -338,7 +430,100 @@ représentée en mémoire avec son marqueur de fin.
    true
    false
 
-	 
+
+
+Nous pouvons maintenant construire une implémentation en assembleur qui
+permet d'ajouter et de retirer un naturel d'une pile. Tout comme l'implémentation
+en python, notre implémentation en assembleur utilise des noeuds qui sont
+composés de deux zones mémoires contigües de 16 bits chacune :
+
+ - ``n_val`` : le naturel stocké sur le pile
+ - ``n_ptr`` : un pointeur vers le successeur de l'élément sur la pile ou ``NULL`` (``0``) en fin de pile
+
+Nous utilisons la variable ``p`` pour stocker un pointeur vers l'adresse de du noeud
+qui se trouve au sommet de la pile (ou ``NULL`` si la pile est vide). Cette variable
+est initialisée à la valeur ``0`` puisque la pile est initialement vide.
+
+
+.. code-block:: nasm
+
+
+   JMP start:
+   p: DB n2_val ; pile
+   n1_val: DB 7
+   n1_ptr: DB 0
+   n2_val: DB 3
+   n2_ptr: DB n1_val
+   n3_val: DB 0
+   n3_ptr: DB 0
+   n4_val: DB 0
+   n4_ptr: DB 0
+   n5_val: DB 0
+   n5_ptr: DB 0
+   ;
+   push:
+   ;retourne la valeur au sommet de la pile sans la retirer
+   ; argument: adresse du pointeur vers sommet de pile
+   peek:
+   MOV A, [D]
+   CMP A, 0 ; si pile vide retourne 0
+   JE fin_peek
+   MOV A, [A]
+   fin_peek: RET
+   ; retourne l'élément au sommet de la pile et le retire de la pile
+   pop:
+   PUSH B
+   MOV B, [D] ; si pile vide, retourne 0
+   CMP B, 0
+   JE fin_pop
+   MOV A, [B] ; valeur à retourner
+   ADD B, 2 ; ptr est au-dessus de val
+   ; mise à zéro, pas nécessaire
+   MOV [B], 0
+   SUB B, 2
+   MOV [B], 0
+   fin_pop: 
+   POP B
+   RET
+   
+   ; push
+   ; premier argument la valeur à ajouter
+   ; deuxième argument, l'adresse du sommet de la pile
+   ; troisième argument, l'adresse du noeud à ajouter
+   push:
+   PUSH B
+   PUSH C
+   ; adresse pointeur de pile, premier sur stack
+   MOV B, [SP+8]
+   ; adresse (val) du noeud à ajouter
+   MOV C, [SP+6]
+   ; ajout de la valeur
+   MOV [C], D
+   ; modification du pointeur du nouveau noeud
+   ADD C, 2
+   MOV B, [B]; adresse pointée
+   MOV [C], B
+   ; modification du sommet de pile
+   MOV C, [SP+6]
+   MOV B, [SP+8]
+   MOV [B], C
+   POP B
+   POP C
+   RET
+   start:
+   MOV D, n4_val
+   CALL peek
+   MOV D, p
+   CALL peek
+   MOV D, p
+   CALL pop
+   start2:MOV D, 42
+   PUSH p
+   PUSH n5_val
+   CALL push
+   HLT
+
+   
 	
 conventions du C
 
