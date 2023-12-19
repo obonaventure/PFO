@@ -1,4 +1,4 @@
-.. LSINC1102 documentation master file, created by
+vv.. LSINC1102 documentation master file, created by
    sphinx-quickstart on Tue Jan 28 18:06:33 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -602,7 +602,284 @@ A titre d'illustration, la fonction ``inc`` ci-dessous permet d'incrémenter la 
 	 RET
 
 
-  
+En assembleur, on stocke parfois l'information sous la forme d'une séquence de bits.
+Lorsque les ordinateurs communiquent sur Internet, ils s'échangent les données
+sous forme de paquets. Chaque paquet est composé d'une entête de quelques dizaines
+d'octets et suivi des données qui sont échangées. L'entête d'un paquet comprend
+différents champs qui dont les valeurs sont fixées par l'émetteur du paquet
+et qui peuvent être modifiées par les noeuds du réseau (appelés routeurs). A titre
+d'exemple, la figure ci-dessous présente le format de l'entête d'un paquet
+IP version 4. Chaque ligne correspond à un mot de 32 bits et l'émetteur d'un tel
+paquet doit pouvoir spécifier précisément les valeurs de certains bits dans les
+champs tels que ``Type of Service`` ou ``Flags``. 
+
+
+.. code-block:: console
+
+		
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |Version|  IHL  |Type of Service|          Total Length         |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |         Identification        |Flags|      Fragment Offset    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Time to Live |    Protocol   |         Header Checksum       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Source Address                          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Destination Address                        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Options                    |    Padding    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+Notre microprocesseur utilise des mots de 16 bits. Pour traiter une entête de
+paquet IP, nous devrons donc la découper en blocs de 16 bits qui seront chacun
+stocké en mémoire ou dans un registre du micrprocesseur. Pour faciliter la
+modification de certains bits en mémoire, nous construisons deux fonctions. Ces
+fonctions prennent deux arguments :
+
+ - la position du bit à modifier (qui est placée dans le registre ``D`` suivant notre
+   convention). On supposera que le bit de poids faible est celui qui se trouve en
+   position ``0`` tandis que le bit de poids fort est en position ``15``
+ - le mode de 16 bits à modifier (qui est placé sur la pile suivant notre convention)
+
+Lors de l'exéction de ces fonctions, la pile contient donc l'adresse de retour
+précédée du mot de 16 bits à modifier comme représenté dans la :numref:`fig-pile-avant-set`. Après exécution, nos deux fonctions retournent le mot modifié dans
+le registre ``A``.
+
+
+.. _fig-pile-avant-set:
+.. tikz:: Etat de la pile avant l'exécution des fonctions setbit ou resetbit
+	  
+	  \matrix(m) [matrix of nodes]
+	  {
+	  \texttt{SP+4} & \ldots \\
+	  \texttt{SP+2} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$Mot$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
+	  \texttt{SP-2} & \ldots \\
+	  };  	     
+		
+
+Notre première fonction est ``setbit``. Elle fixe le nième bit du mot placé
+sur la pile à la valeur 1. Pour construire cette fonction, il faut se rappeler un
+peu de logique et utiliser les instructions de décalage. En logique, on se
+souvient que ``OR(x,1)`` vaut toujours ``1``, quelle que soit la valeur de ``x``.
+Pour mettre à ``1`` le bit à l'index 3 d'un mot de seize bits ``m``, il suffit donc
+de calculer ``OR(0000000000001000,m)``. Il nous reste donc à trouver un façon rapide
+de construire la séquence de bits dont le bit en position ``n`` vaut ``1`` et tous les
+autres valent ``0``. Pour cela, il suffit d'utiliser les opérations de décalage. En
+effet, ``SHL(0000000000000001,1)`` donne ``0000000000000010``. Pour obtenir la séquence
+``00000000000001000`` il suffit d'utiliser l'instruction ``SHL(0000000000000001,3)``.
+En assemblant ces différentes instructions, on obtient le code ci-dessous.
+
+	  
+.. code-block:: nasm
+		
+   ; fonction pour fixer le nième bit d'un mot à 1
+   ; pre: n est dans le registre D et 0<=n<15
+   ; le mot à modifier est sur la pile, retourne le mot 
+   setbit:
+   PUSH B
+   MOV B, 1
+   SHL B, D
+   MOV A, [SP+6]
+   OR A, B
+   POP B
+   RET
+
+De la même façon, on peut aisément construire une fonction pour mettre à zéro
+le nième bit d'un mot de 16 bits en se rappelant que ``AND(0,x)`` vaut toujours ``0``
+et que ``AND(1,y)`` vaut ``y``. Pour forcer la valeur du bit en position 4 du mot
+``m``, il suffit de calculer ``AND(111111111101111,m)`` et ``1111111111101111``
+n'est rien d'autre que ``NOT(0000000000010000)```. Le code de resetbit s'en déduit
+facilement.
+
+   
+.. code-block:: nasm
+		
+   ; fonction pour fixer le nième bit d'un mot à 0
+   ; pre: n est dans le registre D et 0<=n<15
+   ; le mot à modifier est sur la pile, retourne le mot 
+   resetbit:
+   PUSH B
+   MOV B, 1
+   SHL B, D
+   NOT B
+   MOV A, [SP+6]
+   AND A, B
+   POP B
+   RET
+
+
+   start:
+   MOV D, 3
+   PUSH 2
+   CALL setbit
+   MOV D, 3
+   PUSH A
+   CALL resetbit 
+   HLT
+
+
+Prenons un autre exemple pour illustrer l'utilisation de la pile et passer plus d'arguments. Construisons la fonction
+qui calcule l'équivalent de la fonction ``f`` qui en python calcule ``y=a*x+b``
+
+.. code-block:: python
+
+   def f (x, a, b):
+       return a*x+b
+
+
+En assembleur, nous devons passer les trois arguments à cette fonction en utilisant le registre ``D`` pour la
+valeur de ``x`` et la pile pour les valeurs de ``a`` et ``b``. Nous devons définir l'ordre dans lequel nous
+plaçons les arguments sur la pile. Si la valeur de ``a`` est passée en premier et celle de ``b`` en second,
+alors lors de l'exécution de notre fonction ``f``, la pile contient les valeurs représentées dans :numref:`fig-pile-pendant-f`.
+
+.. _fig-pile-pendant-f:
+.. tikz:: Etat de la pile durant l'exécution de la fonction f
+	  
+	  \matrix(m) [matrix of nodes]
+	  {
+	  \texttt{SP+6} & \ldots \\
+	  \texttt{SP+4} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$b$}; \\
+	  \texttt{SP+2} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$a$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
+	  \texttt{SP-2} & \ldots \\
+	  };  	     
+
+Nous pouvons ensuite construire notre fonction en utilisant les instructions ``MOV``, ``MUL`` et ``ADD`` à bon escient.
+
+
+.. code-block:: nasm
+
+
+   ; calcule y=a*x+b
+   ; x est passé dans le registre D
+   ; a et b sont passés sur la pile
+   ; SP   : adresse de retour
+   ; SP+2 : b
+   ; SP+4 : a
+   f: 
+   MOV A, [SP+4] ; récupère x
+   MUL D
+   ADD A, [SP+2]
+   RET
+
+
+On peut vérifier le bon fonctionnement de cette fonction en exécutant le code ci-dessous:
+
+   
+.. code-block:: nasm
+		
+   MOV D, 3
+   PUSH 4
+   PUSH 1
+   CALL f
+   ; A contient 3*4+1
+   ; ne pas oublier de libérer la pile après
+   POP D
+   POP D
+
+
+
+Comme autre exemple d'utilisation de la pile, considérons une fonction qui
+permet d'ajouter un entier à tous les éléments d'un tableau d'entiers. En python,
+une telle fonction peut s'écrire comme suit.
+
+.. code-block:: python
+		
+   def ajouter_entier(entier, tableau):
+	for i in range(len(tableau)):
+		tableau[i] += entier
+
+
+Pour traduire cette fonction en assembleur, nous devons déterminer comment passer ses
+arguments. Nous choisissons de mettre l'entier à ajouter dans le registre ``D``. Pour
+passer le tableau, nous devons pousser l'adresse du premier élément sur la pile et
+ensuite la taille du tableau. Au début de l'exécution de la fonction ``ajouter_entier``,
+la pile contient donc les informations reprises en :numref:`fig-pile-avant-ajouter-entier`.
+
+.. _fig-pile-avant-ajouter-entier:
+.. tikz:: Etat de la pile au début de l'exécution de la fonction ajouter_entier
+	  
+	  \matrix(m) [matrix of nodes]
+	  {
+	  \texttt{SP+6} & \ldots \\
+	  \texttt{SP+4} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse tableau$}; \\
+	  \texttt{SP+2} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$taille$}; \\
+
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
+	  \texttt{SP-2} & \ldots \\
+	  };
+
+
+Notre fonction va utiliser les registres ``B`` et ``C``. Nous devons donc d'abord les
+sauvegarder sur la pile. Durant l'exécution de la fonction ``ajouter_entier``, la
+pile contiendra donc les informations reprises en :numref:`fig-pile-pendant-ajouter-entier`. 
+
+	  
+.. _fig-pile-pendant-ajouter-entier:
+.. tikz:: Etat de la pile pendant l'exécution de la fonction ajouter_entier
+	  
+	  \matrix(m) [matrix of nodes]
+	  {
+	  \texttt{SP+10} & \ldots \\
+	  \texttt{SP+8} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse tableau$}; \\
+	  \texttt{SP+6} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$taille$}; \\
+	  \texttt{SP+4}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
+	  \texttt{SP+2}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien B$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien C$}; \\
+	  \texttt{SP-2} & \ldots \\
+	  };  	     
+
+La fonction peut ensuite aisément se traduire en assembleur comme une boucle
+qui parcoure tous les éléments du tableau. Il faut cependant être attentif à
+charger l'adresse du tableau et lenombre d'éléments correctement depuis la pile.
+Comme nos entiers sont stockés sur 16 bits, nous devons aussi incrémenter
+l'adresse du prochain élément de deux unités à chaque passage dans la boucle.
+	  
+
+.. code-block:: nasm
+		
+   ; ajoute son premier argument à tous les éléments du tableau
+   ; registre D: x, valeur à ajouter
+   ; SP+4 : adresse du premier élément du tableau
+   ; SP+2 : nombre d'éléments
+   ajouter_entier:
+      PUSH B ; préservation du contenu de B
+      PUSH C ; préservation du contenu de C
+      MOV B, [SP+8] ; adresse du tableau
+      MOV C, [SP+6] ; nombre d'éléments
+   loop:
+      MOV A, D
+      ADD A, [B] ; calcule de tableau[i]+entier
+      MOV [B], A ; sauvegarde du résultat en mémoire 
+      ADD B, 2 ; adresse suivante
+      DEC C
+      CMP C, 0
+      JNE loop
+      POP B ; récupération du contenu de B
+      POP C ; récupération du contenu de C
+      RET
+	  
+
+Cette fonction peut être testée en créant un tableau contenant quelques entiers
+et en appelant la fonction comme dans l'exemple ci-dessous.
+
+.. code-block:: nasm
+
+   ; création d'un tableau de 5 entiers		
+   t: DB 1
+   DB 2
+   DB 3
+   DB 4
+   DB 5
+   MOV D, 3 ; valeur à ajouter
+   PUSH t   ; adresse du premier élément du tableau
+   PUSH 5   ; nombre d'éléments
+   CALL ajouter_entier
 		    
 Nous devons maintenant trouver une réponse à la troisième question. Lors de son exécution, une fonction doit souvent utiliser de la mémoire, pour stocker des résultats intermédiaires de calculs ou des variables locales. C'est le cas de la fonction ``fct`` dans l'exemple en python ci-dessous. Celle-ci a besoin de mémoire pour réaliser les calculs qui se trouvent dans son corps. Il en va de même par exemple pour une fonction qui contiendrait une simple boucle. 
 
@@ -613,6 +890,8 @@ Nous devons maintenant trouver une réponse à la troisième question. Lors de s
 Chacune des variables locales d'une fonction doit être stockée à une adresse mémoire. Une première approche naïve pour résoudre ce problème serait de réserver une zone de mémoire fixe pour les variables locales utilisées par chaque fonction. Dans une implémentation en assembleur de l'exemple ci-dessus, on pourrait réserver une adresse en mémoire RAM pour la variable ``r`` de la fonction ``fct``. Malheureusement, cette approche a deux inconvénients. Premièrement, toute la mémoire qu'une fonction peut utiliser durant son exécution doit être réservée en RAM avant de pouvoir exécuter cette fonction. Si une fonction doit utiliser un grand tableau lorsqu'elle est appelée avec une valeur spécifique d'un argument, alors la zone nécessaire pour ce tableau doit toujours être réservée, même si la fonction n'est jamais exécutée par le programme. Le deuxième inconvénient est qu'il est impossible avec cette approche de supporter une fonction ``f`` qui appelle une fonction ``g`` qui elle-même appelle une fonction  ``f`` car le premier appel à la fonction ``f`` aura initialisé les "variables locales de la fonction ``f``" puis fera appel à la fonction ``g``. Lorsque ``g`` fait appel de son côté à la fonction ``f``, cette seconde invocation de la fonction ``f`` va modifier les données stockées aux adresses en mémoire qui correspondent à ses variables locales et donc modifier les variables utilisées par la première invocation de la fonction ``f``. Si ce second inconvénient peut paraître un peu théorique et hypothétique à ce stade, il est malheureusement bien réel en pratique.
 
 On peut éviter ces deux inconvénients en utilisant la pile comme mémoire pour stocker les variables locales d'une fonction. La pile n'utilise la RAM que durant l'exécution de la fonction, il n'y a donc pas de gaspillage de mémoire comme avec la solution précédente. Dans le cas où une invocation de la fonction ``f`` appelle la fonction ``g`` qui appelle elle-même la fonction ``f``, le bas de la pile contiendra les arguments, adresse de retour et variables de la première invocation de la fonction ``f``. Au-dessus de ces informations, on trouvera les arguments, adresses de retour et variables locales de la fonction ``g``. Enfin, les arguments, adresse de retour et variables locales de la seconde invocation de la fonction ``f`` sont au sommet de la pile. A la fin de son exécution, cette invocation de la fonction ``f`` libère la mémoire qu'elle utilise sur la pile.
+
+
 
 .. spelling:word-list::
 

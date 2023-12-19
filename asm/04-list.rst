@@ -369,7 +369,7 @@ stockées et un pointeur vers l'élément suivant sur la pile.
 
 A titre d'exemple, considérons la pile de prénoms suivante en python:
 
-.. code-block:: console
+.. code-block:: python
 
    # Exemple d'utilisation de la pile
    pile = Stack()
@@ -445,6 +445,105 @@ qui se trouve au sommet de la pile (ou ``NULL`` si la pile est vide). Cette vari
 est initialisée à la valeur ``0`` puisque la pile est initialement vide.
 
 
+Nous pouvons commencer par la fonction ``push`` qui permet d'ajouter un élément
+au sommet de la pile. Notre fonction ``push`` prend trois arguments :
+
+ - la valeur entière à ajouter sur la pile qui est placée dans le registre ``D``
+ - l'adresse de la variable contenant l'adresse du sommet de la pile
+ - comme la fonction doit créer un nouveau noeud, nous devons aussi lui indiquer l'adresse mémoire de ce nouveau noeud
+
+
+Cette fonction utilise les registres ``B`` et ``C``. Ils
+sont donc sauvegardés sur la pile en mémoire au début de la fonction. Durant l'exécution
+de la fonction ``push``, la pile contient donc les informations reprises en
+:numref:`fig-pile-pendant-push`.
+
+.. _fig-pile-pendant-push:
+.. tikz:: Etat de la pile pendant l'exécution de la fonction push
+	  
+	  \matrix(m) [matrix of nodes]
+	  {
+	  \texttt{SP+6} & \ldots \\
+	  \texttt{SP+8} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse noeud$}; \\
+	  \texttt{SP+6} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse p$}; \\
+
+	  \texttt{SP+4}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
+	  \texttt{SP+2}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien B$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien C$}; \\
+	  \texttt{SP-2} & \ldots \\
+	  };
+	
+
+
+	  
+.. code-block:: nasm
+
+   ; push
+   ; premier argument la valeur à ajouter dans D
+   ; [SP+4] deuxième argument, l'adresse du sommet de la pile
+   ; [SP+2] troisième argument, l'adresse du noeud à ajouter
+   push:
+      PUSH B
+      PUSH C
+      MOV B, [SP+8]    ; adresse pointeur de pile, premier sur stack
+      MOV C, [SP+6]    ; adresse (val) du noeud à ajouter
+      ; ajout de la valeur
+      MOV [C], D  ; sauvegarde dans le nouveau noeud
+      ADD C, 2    ; adresse de l'élément _ptr du noeud
+      MOV B, [B]  ; adresse de l'ancien sommet de la pile
+      MOV [C], B  ; sauvegarde dans l'élément _ptr du nouveau noeud
+      ; mise à jour du pointeur de somme de pile
+      MOV C, [SP+6]
+      MOV B, [SP+8]
+      MOV [B], C
+      POP B 
+      POP C
+      RET
+
+Nous pouvons ensuite implémenter la fonction ``pop`` qui retire l'élément se
+trouvant au sommet de la pile. Cette fonction prend un argument, l'adresse
+de la variable qui contient l'adresse du sommet de la pile. Le code de cette
+fonction est assez simple. Il utilise le registre ``B`` comme registre temporaire.
+Sa valeur est donc placée sur la pile au début de la fonction et récupérée à la
+fin. Au début de la fonction, nous devons d'abord tester si la pile est vide.
+C'est le cas si la variable qui stocke l'adresse du sommet de pile contient
+la valeur ``NULL`` (``0``). Notre fonction récupère ensuite la valeur se
+trouvant au sommet de la pile et met à jour le pointeur de sommet de pile passé
+en argument pour qu'il pointe vers le noeud se trouvant maintenant au sommet. 
+Elle remet à zéro le noeud qui a été effacé.
+
+.. code-block:: nasm
+
+  pop:
+      PUSH B
+      PUSH C
+      MOV A, [D] ; si pile vide, retourne 0
+      CMP A, 0
+      JE fin_pop
+      MOV B, [D] ; adresse de l'élément au sommet de la pile
+      MOV A, [B] ; valeur à retourner
+      ADD B, 2   ; adresse de l'élément ptr du noeud
+      MOV C, [B]
+      MOV [D], C ; nouveau sommet de pile
+      MOV [B], 0 ; mise à zéro de l'élément
+      SUB B, 2 ; ptr est au-dessus de val
+      MOV [B], 0 ; mise à zéro du pointeur
+   fin_pop:
+      POP C
+      POP B
+      RET
+
+      
+
+Pour tester ces deux fonctions, nous pouvons construire une petite pile
+en mémoire en utilisant les instructions ``DB`` à bon escient. Pour cela,
+il suffit de se rappeler qu'un noeud occupe deux blocs de 16 bits consécutifs
+en mémoire. L'exemple ci-dessous contient une pile contenant deux noeuds. Celui
+du sommet contient la valeur ``3`` et son pointeur indique comme successeur le
+noeud se trouvant à l'adresse ``n1_val`` qui contient la valeur ``7``. Ce second noeud
+n'a pas de successeur. Les noeuds ``n3``, ``n4`` et ``n5`` sont vides.
+
+
 .. code-block:: nasm
 
 
@@ -460,153 +559,101 @@ est initialisée à la valeur ``0`` puisque la pile est initialement vide.
    n4_ptr: DB 0
    n5_val: DB 0
    n5_ptr: DB 0
-   ;
-   push:
-   ;retourne la valeur au sommet de la pile sans la retirer
-   ; argument: adresse du pointeur vers sommet de pile
-   peek:
-   MOV A, [D]
-   CMP A, 0 ; si pile vide retourne 0
-   JE fin_peek
-   MOV A, [A]
-   fin_peek: RET
-   ; retourne l'élément au sommet de la pile et le retire de la pile
-   pop:
-   PUSH B
-   MOV B, [D] ; si pile vide, retourne 0
-   CMP B, 0
-   JE fin_pop
-   MOV A, [B] ; valeur à retourner
-   ADD B, 2 ; ptr est au-dessus de val
-   ; mise à zéro, pas nécessaire
-   MOV [B], 0
-   SUB B, 2
-   MOV [B], 0
-   fin_pop: 
-   POP B
-   RET
-   
-   ; push
-   ; premier argument la valeur à ajouter
-   ; deuxième argument, l'adresse du sommet de la pile
-   ; troisième argument, l'adresse du noeud à ajouter
-   push:
-   PUSH B
-   PUSH C
-   ; adresse pointeur de pile, premier sur stack
-   MOV B, [SP+8]
-   ; adresse (val) du noeud à ajouter
-   MOV C, [SP+6]
-   ; ajout de la valeur
-   MOV [C], D
-   ; modification du pointeur du nouveau noeud
-   ADD C, 2
-   MOV B, [B]; adresse pointée
-   MOV [C], B
-   ; modification du sommet de pile
-   MOV C, [SP+6]
-   MOV B, [SP+8]
-   MOV [B], C
-   POP B
-   POP C
-   RET
-   start:
-   MOV D, n4_val
-   CALL peek
-   MOV D, p
-   CALL peek
-   MOV D, p
-   CALL pop
-   start2:MOV D, 42
-   PUSH p
-   PUSH n5_val
-   CALL push
-   HLT
 
-   
-	
-conventions du C
 
-- ``false`` est toujours 0, ``true`` est n'importe quelle valeur qui n'est pas zéro
-- NULL pas d'adresse: 0
+Sur cette pile, on peut faire appel à la fonction ``pop`` en lui passant l'adresse
+de la variable ``p`` comme argument dans le registre ``D``.
 
-  
 
 .. code-block:: nasm
 
-   ; incomplet début de liste
-   
-   JMP start
-   n: DB 2
-   tab: DB 9
-   DB 12
-   DB 3
-   DB 0xAA
-   x:  ; simple list
-   ; header
-   DB 2
-   DB x+2
-   
-   ; header node contains
-   ; header.head : pointer to the head of the list
-   ; header.tail : pointer to the tail of the list
-   ; NULL (0) if there is no head/tail
-   ; header.length : number of elements in the list
-   
-   ; list nodes
-   ; node.val : value
-   ; node.next : pointer to the next node in the list
-   
-   ; initialise a header node
-   ; D: address of the node
-   init_list:
-   MOV [D], 0; init head pointer
-   MOV [D+2], 0; init tail pointer
-   MOV [D+4], 0; init length
-   RET
-   
-   ; add a new node at the head
-   ; D: address of list header node
-   ; [SP+2]: value to be added
-   ; [SP+4]: address of the new node 
-   ; returns the address of the node added
-   add_head:
-   PUSH B
-   PUSH C
-   ; put value in place
-   MOV B, [SP+6]
-   MOV C, [SP+8]
-   MOV [C], B ;
-   ; retrieve address of first node
-   MOV B, [D] ; head address in B
-   ADD C, 2  ; C contains address of the next element
-   MOV [C], B
-   ; replace head with new address
-   MOV  C, [SP+8]
-   MOV [D], C 
-   ; increment length of the list
-   MOV B, [D+4]
-   INC B
-   MOV [D+4], B 
-   POP C
-   POP B
-   RET
-   start:
+   ; exemple d'appel à pop		
+   MOV D, p
+   CALL pop
 
 
+L'appel à la fonction assembleur ``push`` est un peu plus compliqué puisqu'il faut
+lui passer l'entier à ajouter, l'adresse du sommet de la pile et l'adresse d'un noeud
+vide. L'exemple ci-dessous ajoute la valeur ``42`` sur notre pile. 
 
 
+.. code-block:: nasm
+
+   ; ajout de la valeur 42 sur la pile		
+   MOV D, 42
+   PUSH p
+   PUSH n5_val
+   CALL push
+
+
+.. note:: Gestion de la mémoire
+
+
+   En python, lorsque l'on écrit ``new_node = Node(value)``, on réserve une nouvelle
+   zone mémoire pour stocker le nouveau noeud. Cela se fait en appelant une fonction
+   de gestion de la mémoire qui sort du cadre de ce cours. C'est pour cette raison
+   que notre fonction ``push``, et d'autres exemples que nous verrons ensuite,
+   reçoivent l'adresse de la zone mémoire à utiliser. Vous verrez dans d'autres cours
+   comment il est possible d'écrire des programmes pour gérer la mémoire. De
+   la même façon, la fonction ``pop`` devrait libérer la mémoire du noeud qu'elle retire
+   de la pile afin que celle-ci soit disponible pour d'autres parties du programme.
+
+	
+.. conventions du C
+
+.. - ``false`` est toujours 0, ``true`` est n'importe quelle valeur qui n'est pas zéro
+.. - NULL pas d'adresse: 0
+
+
+Liste chaînée
+-------------
+
+
+Nous pouvons maintenant construire une liste chaînée et écrire quelques fonctions
+pour manipuler une telle liste. Nous choisissons d'utiliser trois blocs de
+16 bits consécutifs pour stocker les informations suivantes sur la liste :
+
+ - le nombre d'éléments dans la liste (``len``)
+ - l'adresse du dernier élément de la liste (``tail``, mis à ``NULL`` si la liste est vide)
+ - l'adresse du premier élément de la liste (``head``, mis à ``NULL`` si la liste est vide)  
+
+
+La :numref:`fig-entete-liste` représente ces trois blocs de données en mémoire.
+
+.. _fig-entete-liste:
 .. tikz:: Entête de la liste initialisée
 
    \matrix(m) [matrix of nodes]
    {
-   $x+4$ \hspace{20pt} & \node(l_len)[red,rectangle,draw,text width=40pt]{$0$}; & \hspace{40pt}\texttt{;l.len}\\
-   $x+2$ \hspace{20pt}& \node(l_tail)[red,rectangle,draw,text width=40pt]{$0$} ;& \hspace{40pt}\texttt{;l.tail}\\
-   $x$ \hspace{20pt} & \node(l_head)[red,rectangle,draw,text width=40pt]{$0$}; & \hspace{40pt}\texttt{;l.head}\\
+   $x+4$ & \node(l_len)[red,rectangle,draw,text width=40pt]{$0$}; & \hspace{40pt}\texttt{;l.len}\\
+   $x+2$ & \node(l_tail)[red,rectangle,draw,text width=40pt]{$0$} ;& \hspace{40pt}\texttt{;l.tail}\\
+   $x  $  & \node(l_head)[red,rectangle,draw,text width=40pt]{$0$}; & \hspace{40pt}\texttt{;l.head}\\
    };
-
-
    
+
+Ce bloc de mémoire peut être initilialisé par la fonction ``init_list`` qui
+prend comme argument l'adresse du bloc.
+
+.. code-block:: nasm
+
+   ; initialise une liste
+   ; D: adress du bloc de mémoire
+   init_list:
+      MOV [D], 0 ; initialisation du pointeur du premier élément
+      MOV [D+2], 0 ; initialisation du pointeur du dernier élément
+      MOV [D+4], 0 ; initialisation de l'indication de longueur
+      RET
+
+
+Un noeud de notre liste contiendra deux éléments:
+
+ - la valeur stockée (``val``)
+ - le pointeur vers le noeud successeur (``next``)
+
+La :numref:`fig-liste-noeud` représente un noeud de notre liste contenant la valeur
+``17``. Ce noeud est le dernier de la liste puisqu'il n'a pas de successeur.
+
+.. _fig-liste-noeud:
 .. tikz:: Élément de la liste contenant la valeur 17 et Entête de la liste initialisée
 
    \matrix(m) [matrix of nodes]
@@ -616,6 +663,12 @@ conventions du C
    };
 
 
+Nous pouvons maintenant visualiser comme une liste peut être stockée en mémoire.
+La :numref:`fig-liste-1` et la :numref:`fig-liste-2` repéresentent deux organisations
+en mémoire possible d'une liste de deux éléments contenant la valeur ``42`` suivie par la valeur ``17``.
+
+   
+.. _fig-liste-1:
 .. tikz:: Représentation en mémoire d'une liste contenant la valeur ``42`` suivie de ``17``
 
    \matrix(m1) [matrix of nodes, text width=60pt] at (0,0)
@@ -643,7 +696,7 @@ conventions du C
    \draw[thick,red,->] (l1_next.east) to [bend left=20] (l2_val.east);
 
 
-
+.. _fig-liste-2:
 .. tikz:: Une autre organisation possible de la liste contenant ``42`` suivi de ``17`` en mémoire
 
 
@@ -664,7 +717,36 @@ conventions du C
    \draw[thick,red,->] (l1_next.east) to [bend left=20] (l2_val.east);
 
 
+Tout comme nous l'avons fait dans la section précédente pour tester notre implémentation
+des fonctions de manipulation d'une pile, nous pouvons facilement construire en
+mémoire une liste chaînée telle que celle représentée en :numref:`fig-liste-2`.
 
+.. code-block:: nasm
+
+		
+   n1_val: DB 17
+   n1_next: DB 0
+   l_head: DB n2_val
+   l_tail: DB n1_val
+   l_len: DB 2		 
+   n2_val: DB 42
+   n2_next: DB n1_val
+
+
+Nous utiliserons cette structure de liste pour implémenter plusieurs fonctions.
+La première, baptisée ``add_head`` ajoute un nouvel entier en début de liste.
+Cette fonction prend trois arguments :
+
+ - l'adresse de la structure contenant la longueur de la liste et les deux pointeurs vers le début et la fin de la liste (dans le registre ``D``)
+ - la valeur à ajouter (sur la pile, ``SP+4``)
+ - l'adresse d'un noeud vide (sur la pile, ``SP+2``)  
+
+
+La :numref:`fig-ajout-noeud` présente graphiquement l'ajout d'un noeud dans une
+telle liste.
+
+
+.. _fig-ajout-noeud:
 .. tikz:: Ajout du nœud contenant la valeur ``9`` en tête de liste
 
       \matrix(m0) [matrix of nodes, text width=60pt] at (0,2)
@@ -697,8 +779,41 @@ conventions du C
       \draw[thick,black,dashed,->] (l3_next.east) to [bend left] (l1_val.east);
       \draw[thick,red,->] (l_tail.west) to [bend right] (l2_val.west);
       \draw[thick,red,->] (l1_next.east) to [bend left=20] (l2_val.east);
-   
 
+   
+.. code-block:: nasm
+
+   ; Ajout d'un nouvel élément en tête de liste
+   ; D: adresse du descripteur de liste
+   ; [SP+4]: valeur à ajouter
+   ; [SP+2]: adresse du noeud vide à utiliser
+   ; retourne dans A l'adresse du noeud ajouté
+   add_head:
+      PUSH B ; sauvegarde
+      PUSH C ; sauvegarde
+      MOV A, [SP+6] ; adresse noeud à ajouter
+      MOV C, [SP+8] ; valeur à ajouter
+      MOV [A], C ; valeur placée dans le noeud à ajouter
+      MOV B, [D] ; adresse du premier noeud de l'ancienne liste
+      MOV C, [SP+6] ; adresse du noeud à ajouter
+      ADD C, 2  ; C contient l'adresse de l'élément next du nouveau noeud
+      MOV [C], B ; next pointe vers l'ancien premier noeud
+      MOV  C, [SP+6] ; adresse du nouveau noeud
+      MOV [D], C     ; descripteur head pointe vers le nouveau noeud
+      MOV B, [D+4] ; adresse de len dans le descripteur
+      INC B
+      MOV [D+4], B ; sauvegarde en mémoire	
+      POP C ; récupération
+      POP B ; récupération
+      RET
+
+
+De la même façon, on pourra facilement écrire une fonction ``add_tail`` qui
+ajoute un élément en fin de liste en utilisant le pointeur de fin de liste.
+La :numref:`fig-ajout-noeud-fin` présente graphiquement l'ajout d'un
+noeud en fin de liste.
+
+.. _fig-ajout-noeud-fin:
 .. tikz:: Ajout du nœud 77 en fin de liste
 
    \matrix(m0) [matrix of nodes, text width=60pt] at (0,2)
@@ -731,4 +846,48 @@ conventions du C
    \draw[thick,black,dashed,->] (l2_next.east) to [bend right] (l3_val.east);
    \draw[thick,red,->] (l_head.west) to [bend left] (l1_val.west);
    \draw[thick,red,->] (l1_next.east) to [bend left=20] (l2_val.east);
+
+
+Regardons maintenant comment parcourir cette liste. Le parcours d'une liste est
+une opération importante sur les listes. Comme exemple, considérons la
+fonction ``sum`` qui calcule la somme de tous les éléments présents dans la liste.
+Cette fonction prend un seul argument dans le registre ``D``, l'adresse du
+descripteur de liste. Elle retourne la somme calculée dans le registre ``A``.
+
+Cette fonction commence par vérifier si la liste est vide. Pour cela, elle regarde
+si le pointeur ``head`` vaut zéro (adresse ``NULL``). Dans ce cas, elle retourne
+la valeur zéro dans le registre ``A``. Ensuite, elle parcoure la liste est
+bouclant tant que le pointeur ``next`` des éléments parcourus est différent
+de ``NULL`` et accumule la somme des éléments dans le registre ``A``.
+
+.. code-block:: nasm
+
+   ; calcul de la somme des éléments d'une liste
+   ; D: adresse du descripteur de liste
+   sum:
+      ; si la liste est vide, retourne 0
+      MOV A, [D] ; D est l'adresse de head
+      CMP A, 0
+      JNE suite
+      RET
+   suite:
+      PUSH B 
+      PUSH C
+      MOV A, 0
+      MOV B, [D] ; adresse du premier noeud
+   boucle:
+      ADD A, [B] ; valeur du premier noeud
+      ADD B, 2 ; adresse du pointeur next
+      MOV B, [B] ; pointeur next  
+      CMP B, 0
+      JNE boucle
+      POP C
+      POP B
+      RET
+      
+
+
+On peut bien entendu construire d'autres opérations sur de telles structures
+chaînées. Plusieurs exemples vous serons présentés durant les travaux pratiques.
+   
       
