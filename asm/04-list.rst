@@ -5,7 +5,9 @@ Les structures de données
 Le langage python permet de supporter différents types de structure de données dont
 les piles, les queues et les listes. Il est intéressant de comprendre comment ces
 différentes structures de données sont stockées en mémoire avant de les implémenter
-en assembleur. Commençons par la pile qui joue un rôle majeur en informatique.
+en assembleur. Nous avons déjà parlé de la pile qui est utilisée par notre processeur, 
+mais une application peut aussi définir sa propre pile, indépendemment de celle que le 
+processeur utilise pour supporter les fonctions et procédures.
 
 .. spelling:word-list::
 
@@ -15,8 +17,10 @@ en assembleur. Commençons par la pile qui joue un rôle majeur en informatique.
    out
 
 
+.. todo:: Exercice, faire la même chose, mais avec une queue
 
-Une :index:`pile` est une structure de données qui permet de stocker des informations
+Une :index:`pile` utilisée par une application
+est une structure de données qui permet de stocker des informations
 et de les récupérer dans l'ordre inverse d'arrivée (dernier arrivé, premier servi ou
 last-in first-out en anglais). La pile a une interface de programmation qui comprend
 trois opérations:
@@ -91,7 +95,7 @@ entendu disposer d'espace pour stocker les naturels que l'on stocke
 sur la pile, mais il faut aussi mémoriser l'ordre dans lequel les opérations
 d'ajout à la pile ont étés effectuées pour pouvoir retourner les données
 stockées dans l'ordre inverse. Un première approche possible serait
-de réserver un bloc de mémoire pour stocker la pile et de stocker le
+de réserver une zone de mémoire pour stocker celle pile et d'y stocker le
 nombre d'éléments se trouvant sur cette pile. Si cette zone de mémoire
 commence à l'adresse :math:`p`, elle pourrait être initialisée comme
 dans la :numref:`fig-pile-bloc`.
@@ -145,8 +149,6 @@ A ce moment, la pile contient trois éléments comme représenté dans la
     $p$ & \node(pilen)[red,rectangle,draw]{$3$}; & \texttt{;nombre d'éléments}\\
   };
 
-  
-  
 
 Malheureusement, cette solution de stockage d'un pile souffre d'un problème
 majeur. Que se passe-t-il lorsque la zone mémoire allouée à la pile est
@@ -156,10 +158,12 @@ le résoudre, il faut pouvoir déplacer la zone mémoire allouée à la pile pou
 la mettre dans une autre zone de la mémoire qui contient plus d'espace libre. La copie
 est assez facile à réaliser, mais il faut aussi modifier toutes les instructions
 du programme qui utilisent l'adresse de la pile puisque celle-ci change et cela
-c'est beaucoup plus difficile à réaliser.
+c'est beaucoup plus difficile à réaliser. La pile utilisée par notre processeur évite
+ce problème car le processeur contient le registre ``SP`` et elle utilise le haut
+de la mémoire. Cette technique n'est pas utilisable dans un programme applicatif.
 
-
-En python, il est possible d'implémenter une pile en utilisant des références.
+Une meilleure solution pour implémenter une pile de façon générique est d'utiliser
+des références. L'exemple ci-dessous montre comment construire une telle pile en python.
 
 .. code-block:: python
 
@@ -203,10 +207,10 @@ La méthode ``push()`` permet d'empiler un nouvel élément sur le dessus de la 
 
 La méthode ``pop()`` permet de dépiler l'élément du dessus de la pile en ajustant les références pour pointer vers le nœud suivant.
 
-La méthode ``is_empty()`` vérifie si la pile est vide en vérifiant si le pointeur `top` est ``None``.
+La méthode ``is_empty()`` vérifie si la pile est vide en vérifiant si la référence `top` pointe vers ``None``.
 
 
-Cette implémentation peut s'utiliser comme suit.
+Cette implémentation peut s'utiliser par le fragment de code ci-dessous.
 
 .. code-block:: python
 	    
@@ -220,7 +224,7 @@ Cette implémentation peut s'utiliser comme suit.
    print(stack.is_empty()) # Résultat: False
 
 
-Dans l'exemple d'utilisation, nous empilons les éléments 1, 2 et 3 sur la pile à l'aide de la méthode ``push()``. Ensuite, nous déplions les deux premiers éléments de la pile à l'aide de la méthode ``pop()``. Finalement, nous utilisons la méthode ``is_empty()`` pour vérifier si la pile est vide.
+Dans l'exemple d'utilisation, nous empilons les éléments 1, 2 et 3 sur la pile à l'aide de la méthode ``push()``. Ensuite, nous dépilons les deux premiers éléments de la pile à l'aide de la méthode ``pop()``. Finalement, nous utilisons la méthode ``is_empty()`` pour vérifier si la pile est vide.
 
 Cette implémentation de la pile utilise une :index:`structure chaînée`. Dans une pile,
 il est nécessaire de connaître à tout moment l'élément qui se trouve au sommet de la
@@ -239,19 +243,18 @@ En assembleur, nous pouvons également stocker l'équivalent de l'information
 contenue dans chaque instance de la classe ``Node``, c'est-à-dire :
 
  - la valeur (le naturel) stockée en mémoire
- - l'adresse de l'instance suivante de la classe ``Node`` sur la pile ou ``None`` si
+ - l'adresse de l'instance suivante de la classe ``Node`` sur la pile ou ``NULL`` si
    on est en fin de pile.
 
-Nous utiliserons une
-notation pointée pour faire référence à ces deux parties d'un élément d'une pile.
+Nous utiliserons une notation pointée pour indiquer les deux parties d'un élément d'une pile.
 Si ``e`` est notre élément, alors ``e_val`` sera la valeur du naturel de cet élément
-et ``e_ptr`` sera l'adresse l'adresse de l'élément
+et ``e_ptr`` contiendra l'adresse de l'élément
 suivant sur la pile. Sur base de cette notation, nous pouvons reprendre
 notre exemple en python et analyser comment les différents éléments sont
 stockés en mémoire. La pile est initialisée en plaçant la valeur ``0``, correspondant
 au pointeur ``NULL``, à l'adresse (:math:`p`) correspondant au pointeur de sommet
 de pile. Ensuite, nous ajoutons ``7`` sur la pile avec l'opération
-``p.push(7)``. L'élément correspond se trouve à l'adresse :math:`x` sur la
+``p.push(7)``. L'élément correspondant se trouve à l'adresse :math:`x` sur la
 :numref:`fig-pile-chain-7`.
 
 .. _fig-pile-chain-7:
@@ -276,9 +279,9 @@ en utilisant les instructions suivantes.
 
 .. code-block:: nasm
 
-   p: DB n1_val   ; le pointeur vers le sommet de la pile
-   n1_val: DB 7   ; le premier naturel stocké sur la pile
-   n1_ptr: DB 0   ; pointeur NULL, pas de successeur
+   p:      DB n1_val   ; le pointeur vers le sommet de la pile
+   n1_val: DB 7        ; le premier naturel stocké sur la pile
+   n1_ptr: DB 0        ; pointeur NULL, pas de successeur
 
 	  
 
@@ -365,7 +368,7 @@ données que des naturels. A titre d'exemple, considérons des chaînes de carac
 qui sont terminées par un marqueur de fin valant ``0``. On peut facilement
 construire une pile de prénoms en conservant un pointeur de sommet de pile et
 en ayant dans chaque élément de la pile un pointeur vers la chaîne de caractères
-stockées et un pointeur vers l'élément suivant sur la pile.
+stockée et un pointeur vers l'élément suivant sur la pile.
 
 A titre d'exemple, considérons la pile de prénoms suivante en python:
 
@@ -379,9 +382,10 @@ A titre d'exemple, considérons la pile de prénoms suivante en python:
 		
 
 Si la chaîne de caractères ``Louise`` est stockée à l'adresse :math:`l`, la chaîne
-``Claire`` à`l'adresse :math:`c` et la chaîne ``Dominique`` à l'adresse :math:`d`,
-alors en mémoire cette pile peut être organisée comme dans :numref:`fig-pile-chain-prenoms`. Pour ne pas alourdir la figure, seule la chaîne de caractères ``Louise`` est
-représentée en mémoire avec son marqueur de fin.
+``Claire`` à l'adresse :math:`c` et la chaîne ``Dominique`` à l'adresse :math:`d`,
+alors en mémoire cette pile peut être organisée comme dans la :numref:`fig-pile-chain-prenoms`. 
+Pour ne pas alourdir la figure, seule la chaîne de caractères ``Louise`` est
+représentée dans la figure avec son marqueur de fin.
 
 .. _fig-pile-chain-prenoms:
 .. tikz:: Stockage d'une pile dans une structure chaînée après exécution de pile.push("Louise") suivi de pile.push("Claire") et pile.push("Dominique")
@@ -431,16 +435,15 @@ représentée en mémoire avec son marqueur de fin.
    false
 
 
-
 Nous pouvons maintenant construire une implémentation en assembleur qui
 permet d'ajouter et de retirer un naturel d'une pile. Tout comme l'implémentation
 en python, notre implémentation en assembleur utilise des noeuds qui sont
 composés de deux zones mémoires contigües de 16 bits chacune :
 
  - ``n_val`` : le naturel stocké sur le pile
- - ``n_ptr`` : un pointeur vers le successeur de l'élément sur la pile ou ``NULL`` (``0``) en fin de pile
+ - ``n_ptr`` : un pointeur vers le successeur de l'élément sur la pile ou ``NULL`` (``0``) pour indiquer la fin de pile
 
-Nous utilisons la variable ``p`` pour stocker un pointeur vers l'adresse de du noeud
+Nous utilisons la variable ``p`` pour stocker un pointeur vers l'adresse du noeud
 qui se trouve au sommet de la pile (ou ``NULL`` si la pile est vide). Cette variable
 est initialisée à la valeur ``0`` puisque la pile est initialement vide.
 
@@ -454,8 +457,8 @@ au sommet de la pile. Notre fonction ``push`` prend trois arguments :
 
 
 Cette fonction utilise les registres ``B`` et ``C``. Ils
-sont donc sauvegardés sur la pile en mémoire au début de la fonction. Durant l'exécution
-de la fonction ``push``, la pile contient donc les informations reprises en
+sont donc sauvegardés sur la pile du processeur au début de la fonction. Durant l'exécution
+de la fonction ``push``, la pile du programme contient donc les informations reprises en
 :numref:`fig-pile-pendant-push`.
 
 .. _fig-pile-pendant-push:
@@ -589,7 +592,7 @@ vide. L'exemple ci-dessous ajoute la valeur ``42`` sur notre pile.
 .. note:: Gestion de la mémoire
 
 
-   En python, lorsque l'on écrit ``new_node = Node(value)``, on réserve une nouvelle
+   En python, lorsque l'on écrit ``new_node = Node(value)``, on réserve une 
    zone mémoire pour stocker le nouveau noeud. Cela se fait en appelant une fonction
    de gestion de la mémoire qui sort du cadre de ce cours. C'est pour cette raison
    que notre fonction ``push``, et d'autres exemples que nous verrons ensuite,
@@ -637,9 +640,9 @@ prend comme argument l'adresse du bloc.
 .. code-block:: nasm
 
    ; initialise une liste
-   ; D: adress du bloc de mémoire
+   ; D: adresse du bloc de mémoire
    init_list:
-      MOV [D], 0 ; initialisation du pointeur du premier élément
+      MOV [D], 0   ; initialisation du pointeur du premier élément
       MOV [D+2], 0 ; initialisation du pointeur du dernier élément
       MOV [D+4], 0 ; initialisation de l'indication de longueur
       RET
@@ -663,7 +666,7 @@ La :numref:`fig-liste-noeud` représente un noeud de notre liste contenant la va
    };
 
 
-Nous pouvons maintenant visualiser comme une liste peut être stockée en mémoire.
+Nous pouvons maintenant visualiser comment une telle liste peut être stockée en mémoire.
 La :numref:`fig-liste-1` et la :numref:`fig-liste-2` repéresentent deux organisations
 en mémoire possible d'une liste de deux éléments contenant la valeur ``42`` suivie par la valeur ``17``.
 
@@ -850,7 +853,7 @@ noeud en fin de liste.
 
 Regardons maintenant comment parcourir cette liste. Le parcours d'une liste est
 une opération importante sur les listes. Comme exemple, considérons la
-fonction ``sum`` qui calcule la somme de tous les éléments présents dans la liste.
+fonction ``sum`` qui calcule la somme de tous les éléments présents dans une liste.
 Cette fonction prend un seul argument dans le registre ``D``, l'adresse du
 descripteur de liste. Elle retourne la somme calculée dans le registre ``A``.
 
@@ -872,7 +875,6 @@ de ``NULL`` et accumule la somme des éléments dans le registre ``A``.
       RET
    suite:
       PUSH B 
-      PUSH C
       MOV A, 0
       MOV B, [D] ; adresse du premier noeud
    boucle:
@@ -881,7 +883,6 @@ de ``NULL`` et accumule la somme des éléments dans le registre ``A``.
       MOV B, [B] ; pointeur next  
       CMP B, 0
       JNE boucle
-      POP C
       POP B
       RET
       

@@ -6,10 +6,39 @@
 Représentation de l'information
 ===============================	     
 
-Représentation binaire de l'information 
----------------------------------------
+
+Le fonctionnement des ordinateurs s'appuie sur quelques principes très simples, mais qui sont utilisés à une très grande échelle. Le premier principe est que toute l'information peut s'encoder sous une forme binaire, c'est-à-dire une suite de bits. Un :index:`bit` est l'unité de représentation de l'information. Un bit peut prendre deux valeurs:
+
+ - ``0``
+ - ``1``
+
+On peut associer une signification à ces bits. Il est par exemple courant de considérer que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois porter à confusion. 
 
 Dans un ordinateur, toutes les informations peuvent être stockées sous la forme d'une séquence de bits. La longueur de la séquence est fonction de la quantité d'information à stocker. Notre premier exemple concerne les caractères. Il est important de pouvoir représenter les différents caractères des langues écrites de façon compacte et non-ambiguë pour pouvoir stocker et manipuler du texte sur un ordinateur. Le principe est très simple. Il suffit de construire une table qui met en correspondance une séquence de bits et le caractère qu'elle représente. 
+
+
+Représentation des caractères
+-----------------------------
+
+Pour représenter chaque caractère sous la forme d'une séquence de bits, il suffit de choisir une séquence unique qui représente un caractère. Commençons par essayer de représenter les dix chiffres de notre numérotation décimale, de ``0`` à ``9``. Nous pouvons facilement associer une séquence binaire unique à chacun de ces chiffres. Avec deux bits, nous pouvons construire quatre séquences différentes: ``00``, ``01``, ``10`` et ``11``. Avec ces deux bits, nous ne pouvons pas obtenir une séquence unique pour chaque chiffre décimale. Avec trois bits, nous pouvons construire 8 séquences différentes: ``000``, ``001``, ``010``, ``011``, ``100``, ``101``, ``110`` et ``111``. Pour représenter tous les chiffres décimaux, nous avons besoin d'utiliser des séquences d'au moins 4 bits. La table ci-dessous présente une première représentation possible des chiffres décimaux.
+
+------- ----------------
+Chiffre Séquence binaire
+0       ``0000``
+1       ``0001``
+2		``0010``
+3 		``0011``
+4		``0100``
+5		``0101``
+6		``0110``
+7		``0111``
+8		``1000``
+9		``1001``
+------- ----------------
+
+En utilisant cette représentation, on peut représenter n'importe quel nombre naturel comme une séquence de bits. Il suffit pour cela de représenter chaque chiffre par un bloc de quatre bits. Ainsi, le nombre `478` en notation décimale pourra être représenté par la séquence de bits ``0100 0111 1000``.
+
+Pour représenter les lettres de l'aphabet en plus des chiffres, il nous faut utiliser plus de bits. On peut facilement voir qu'avec :math:`n` bits on peut construire :math:`2^n` séquences distinctes. Avec 4 bits, on peut donc obtenir 16 séquences distinctes. Il faut 5 bits pour avoir 32 séquences distinctes, 6 bits pour en construire 64, ... Notre alphabet latin comprend 26 lettres. Si on veut pouvoir représenter les lettres majuscules et les chiffres sous forme binaire, nous utiliser au minimum 6 bits. Avec ces six bits, on peut représenter les 26 lettres majuscules, les 26 lettres minucules et les 10 chiffres. Il ne nous reste ensuite plus que 2 séquences de bits pour représenter tous les autres caractères comme la ponctuation, les symbôles mathématiques, ...
 
 Parmi les tables d'encodage des caractères les plus simples, la plus connue est certainement la table US-ASCII dont la définition est notamment reprise dans :rfc:`20`. Cette table associe une séquence de 7 bits (`b7` à `b1`) à un caractère particulier. Pour des raisons historiques, certains de ces caractères sont des caractères dits "de contrôle" qui ne sont pas imprimables. Ils permettaient de contrôler le fonctionnement de terminaux ou d'imprimantes. Par exemple, les caractères `CR` et/ou `LF` correspondent au retour de charriot et au passage à la ligne sur un écran ou une imprimante.  
 
@@ -133,7 +162,7 @@ Une représentation graphique, fortement agrandie, de ce caractère est présent
 Représentation des nombres naturels
 -----------------------------------
 
-Commençons par analyser comment représenter les nombres pour effectuer des opérations arithmétiques. Pour simplifier la présentation, nous travaillerons surtout avec des quartets dans ce chapitre. Il y a seize quartets différents : 
+Les ordinateurs ont d'abord étés conçus pour réaliser des opérations mathématiques. Il est important de pouvoir représenter des nombres dans tout ordinateur.  Commençons par analyser comment représenter les nombres pour effectuer des opérations arithmétiques. Pour simplifier la présentation, nous travaillerons surtout avec des quartets dans ce chapitre. Il y a seize quartets différents : 
 
  - `0000`
  - `0001`
@@ -156,7 +185,7 @@ Un tel :index:`quartet`, peut se représenter de façon symbolique: :math:`B_{3}
 
 Cette représentation des quartets est similaire à la représentation que l'on utilise pour les nombres décimaux. Un nombre en représentation décimale peut aussi s'écrire :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}`. Dans cette représentation, les :math:`C_{i}` sont les chiffres de `0` à `9`. :math:`C_{0}` est le chiffre des unités, :math:`C_{1}` le chiffre correspondant aux dizaines, :math:`C_{2}` celui qui correspond aux centaines, ... Numériquement, on peut écrire que la représentation décimale :math:`C_{3}C_{2}C_{1}C_{0}` correspond au nombre :math:`C_{3}*1000 + C_{2}*100 + C_{1}*10 + C_{0}` ou encore :math:`C_{3}*10^{3} + C_{2}*10^{2} + C_{1}*10^{1} + C_{0}*10^{0}` en se rappelant que :math:`10^{0}` vaut 1.
 
-En toute généralité, la suite de chiffres :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} C_{i} \times 10^{i}`.
+En toute généralité, la suite de chiffres décimaux :math:`C_{n-1}C_{n-2}...C_{2}C_{1}C_{0}` correspond au naturel :math:`\sum_{i=0}^{i=n-1} C_{i} \times 10^{i}`.
 
 A titre d'exemple, le nombre sept cent trente six s'écrit en notation décimale `736`, ce qui équivaut bien à :math:`7*10^{2}+3*10^{1}+6*10^{0}`. 
 
@@ -208,6 +237,14 @@ En pratique, outre les notations binaires, deux notations sont couramment utilis
 
 En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les symboles sont des chiffres de `0` à `9` et les lettres de `A` à `F` sont utilisées pour représenter les valeurs de `0` à 15.
 
+
+On peut facilement convertir une séquence de bits en sa représentation octale ou hexadécimale. Il suffit pour cela de découper la séquence en blocs de 3 bits pour la représentation octale et en blocs de quatre bits pour la représentation hexadécimale. A titre d'exemple, la séquence  de douze bits ``001010011101`` peut être convertie comme suit:
+
+ - en notation octale, il suffit de la découper en 4 blocs de trois bits chacun, ``001 010 011 101``. Chacun de ces blocs peut ensuite être converti en notation octale, ``001`` correspond à ``1``, ``010`` à ``2``, ``011`` à ``3`` et ``101`` à ``5``. La séquence complète correspond donc à ``1235``.
+ 
+ - en notation hexadécimale, il suffit de la découper en trois blocs de quatre bits chacun, ``0010 1001 1101``. Le premier quartet correspond à ``2``, le deuxième à ``9`` et le troisième à ``D``. Le séquence complète correspond donc à ``29D``.
+
+
 .. note::
 
    Il est parfois intéressant d'entrer un nombre en binaire, octal ou hexadécimal dans un langage de programmation. En python3, cela se fait en préfixant le nombre avec `0b` pour du binaire, `0o` pour de l'octal et `0x` pour de l'hexadécimal. Ainsi, les lignes ci-dessous stockent toutes la valeur `23` dans la variable ``n``.
@@ -253,12 +290,21 @@ L'architecture des ordinateurs est basée sur l'architecture dite de Von Neumann
 
 .. expliquer von neuman 
 
+
+Dans un ordinateur, toutes les données et les programmes sont représentés sous la forme de séquences de bits. Pour exécuter un programme, le microprocesseur doit charger les séquences de bits qui correspondent aux instructions depuis la mémoire ainsi que les données qui y sont associées. Le programme est découpé en de très nombreuses instructions très simples, beaucoup plus simples que celles que l'on trouve dans un langage de programmation comme python. Chaque microprocesseur est caractérisé par l'ensemble des instructions qu'il peut exécuter. Les premiers microprocesseurs supportaient quelques dizaines d'instructions différentes. Les processeurs récents en supportent beaucoup plus. 
+
+Même si dans l'ordinateur chaque instruction à exécuter est représentée sous la forme d'une séquence de bits, ces séquences sont peu pratiques pour les informaticiens et informaticiennes qui doivent les utiliser pour écrire des programmes. Pour écrire de tels programmes, il est préférable de passer par le :index:`langage d'assemblage`. Un langage d'assemblage est la liste de toutes les instructions simples qui sont supportées par un microprocesseur donné. Chaque microprocesseur dispose de son langage d'assemblage. 
+
+Dans ce syllabus, nous nous concentrons sur un langage d'assemblage simple qui ne correspond pas à un ordinateur réel, mais contient les instructions que l'on retrouve dans la plupart des langages d'assemblage. Son avantage principal est qu'il est très facile d'exécuter des programmes écrits dans ce langage en utilisant le simulateur disponible en ligne. Ce simulateur est utilisable depuis n'importe quel navigateur web.
+
+
+.. todo:: brève description du simulateur et de son fonctionnement
+
+
 Un assembleur simple
 --------------------
 
-
-
-Notre processeur contient quatre registres que vous pouvez utiliser
+Tout langage d'assemblage dépend des caractéristiques matérielles du microprocesseur qui supporte ses instructions. Notre processeur contient quatre registres que vous pouvez utiliser
 pour stocker des données. Ils sont identifiés par les lettres ``A``,
 ``B``, ``C`` et ``D``. Chacun de ces registres peut stocker un bloc de
 16 bits de données. Comme dans tout stockage binaire de l'information,
@@ -266,25 +312,31 @@ c'est au programmeur de décider ce que représente un bloc de bits. Il
 peut s'agir d'un caractère, d'un nombre ou de tout autre type
 d'information.
 
-Notre ordinateur comprend aussi une mémoire RAM qui permet elle aussi
-de stocker des données et des instructions. Toutes les informations
-stockées dans la RAM sont sous forme binaire. Tout comme pour les
-registres, c'est au programmeur de décider si une information se
-trouvant en mémoire représente un caractère, un nombre ou une
-instruction.
+.. todo:: figure du processeur
+
+
+
+
+Notre ordinateur comprend aussi une mémoire :index:`RAM` (ou index:`Random Access Memory`) qui permet de stocker des données et des instructions. Toutes les informations stockées dans la RAM sont sous forme binaire. Tout comme pour les registres, c'est au programmeur de décider si une information se trouvant en mémoire représente un caractère, un nombre ou une instruction.
+
+.. todo:: expliquer mémoire RAM avec un exemple, voir dans l'ancien syllabus le texte qui existait
 
 
 Notre processeur simple supporte quelques dizaines d'instructions que
 nous allons découvrir petit à petit. La première instruction est
 baptisée :index:`MOV`. L'instruction ``MOV`` prend deux arguments:
-une destination et une source. Sa syntaxe de base est donc:
+
+ - une destination 
+ - une source
+
+La syntaxe de base de cette instruction est :
 ``MOV dest, src``. La destination est un identifiant de registre (``A``,
 ``B``, ``C`` ou ``D``) et la source peut être un identifiant de
 registre ou une constante. Cette constante peut être spécifiée en
-notation binaire, décimale, octal ou hexadécimale. Lorsque l'on
+notation binaire, décimale, octale ou hexadécimale. Lorsque l'on
 spécifie une constante, c'est généralement la notation décimale qui
 est utilisée, mais parfois il est intéressant d'utiliser une des
-autres notations.
+autres notations, notamment lorsque l'on veut spécifier une séquence de bits spécifique.
 
 L'instruction ``MOV`` permet de placer un bloc de 16 bits dans
 un registre ou de déplacer un bloc de 16 bits d'un registre à l'autre.
@@ -293,8 +345,13 @@ Dans l'assembleur que nous utilisons, chaque instruction est
 représenté par un mot clé en majuscules suivi de ses arguments sur une
 ligne. Le caractère ``;`` est utilisé pour marquer le début d'un
 commentaire. Une ligne qui débute par le point virgule n'est donc
-pas considérée. Il en va de même pour tous les caractères qui
+pas considérée comme une instruction. 
+Il en va de même pour tous les caractères qui
 suivent le point virgule sur une ligne quelconque.
+
+Nous pouvons maintenant exécuter notre première séquence d'instructions.
+Notre microprocesseur va d'abord exécuter la première instruction. Il exécutera
+ensuite la deuxième et enfin la troisième.
 
 .. code-block:: nasm
    :linenos:
@@ -309,7 +366,10 @@ dans le registre ``A``. La deuxième ligne contient l'instruction qui
 permet de placer la représentation binaire du nombre naturel 2 dans le
 registre ``B``. La troisième instruction permet elle de copier les 16
 bits qui se trouvent dans le registre ``B`` (c'est-à-dire la valeur
-``2``) dans le registre ``A``. 
+``2``) dans le registre ``A``. Après l'exécution de ces trois instructions, 
+les registres ``A`` et ``B`` contiennent tous les deux la séquence
+``0000000000000010``.
+
 
 L'instruction ``MOV``, et toutes les instructions de l'assembleur que
 nous utilisons, permettent de spécifier leurs arguments numérique en
@@ -322,10 +382,10 @@ ci-dessous placent toute la valeur vingt trois dans le registre ``D``.
 .. code-block:: nasm
    :linenos:
       
-   MOV D, 23d        ; en notation décimale       
+   MOV D, 23d       ; en notation décimale       
    MOV D, 0x17      ; en notation hexadécimale
    MOV D, 0o27      ; en notation octale  
-   MOV D, 10111b  ; en notation binaire
+   MOV D, 10111b    ; en notation binaire
 
 
 Notre processeur peut également réaliser des opérations arithmétiques
@@ -408,7 +468,8 @@ Il est important de noter qu'après exécution de la séquence
 d'instructions ci-dessus, la valeur qui était stockée dans le registre
 ``A`` est perdue. Si cette valeur était importante pour la suite du
 programme, alors il est préférable d'utiliser la séquence
-d'instructions qui suit qui elle utilise le registre ``C`` comme intermédiaire.
+d'instructions qui suit qui elle utilise le registre ``C`` comme 
+mémoire intermédiaire.
 
 
 .. code-block:: nasm
@@ -465,7 +526,8 @@ par une constante entière.
    DIV 3
 
 Après exécution de ces instructions, le registre ``A``
-contient la valeur ``8``. Tout comme pour l'instruction
+contient la valeur ``8`` qui est le quotient de la division
+de ``24`` par ``3``. Tout comme pour l'instruction
 de multiplication, il est possible de diviser la
 valeur stockée dans le registre ``A`` par une valeur
 entière se trouvant dans un autre registre.
@@ -499,11 +561,12 @@ permettant de calculer le reste d'une division entière. Si
 vous avez besoin de cette opération, vous devrez la
 programmer en utilisant les autres instructions du langage. 
 
+.. todo: Carole, faire un exercice pour calculer le reste de la division pour des naturels
 
-Un dernière instruction qui se sera utile par après est
+Une dernière instruction qui nous sera utile par après est
 l'instruction :index:`HLT`. Cette instruction permet
-d'arrêter l'exécution du processeur. Il faut pousser sur
-`Reset` pour redémarrer le processeur.
+d'arrêter l'exécution du programme. Il faut pousser sur
+le bouton `Reset` du simulateur pour redémarrer le processeur.
 
 
 Interaction avec la mémoire RAM
@@ -521,12 +584,12 @@ Interaction avec la mémoire RAM
 A côté des instructions de calcul telles que celles qui
 viennent d'être présentées, notre microprocesseur simple
 est aussi capable d'interagir avec la mémoire. Il existe
-plusieurs type de mémoire dans un ordinateur. Les deux
+plusieurs type de mémoires dans un ordinateur. Les deux
 plus simples sont les :index:`Random Access Memory`
 (:index:`RAM`) et les :index:`Read-Only Memory`
 (:index:`ROM`).
 
-Comme son nom l'indique, une mémoire :index:`ROM` est une mémoire dont le contenu ne peut qu'être lu. Le contenu de cette mémoire est écrit lors de la construction du circuit et elle ne peut jamais être modifiée. Ces mémoires sont utilisées pour stocker des données ou des programmes qui ne changent jamais, comme par exemple le code qui permet de faire démarrer un ordinateur et de lancer son système d'exploitation. Une mémoire :index:`ROM` peut se représenter comme dans la :numref:`fig-rom`.
+Comme son nom l'indique, une mémoire :index:`ROM` est une mémoire dont le contenu ne peut qu'être lu. Le contenu de cette mémoire est écrit lors de la construction de la mémoire et ne peut jamais être modifié. Ces mémoires sont utilisées pour stocker des données ou des programmes qui ne changent jamais, comme par exemple le code qui permet de faire démarrer un ordinateur et de lancer son système d'exploitation. Une mémoire :index:`ROM` peut se représenter comme dans la :numref:`fig-rom`.
 
 
 .. _fig-rom:
@@ -551,12 +614,13 @@ Une caractéristique important des mémoires de type :index:`ROM` est que
 leur contenu est préservé même lorsque la mémoire est mise hors tension. 
 Certaines mémoires de type :index:`ROM` sont dites programmables car il
 est possible d'effacer et de modifier leur contenu. C'est le cas par
-exemple des :index:`EPROM` ou des :index:`EEPROM`. La programmation d'un
-tel circuit se fait en utilisant un dispositif spécialisé. 
+exemple des :index:`EPROM` (Electrically Programmable ROM) ou des 
+:index:`EEPROM` (Electrically Erasable and Programmable ROM). La programmation d'un
+tel circuit se fait en utilisant un dispositif spécialisé qui sort du cadre de ce cours. 
 
 Une mémoire :index:`ROM` peut être vue comme un tableau permettant de
 stocker des données (dans notre ordinateur des blocs de 16 bits). Chaque
-élément du tableau est identifié par une adresse. A titre d'exemple, considérons
+élément du tableau est identifié par une :index:`adresse`. A titre d'exemple, considérons
 une mémoire :index:`ROM` qui permet de stocker 4 blocs de 16 bits.
 
 .. _table-rom4:
@@ -585,7 +649,7 @@ décimale.
 
 Une mémoire :index:`ROM` utilise un nombre de bits d'adresse qui dépend de
 sa capacité. Une mémoire permettant de stocker :math:`2^{n}` blocs de données
-utilisera des adresses qui sont stockées sur `n` bits. Il faut cependant
+utilisera des adresses qui sont stockées sur :math:`n` bits. Il faut cependant
 noter que dans la plupart des ordinateurs, les mémoires sont organisées de
 façon à associer une adresse à chaque octet ou bloc de 8 bits. 
 
@@ -599,9 +663,9 @@ façon à associer une adresse à chaque octet ou bloc de 8 bits.
 Lorsque l'on doit stocker un bloc de 16 bits dans une mémoire dont l'unité
 de stockage est l'octet (8 bits), il faut se mettre d'accord sur la convention
 utilisée pour stocker les bits de poids fort et les bits de poids faible.
-Considérons la séquence de bits ``0b01000000 00000001``. Cette séquence de
-bits correspond à la valeur entière ``8193``. Dans une mémoire permettant
-de stocker deux octets, elle peut être stockée de deux façons différentes.
+Considérons la séquence de bits ``0b 01000000 00000001``. Cette séquence de
+bits correspond à la valeur entière ``8193``. Dans une mémoire dont l'unité
+de stockage est l'octet, elle peut être stockée de deux façons différentes.
 La première convention, baptisée :index:`big-endian` stocke l'octet de poids
 fort (``0b01000000```) à l'adresse la plus petite comme illustré dans la
 table :numref:`table-rom2-big`. C'est la convention qui est utilisée par
@@ -681,9 +745,9 @@ représente une mémoire :index:`RAM` de façon schématique.
 
 Cette mémoire :index:`RAM` peut être utilisée par notre microprocesseur
 comme mémoire permettant de stocker à la fois les instructions et
-les données. Tant les instructions que les données seront stockées sous
+les données. Tant les instructions que les données sont stockées sous
 la forme de séquences de bits. Nous analyserons plus tard comment représenter
-chaque instruction comme une séquence de bits. Pour le moment, concentrons-nous
+une instruction comme une séquence de bits. Pour le moment, concentrons-nous
 sur l'utilisation de la mémoire :index:`RAM` pour stocker des données
 qui seront utilisées par nos programmes.
 
@@ -691,8 +755,8 @@ Le langage d'assemblage nous permet de précharger en mémoire :index:`RAM`
 des constantes qui pourront ensuite être utilisées dans notre programme.
 Le mot clé :index:`DB` permet de stocker en mémoire une constante.
 
-A titre d'exemple, le code ci-dessous stocke l'octet ``0b0000011`` à
-l'adresse ``0`` en mémoire et l'octet ``0b00000111`` à l'adresse ``1``.
+A titre d'exemple, le code ci-dessous stocke le bloc de 16 bits ``0b00000000 0000011`` à
+l'adresse ``0`` en mémoire et le bloc ``0b00000000 00000111`` à l'adresse ``2``.
 
 .. code-block:: nasm
 
@@ -704,9 +768,9 @@ En pratique, le mot clé ``DB`` sera rarement utilisé de cette façon.
 Dans un programme, on utilisera ce mot clé pour définir des constantes
 ou alors pour fixer la valeur initiale de certaines variables. Dans ces
 deux cas d'utilisation, il est important pour le programmeur de pouvoir
-connaître l'adresse où chacune de ces variables ou constantes sont
-stockées. L'assembleur que nous utilisons permet d'associer une
-étiquette (`label` en anglais) à certaines adresses mémoire. Ces
+connaître l'adresse mémoire correspondant à chacune de ces variables 
+ou constantes. L'assembleur que nous utilisons permet d'associer une
+:index:`étiquette` (:index:`label` en anglais) à certaines adresses mémoire. Ces
 étiquettes peuvent ensuite être utilisées par les instructions du
 programme et elles sont automatiquement traduites par l'assembleur en
 l'adresse correspondante. Pour définir une étiquette, il suffit
@@ -723,7 +787,7 @@ mémoire à l'adresse de l'étiquette.
 
 Le programme ci-dessous définit deux étiquettes: `x` et `y`. Il
 initialise la valeur stockée à l'adresse `x` à ``3`` et celle
-stockée à l'adresse `y` à ``7`` via les deux "instructions"
+stockée à l'adresse `y` à ``7`` via les deux commandes
 ``DB``. La première instruction place dans le registre
 ``A`` la valeur qui se trouve en mémoire à l'adresse de l'étiquette
 `x`, c'est-à-dire la valeur ``3``. La deuxième instruction
@@ -732,18 +796,20 @@ place dans le registre ``B`` la valeur qui se trouve en mémoire
 Ensuite, l'instruction ``ADD`` place la valeur ``10`` dans le registre
 ``A``. 
 
+.. todo:: vérifier avec le nouveau simulateur et mettre une copie d'écran
+
 .. code-block:: nasm
 
    MOV A, [x]
    MOV B, [y]
    ADD A, B
-   MOV C, x
-   MOV D, y
    HLT
    ;  Variables et données du programme
    x: DB 3
    y: DB 7
 
+   
+   
 
 Lorsque le programme ci-dessus est transformé en langage machine et
 stocké en mémoire, l'instruction :index:`HLT` se trouve à l'adresse
@@ -870,25 +936,24 @@ de réaliser la soustraction.
    z2: DB 0		
 
 
+En exécutant ce programme dans le simulateur, on peut facilement vérifier
+que les zones mémoires étiquettées ``z1`` et ``z2`` contiennent bien le même naturel
+avec l'exécution du programme.
 
 
 Instructions logiques
 ---------------------
 
-
-Le fonctionnement des ordinateurs s'appuie sur quelques principes très simples, mais qui sont utilisés à une très grande échelle. Le premier principe est que toute l'information peut s'encoder sous une forme binaire, c'est-à-dire une suite de bits. Un bit est l'unité de représentation de l'information. Un bit peut prendre deux valeurs:
-
- - ``0``
- - ``1``
-
-On peut associer une signification à ces bits. Il est par exemple courant de considérer que le bit ``0`` représente la valeur `Faux` tandis que le bit ``1`` représente la valeur `Vrai`. C'est une convention qui est utile dans certains cas, mais n'est pas toujours nécessaire et peut parfois porter à confusion. 
-
-Avec ces deux valeurs booléennes, il est intéressant de définir des opérations. Une opération booléenne est une fonction qui prend en entrée 0, 1 ou plusieurs bits et retourne un résultat.
+Comme nous l'avons indiqué précédemment, un microprocesseur manipule des séquences de bits.
+Outre les opérations arithmétiques que nous venons de voir, il est parfois intéressant
+de réaliser des opérations directement sur les séquence de bits. Cela se fait en utilisant
+les instructions logiques qui s'appuient sur les opérations booléennes. Une :index:`opération 
+booléenne` est une fonction qui prend en entrée 0, 1 ou plusieurs bits et retourne un résultat.
 
 Fonctions booléennes
---------------------
+____________________
 
-La fonction la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une `table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x` contient les différentes valeurs possibles de l'entrée `x` et la valeur du résultat pour chacune des valeurs possibles de `x`.
+La fonction booléenne la plus simple est la fonction identité. Elle prend comme entrée un bit et retourne la valeur de ce bit. On peut la définir en utilisant une :index:`table de vérité` qui indique la valeur du résultat de la fonction pour chaque valeur possible de son entrée. Dans la table ci-dessous, la colonne `x` contient les différentes valeurs possibles de l'entrée `x` et la valeur du résultat pour chacune des valeurs possibles de `x`.
 
 .. spelling:word-list::
 
@@ -911,7 +976,7 @@ x   identité(x)
 
 Cette fonction n'est pas très utile en pratique. Elle nous permet d'illustrer une table de vérité simple dans laquelle il y a une valeur binaire en entrée et une valeur binaire également en sortie.
 
-Une fonction plus intéressante est l'inverseur, aussi dénommée `NOT` en anglais. Cette fonction prend comme entrée un bit. Si le bit d'entrée vaut `1`, elle retourne `0`. Tandis que si le bit d'entrée vaut `0`, elle retourne `1`. Cette fonction sera très fréquemment utilisée pour construire des circuits électroniques utilisés dans les ordinateurs. 
+Une fonction plus intéressante est l':index:`inverseur`, aussi dénommée :index:`NOT(x)` en anglais. Cette fonction prend comme entrée un bit. Si le bit d'entrée vaut `1`, elle retourne `0`. Tandis que si le bit d'entrée vaut `0`, elle retourne `1`. Cette fonction sera très fréquemment utilisée pour construire des circuits électroniques. 
 
 === ======
 x   NOT(x)
@@ -920,7 +985,7 @@ x   NOT(x)
 1   0
 === ======
 
-Il y a encore deux fonctions que l'on peut construire avec une seule entrée binaire. La première, baptisée `Toujours0`, retourne toujours la valeur ``0``, quelle que soit son entrée. La seconde, baptisée `Toujours1` retourne toujours la valeur ``1``. Voici leurs tables de vérité.
+Il y a encore deux fonctions que l'on peut construire avec une seule entrée binaire. La première, baptisée :index:`Toujours0`, retourne toujours la valeur ``0``, quelle que soit son entrée. La seconde, baptisée :index:`Toujours1` retourne toujours la valeur ``1``. Voici leurs tables de vérité.
 
 === ============
 x   Toujours0(x) 
@@ -943,7 +1008,7 @@ La logique booléenne devient nettement plus intéressante lorsque l'on considè
 
 
 Fonctions booléennes à deux entrées 
-------------------------------------
+___________________________________
 
 Plusieurs fonctions booléennes classiques existent. Les premières correspondent
 à la conjonction (`et`) et à la disjonction (`ou`) en logique. Commençons par
@@ -959,10 +1024,10 @@ x   y AND(x,y)
 === = ========
 
 
-Cette table comprend quatre lignes qui correspondent à toutes les combinaisons possibles des deux entrées de la fonction. On remarque aisément que la fonction `AND(x,y)` retourne la valeur ``1`` uniquement lorsque ses deux entrées ont la valeur ``1``. Si une des deux entrées de la fonction `AND(x,y)` a la valeur
+Cette table comprend quatre lignes qui correspondent à toutes les combinaisons possibles des deux entrées de la fonction. On remarque aisément que la fonction :index:`AND(x,y)` retourne la valeur ``1`` uniquement lorsque ses deux entrées ont la valeur ``1``. Si une des deux entrées de la fonction `AND(x,y)` a la valeur
 ``0``, alors sa sortie est nécessairement ``0``. Cette fonction est bien l'équivalent de la conjonction logique si l'on applique la convention que ``0`` représente la valeur `Faux`.
 
-La fonction `OR(x,y)`, quant à elle, est l'équivalent de la disjonction logique. Sa table de vérité est reprise ci-dessous.
+La fonction :index:`OR(x,y)`, quant à elle, est l'équivalent de la disjonction logique. Sa table de vérité est reprise ci-dessous.
 
 
 === = ========
@@ -977,7 +1042,7 @@ x   y OR(x,y)
 
 On remarque aisément que la fonction `OR(x,y)` correspond bien à la disjonction logique lorsque `1` représente la valeur `Vrai`. Cette fonction `OR(x,y)` ne retourne la valeur ``0`` que si ses deux entrées valent ``0``. Dans tous les autres cas, elle retourne la valeur ``1``.
 
-Ces fonctions peuvent être combinées entre elles. Un premier exemple est d'appliquer un inverseur (opération `NOT` au résultat de la fonction `AND`). Cette fonction booléenne s'appelle généralement `NAND` (`NOT AND`) et sa table de vérité est la suivante. On pourra dire que :math:`NAND(x,y) \iff NOT(AND(x,y))`. 
+Ces fonctions peuvent être combinées entre elles. Un premier exemple est d'appliquer un inverseur (opération `NOT` au résultat de la fonction `AND`). Cette fonction booléenne s'appelle généralement :index:`NAND(x,y)` (`NOT AND`) et sa table de vérité est la suivante. On pourra dire que :math:`NAND(x,y) \iff NOT(AND(x,y))`. 
 
 === = =========
 x   y NAND(x,y) 
@@ -989,7 +1054,7 @@ x   y NAND(x,y)
 === = =========
 
 
-De même, la fonction `NOR` s'obtient en inversant le résultat de la fonction `OR`. On pourra dire que :math:`NOR(x,y) \iff NOT(OR(x,y))`. 
+De même, la fonction :index:`NOR(x,y)` s'obtient en inversant le résultat de la fonction `OR`. On pourra dire que :math:`NOR(x,y) \iff NOT(OR(x,y))`. 
 
 
 === = ========
@@ -1013,7 +1078,7 @@ x y NOT(x)  NOT(y) OR(NOT(x),NOT(y))
 = = ======  ====== =================
 
  
-Il existe d'autres fonctions booléennes à deux entrées qui sont utiles en pratique. Parmi celles-ci, on retrouve la fonction `XOR(x,y)` qui retourne la valeur `1` uniquement si une seule de ses entrées a la valeur `1`. Sa table de vérité est reprise ci-dessous. On remarquera qu'elle diffère de celle des autres fonctions booléennes que nous avons déjà présenté.
+Il existe d'autres fonctions booléennes à deux entrées qui sont utiles en pratique. Parmi celles-ci, on retrouve la fonction :index:`XOR(x,y)` qui retourne la valeur `1` uniquement si une seule de ses entrées a la valeur `1`. Sa table de vérité est reprise ci-dessous. On remarquera qu'elle diffère de celle des autres fonctions booléennes que nous avons déjà présenté.
 
 
 === = ========
@@ -1061,7 +1126,15 @@ Le langage python supporte également les opérations booléennes bit à bit. Le
 Instructions de manipulation de bits
 ------------------------------------
 
-Notre processeur supporte également des opérations de décalage à gauche (:index:`SHL`) et à droite (:index:`SHR`). Ces instructions prennent deux arguments comme les opérations arithmétiques. En pratique, ces instructions sont généralement utilisées avec une constante comme second argument.
+.. spelling:word-list::
+
+   SHR
+   SHL
+   SHift
+   Left
+   Right
+
+Notre processeur supporte également des opérations de décalage à gauche (:index:`SHL` - SHift Left) et à droite (:index:`SHR` - SHift Right). Ces instructions prennent deux arguments comme les opérations arithmétiques. En pratique, ces instructions sont généralement utilisées avec une constante comme second argument.
 
 L'instruction ``SHL reg, n`` décale de n positions les bits se trouvant dans le registre ``reg`` vers la gauche. A titre d'exemple, si le registre ``B`` contient les bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}`, alors après exécution de l'instruction ``SHL B, 3`` ce registre contiendra les bits :math:`b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}000`. De façon équivalente, si on exécute ``SHR B, 5`` sur les bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}`, on obtient :math:`00000b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}`. 
 

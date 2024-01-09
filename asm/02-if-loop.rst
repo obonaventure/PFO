@@ -19,7 +19,7 @@ peut être :
 
 Lors de son exécution, l'instruction de comparaison ne modifie pas
 la valeur contenue dans le registre qui est son premier argument. Elle stocke
-son résultat dans un drapeau (`flag` en anglais). Ce drapeau occupe 1 bit dans le
+son résultat dans un :index:`drapeau` (:index:`flag` en anglais). Ce drapeau occupe 1 bit dans le
 processeur (le bit ``Z``). Il est mis à la valeur `vrai` par l'instruction ``CMP`` si
 la comparaison a réussi et à `faux` sinon. Dans l'exemple ci-dessous,
 le drapeau ``Z`` est mis à la valeur `faux` après exécution de la première instruction
@@ -31,16 +31,15 @@ instruction ``CMP``.
    MOV A, 2
    MOV B, 3
    MOV C, 2
-   CMP A, B
-   CMP A, C
+   CMP A, B    ; Z est mis à faux
+   CMP A, C    ; Z est mis à vrai
 
 L'instruction ``CMP`` n'est pas la seule à modifier le drapeau ``Z``. C'est le cas
 pour toutes les instructions arithmétiques et logiques: ``ADD``, ``SUB``, ``MUL``,
 ``INC``, ``DEC``, ... Après exécution de chacune de ces instructions, le drapeau
-``Z```est mis à `vrai` si le résultat de l'opération est le bloc de 16 bits
+``Z`` est mis à `vrai` si le résultat de l'opération est le bloc de 16 bits
 dont tous les bits valent zéro. Lorsque l'on veut utiliser la valeur du drapeau
 ``Z``, il faut le faire immédiatement après l'exécution de l'instruction ``CMP``.
-
 
 .. todo:: Attention revoir cette partie si on met du complément à 2
 
@@ -56,18 +55,18 @@ le résultat (``65536```) doit être stocké sur 17 bits et non 16.
 .. code-block:: nasm
 		
    MOV A, 65534
-   INC A          ; C mis à false
+   INC A          ; C mis à faux
    INC A          ; C mis à vrai
 
 
 Il en va de même pour l'instruction de multiplication qui provoque également
 un dépassement de capacité (et donc fixe le drapeau ``C`` à `vrai` après
-son exécution.
+son exécution) comme dans l'exemple ci-dessous.
 
 .. code-block:: nasm
 
    MOV A, 40000
-   MUL A         ; dépassement de capacité
+   MUL A         ; dépassement de capacité C est mis à vrai
 		
 
 Le compteur de programme et les instructions de saut
@@ -90,9 +89,9 @@ parlent de :index:`pointeur d'instruction` ou :index:`instruction pointer` en
 anglais. Dans ce syllabus, nous
 utiliserons le terme :index:`PC` pour parler de ce registre. Le :index:`PC` stocke
 à tout moment l'adresse en mémoire de l'instruction à exécuter. Lors de l'exécution
-d'une instruction arithmétique, le :index:`PC` est simplement incrémenter de
+d'une instruction arithmétique, le :index:`PC` est simplement incrémenté de
 façon à contenir l'adresse de l'instruction suivante. A titre d'exemple, considérons
-la suite d'instruction de la section précédente.
+la suite d'instructions de la section précédente.
 
 .. code-block:: nasm
 
@@ -115,14 +114,14 @@ des instructions du programme.
 
 Notre microprocesseur, comme tous les autres processeurs, supporte également
 des instructions qui permettent de modifier la valeur stockée dans le :index:`PC`.
-Ce sont les instructions de saut. Il existe deux types d'instructions de saut:
+Ce sont les :index:`instructions de saut`. Il existe deux types d'instructions de saut:
 
  - les instructions de saut *inconditionnelles* qui permettent de remplacer l'adresse 
    stockée dans le :index:`PC` par une autre adresse.
  - les instructions de saut *conditionelles* qui permettent de remplacer l'adresse
    stockée dans le :index:`PC` par une autre adresse lorsqu'une *condition particulière
    est remplie*. Si la condition n'est pas remplie, l'adresse stockée dans le :index:`PC`
-   n'est pas modifiée.
+   devient celle de l'instruction suivante.
 
 L'instruction de saut inconditionnelle s'appelle :index:`JMP` (pour `jump`, `saut`
 en anglais). Cette instruction prend un argument qui est une adresse (ou une étiquette).
@@ -146,7 +145,6 @@ de l'étiquette ``i4``. Ensuite il exécute l'instruction de comparaison qui pla
 la valeur `faux` dans le drapeau ``Z`` puisque le registre ``A`` contient la valeur
 ``2`` et le registre ``B`` la valeur ``9``.
 
-
 L'instruction de saut inconditionnel a plusieurs utilisations comme nous le
 verrons bientôt. Pour rendre le code assembleur plus facile à lire, il
 est intéressant de définir les constantes au début du programme plutôt qu'à la
@@ -156,7 +154,6 @@ constante. Par contre, nous pouvons facilement associer une étiquette ``start``
 au début "réel" de notre programme et avoir comme première instruction ``JMP start``.
 Cette instruction peut être suivie d'une définition des différentes constantes utilisées
 par le programme avec une suite de mot-clés ``DB`` et les étiquettes associées.
-
 
 A titre d'exemple, reprenons le programme python ci-dessous.
 
@@ -186,15 +183,15 @@ Ce programme peut être de façon plus lisible comme suit.
 
 Nous pouvons maintenant aborder les instructions de saut conditionnelles. Ces
 instructions réalisent la modification du :index:`PC` en fonction des valeurs
-des drapeaux ``Z`` et ``C``. Elles prennent toutes un seul argument: l'adresse
+des drapeaux ``Z`` et/ou ``C``. Ces instructions prennent un seul argument: l'adresse
 qu'il faut placer dans le :index:`PC` si la condition est remplie.
 
 Les deux premières instructions conditionnelles sont :index:`JE` (`Jump if Equal`)
 et :index:`JNE` (`Jump if Not Equal`). Ces instructions s'utilisent après
 une instruction ``CMP`` et testent la valeur du drapeau ``Z``. L'instruction
 ``JE`` modifie le :index:`PC` si le drapeau ``Z`` contient la valeur
-`vrai`. L'instruction ``JE``, elle, modifie le :index:`PC`
-lorsque le drapeau ``Z`` contient la valeur `vrai`. 
+`vrai`. L'instruction ``JNE``, elle, modifie le :index:`PC`
+lorsque le drapeau ``Z`` contient la valeur `faux`. 
 
 Imaginons que nous devions écrire un programme qui place la valeur ``0`` dans
 le registre ``C`` si les valeurs contenues dans les registres ``A`` et ``B`` sont
@@ -204,33 +201,33 @@ s'écrire comme suit.
 .. code-block:: nasm
 
           MOV A, 123
-	  MOV B, 123
-	  CMP A, B
-	  JE equal
-	  MOV C, 0
+	      MOV B, 123
+	      CMP A, B
+	      JE equal
+	      MOV C, 0
    equal: MOV C, 1
           HLT
 
-Lors de son exécution, ce programme charges les deux valeurs dans les registres
-``A`` et ``B`` puis l'instruction ``CMP`` fixe la valeur du drapeau ``Z``. Si ce
-drapeau est à la valeur `vrai`, tout va bien, l'instruction ``JE`` modifie
+Lors de son exécution, ce programme charge les deux valeurs dans les registres
+``A`` et ``B``. Ensuite, l'instruction ``CMP`` fixe la valeur du drapeau ``Z``. Si ce
+drapeau est à la valeur `vrai`, l'instruction ``JE`` modifie
 le ``PC`` pour y mettre l'adresse correspondant à l'étiquette ``equal`` et
 l'instruction ``MOV C,1`` est exécutée. Par contre, si le drapeau est
 à la valeur `faux`, le processeur exécute l'instruction `MOV C,0` et place
 la valeur attendue dans le registre ``C``. Malheureusement, l'instruction
-suivante est ``MOV C, 1`` et la valeur de ce registre est modifiée.
+suivante est ``MOV C, 1`` et la valeur de ce registre est à nouveau modifiée.
 
-On peut éviter ce problème en utilisant un saut inconditionnel après exécution
+On peut éviter ce problème en utilisant un saut inconditionnel après l'exécution
 de l'instruction ``MOV C,0`` comme ci-dessous.
 
 .. code-block:: nasm
 
            MOV A, 123
-	   MOV B, 123
-	   CMP A, B
-	   JE equal
+	       MOV B, 123
+	       CMP A, B
+	       JE equal
    ne:     MOV C, 0
-	   JMP suite:
+	       JMP suite:
    equal:  MOV C, 1
    suite:  HLT
    
@@ -245,21 +242,21 @@ la valeur du drapeau ``Z``: :index:`JZ` (`Jump if Zero`) et :index:`JNZ`
 (`Jump if Not Zero`). L'instruction
 :index:`JZ` modifie le :index:`PC` si le drapeau ``Z`` est à la valeur `vrai`.
 L'instruction :index:`JNZ` réalise cette modification lorsque le drapeau
-``A`` a la valeur `faux`. Ces instructions peuvent s'utiliser sans être
+``Z`` contient la valeur `faux`. Ces instructions peuvent s'utiliser sans être
 précédées de l'instruction ``CMP`` comme dans l'exemple ci-dessous.
 
 .. code-block:: nasm
 
             MOV A, 1
-	    DEC A
-	    JZ zero
+	        DEC A
+	        JZ zero
    nz:      MOV C, 1
             JMP suite:
    zero:    MOV C, 0
    suite:   HLT
 
 Les instructions conditionnelles permettent aussi de réaliser des comparaisons pour
-déterminer si la valeur stockée dans un registre est supérieure, inférieur, inférieur
+déterminer si la valeur stockée dans un registre est supérieure, inférieure, ou inférieure
 ou égale à celle d'un autre registre. Ces instructions s'utilisent directement après
 une opération ``CMP reg1, reg2``. Les instructions suivantes sont supportées
 par notre assembleur:
@@ -292,11 +289,11 @@ entre deux variables et place le résultat dans le registre ``C``.
             CMP A, [y]
             JBE petit
             MOV C, A
-	    SUB C, [y]
-	    JMP fin
+	        SUB C, [y]
+	        JMP fin
    petit:   MOV C, [y]
-	    SUB C, A
-   fin: HLT
+	        SUB C, A
+   fin:     HLT
 
    
 
@@ -313,17 +310,18 @@ de multiplication a provoqué un dépassement de capacité.
 .. code-block:: nasm
 
              MOV A, 1000
-	     MOV B, 123
-	     MUL B
-	     JNC correct
+	         MOV B, 123
+	         MUL B
+	         JNC correct
    ; dépassement de capacité
-	     HLT
+	         HLT
    correct:  MOV B, D
    ; suite du programme
 
 
 Un autre problème mathématique qui peut survenir est lorsque l'on effectue
-une division par zéro. Notre microprocesseur ne dispose pas de drapeau qui permet
+une division par zéro. Contrairement à d'autres microprocesseurs, 
+notre microprocesseur ne dispose pas de drapeau qui permet
 de détecter cette situation. Lors de l'exécution d'une instruction telle que ``DIV 0``,
 le processeur s'arrête et affiche le message `Division by 0`. Si vous souhaitez
 éviter qu'un programme qui réalise une division ne s'arrête de cette façon, vous devez
@@ -335,15 +333,15 @@ Les instructions conditionnelles
 
 Les instructions de saut que nous venons de voir jouent un rôle critique dans les
 programmes écrits en assembleur. C'est grâce à ces instructions que l'on peut
-implémentation à la fois des instructions conditionnelles de type ``if ... else``, mais
+implémenter à la fois des instructions conditionnelles de type ``if ... else``, mais
 aussi les boucles et même les appels à des fonctions et procédures comme nous le
 verrons plus tard.
 
 En python, il est facile d'écrire une instruction conditionnelle. Il suffit
 d'utiliser le mot clé ``if``, d'indiquer la condition et ensuite la
-séquence d'instructions à exécuter. Considérons à titre d'exemple la recherche du
-maximum entre deux variables, ``x`` et ``y``. En python, ce calcul peut se réaliser
-comme suit:
+séquence d'instructions à exécuter. Prenons comme exemple la recherche du
+maximum entre deux variables, ``x`` et ``y``. En python, on peut affecter le
+maximum à la variable ``max`` comme suit:
 
 .. code-block::  python
 
@@ -367,20 +365,21 @@ variable ``max``.
 .. code-block:: nasm
 
             JMP start
+   ; déclarations et initialisations des variables		
    x:       DB 12
    y:       DB 9
    max:     DB 0
    start:   MOV A, [x]
-	    MOV B, [y]
-	    CMP A, B
-	    JA xmax
-	    MOV [max], B
-	    JMP fin
+	        MOV B, [y]
+	        CMP A, B
+	        JA xmax
+	        MOV [max], B
+	        JMP fin
    xmax:    MOV [max], A
    fin:     HLT
 
 
-Un approche similaire peut être utilisée pour implémenter d'autres instructions
+Une approche similaire peut être utilisée pour implémenter d'autres instructions
 conditionnelles. Le tout est de ramener toute condition à une comparaison avec
 la valeur `0` ou à une relation d'ordre. 
 
@@ -404,7 +403,7 @@ Dans ce cas, on peut réécrire l'instruction conditionnelle sous la forme :
 
        
 Ces deux instructions conditionnelles imbriquées peuvent facilement s'implémenter avec les
-instructions de saut conditionnel que nous avons présenté. Il en va de même pour une
+instructions de saut conditionnel que nous avons présentées. Il en va de même pour une
 disjonction logique. L'instruction ci-dessous :
 
 .. code-block:: python
@@ -422,6 +421,10 @@ peut se réécrire de la façon suivante pour supprimer la disjonction logique.
      if (b<1) :
          x=2
 
+		 
+Les lecteurs attentifs convertiront ces instructions conditionelles en assembleur à
+titre d'exercice.
+		 
 	 
 Les boucles
 -----------
@@ -433,24 +436,21 @@ Les boucles
 
 
 
-
 Après les opérations arithmétiques et logiques et les instructions conditionnelles, il nous
 reste à voir comment supporter les boucles. Python supporte deux types principaux de boucles :
 
  - les boucles ``while``
  - les boucles ``for``
 
-
-
    
 Les boucles ``while`` sont les boucles les plus générales. Une boucle ``for`` est
-généralement une boucle d'un type particulier qui est écrite de façon compacte.
+équivalente à une boucle d'un type particulier qui est écrite de façon compacte.
 Nous nous focaliserons  sur les boucles ``while`` dans cette section. Une boucle
-``while`` comprend toujours une condition qui est une expression booléenne et
-un corps comprenant une ou plusieurs instructions
+``while`` comprend toujours une condition qui comprend une expression booléenne 
+qui est testée à chaque itération et un corps contenant une ou plusieurs instructions
 à exécuter.
 
-Commençons par une boucle inutile, mais que vous avez probablement déjà rencontré:
+Commençons par une boucle inutile, mais que vous avez probablement déjà rencontrée:
 la boucle infinie. 
 
 .. code-block:: python
@@ -469,12 +469,12 @@ de saut inconditionnel ``JMP``.
    ; programme
    start:   MOV A, [x]
             INC A
-	    MOV [x], A
-	    JMP start
+	        MOV [x], A
+	        JMP start
 
-Parfois, on obtient une boucle infinie en python car la condition d'arrêt de
-la boucle n'est sont jamais réalisée, même si python vérifie cette condition à
-chaque itération.
+Parfois, on écrit par inadvertance une boucle infinie en python 
+car la condition d'arrêt de la boucle n'est jamais réalisée, 
+même si python vérifie cette condition à chaque itération.
 
 .. code-block:: python
 
@@ -483,13 +483,13 @@ chaque itération.
      x=x+1  
 
 
-Ce programme python être traduit par les instructions suivantes en assembleur.
+Ce programme python peut être traduit par les instructions suivantes en assembleur.
 
 .. code-block:: nasm
 
             JMP start
    ; variables et constantes	    
-   x: DB 1
+   x:       DB 1
    start:   MOV A, [x]
             CMP A, 0
             JZ fin
@@ -505,14 +505,15 @@ sort de la boucle. Sinon, il incrémente la valeur du registre ``A`` puis sauve
 le résultat en mémoire à l'adresse de la variable ``x``.
 
 La sauvegarde en mémoire de la valeur de la variable ``x`` n'est pas nécessaire
-puisque cette valeur se trouve également dans le registre ``A``. On peut donc
-accélérer le programme comme présenté ci-dessous.
+puisque cette valeur se trouve également dans le registre ``A``. On peut réduire
+le nombre d'instructions à exécuter et donc accélérer le programme en mettant à jour
+la valeur de la variable ``x`` uniquement en fin de boucle comme présenté ci-dessous.
 
 .. code-block:: nasm
 
             JMP start
    ; variables et constantes	    
-   x: DB 1
+   x:       DB 1
    start:   MOV A, [x]
    boucle:  CMP A, 0
             JZ fin
@@ -527,40 +528,42 @@ de la variable ``x`` qu'à la sortie de la boucle (étiquette ``fin``). Ce progr
 plus efficace que le précédent même si il aboutit au même résultat final.
 
 Si vous exécutez le programme python, vous verrez qu'il ne s'arrête jamais et
-que vous devrez manuellement arrêter l'interpréteur python. Si vous faites le même essai
+que vous devrez manuellement arrêter l'interpréteur python pour forcer la
+terminaison du programme. Si vous faites le même essai
 avec le programme en assembleur sur le simulateur, vous verrez que le programme en
 assembleur finit par s'arrêter. Cette différence de comportement s'explique par
 la façon dont les nombres naturels sont stockés en python et dans notre assembleur.
 Le langage python a été conçu de façon à pouvoir réaliser des calculs sans limitation
-sur les nombres entiers qui sont représentés. Le langage python adapte dynamiquement
-le nombre de bits utilisés pour représenter chaque nombre à ce nombre. En python,
+avec tous les nombres entiers. Pour cela, le langage python adapte dynamiquement
+le nombre de bits utilisés pour représenter chaque nombre. En python,
 vous pouvez calculer avec les valeurs ``1000``, ``2000000``, ```5000000000`` ou
 ``9000000000000`` sans aucun souci.
 
 Notre assembleur utilise 16 bits pour représenter les nombres naturels. Avec 16 bits
-qui peuvent prendre les valeurs ``0`` et ``1``, il peut stocker :math:`2^{16}` nombres
-naturels différents. Le plus petit est ``0`` (ou ``0b0000000000000000``) et le
-plus grand ``65535`` (:math:`2^{16}-1` ou ``0b1111111111111111``). Analysons ce qu'il
+qui peuvent prendre les valeurs ``0`` et ``1``, il est possible de représenter
+:math:`2^{16}` nombres
+naturels différents. Le plus petit est ``0`` (ou ``0b00000000 00000000``) et le
+plus grand ``65535`` (:math:`2^{16}-1` ou ``0b11111111 11111111``). Analysons ce qu'il
 se passe dans la boucle. Au début, la valeur dans le registre ``A`` passe de
-``0b0000000000000000`` à puis ``0b0000000000000001``, ``0b0000000000000010``, ...
-Après quelque temps, le registre ``A`` contient la valeur ``65534`` ou ``0b1111111111111110``.
-Après incrémentation, cette valeur passe à ``0b1111111111111111``. C'est le plus
+``0b00000000 00000000`` à puis ``0b000000000 0000001``, ``0b00000000 00000010``, ...
+Après quelque temps, le registre ``A`` contient la valeur ``65534`` ou ``0b11111111 11111110``.
+Après incrémentation, cette valeur passe à ``0b11111111 11111111``. C'est le plus
 grand naturel que l'on peut représenter en utilisant 16 bits. L'incrémentation
-suivante devrait faire passer la valeur du registre à ``0b10000000000000000``
-ou ``65536``. Comme le registre ``A`` ne peut stocker que 16 bits, il mémorise
-les 16 bits de poids faible, à savoir ``0b000000000000000`` ou ``0`` en notation
-décimale. Après l'exécution de cette instruction, le drapeau ``C`` est mis à
-`vrai` pour indiquer qu'il y a eu un dépassement de capacité lors de l'exécution
+suivante devrait faire passer la valeur du registre à ``0b1 00000000 00000000``
+ou ``65536``. Comme le registre ``A`` ne peut stocker que 16 bits, il conserve
+les 16 bits de poids faible, à savoir ``0b00000000 0000000`` ou ``0`` en notation
+décimale. Après l'exécution de cette instruction, le drapeau ``C`` du processeur
+est mis à `vrai` pour indiquer qu'il y a eu un dépassement de capacité lors de l'exécution
 de l'instruction ``INC``, mais notre programme ne vérifie pas ce drapeau...
 Le nouvelle valeur stockée dans le registre ``A``  est numériquement égale à ``0``
-et notre programme en assembleur s'arrête.
+et notre programme sauvegarde la valeur ``0`` en mémoire puis s'arrête.
 
       
 Nous pouvons nous inspirer de cette approche pour traduire une boucle ``while`` en une
 séquence d'instructions en assembleur. Pour cela, notre programme doit :
 
  1. Évaluer la valeur de la condition
- 2. Si la condition est `vrai`, exécuter le corps de la boucle puis revenir au point 1
+ 2. Si la condition est évaluée à la valeur `vrai`, exécuter le corps de la boucle puis revenir au point 1
  3. Sinon, passer à l'exécution des instructions placées juste après le corps de la boucle
 
    
@@ -579,7 +582,8 @@ cette boucle, la variable ``x`` contient la valeur `512`.
 
 
 Ce fragment de code peut se traduire en langage assembleur. Il faut d'abord charger
-la valeur de la variable ``n`` (ligne 5) et la comparer à ``10``. Si ``n`` est
+la valeur de la variable ``n`` (ligne 5) et la comparer à ``10``. Si la valeur
+de la variable ``n`` est
 supérieure ou égale à ``10``, il faut sortir de la boucle. En général, pour implémenter
 une condition en assembleur, utilise l'instruction de saut qui correspond à la condition
 inverse puisque l'on cherche à faire un saut pour sortir de la boucle si la condition
@@ -592,9 +596,9 @@ registre et calculer ``x+x``. Enfin, on utilise une instruction de saut incondit
    :linenos:
 		
             JMP boucle
-   ; variables et constantes
-   x: DB 1
-   n: DB 1
+   ; variables 
+   x:       DB 1
+   n:       DB 1
    boucle:  MOV A, [n]
             CMP A, 10
             JAE fin
@@ -618,9 +622,9 @@ sauver les valeurs stockées dans les registres en mémoire en sortie de boucle.
 
 
             JMP boucle
-   ; variables et constantes
-   x: DB 1
-   n: DB 1
+   ; variables 
+   x:       DB 1
+   n:       DB 1
             MOV A, [n]
             MOV B, [x]
    boucle:  CMP A, 10
@@ -669,55 +673,57 @@ De la même façon, les deux boucles ci-dessous sont également équivalentes.
      
 .. todo pas convaincu de continue et break
 
-Chacune de ces boucles :index:`while` peut être convertie en assembleur
+Chacune de ces boucles :index:`while` peut être facilement convertie en assembleur
 en utilisant notamment des instructions de saut.
 
 
 Utilisation des tableaux
-------------------------
+========================
 
-Jusque maintenant, nous avons manipulé des variables entières qui sont stockées en mémoire ou dans des registres. Un ordinateur doit également pouvoir traiter des objets mathématiques tels que les vecteurs et les matrices. Ceux-ci doivent pouvoir être stockés en mémoire.
+Jusque maintenant, nous avons manipulé des variables entières qui sont stockées en mémoire ou dans des registres. Un ordinateur doit également pouvoir traiter des objets mathématiques tels que les vecteurs et les matrices. Ceux-ci doivent aussi pouvoir être stockés en mémoire.
 
 Commençons par analyser la façon dont un programme peut manipuler les coordonnées `(x,y)` d'un point sur un plan. Ces coordonnées sont toutes les deux représentées sous la forme d'un naturel. Une première approche serait d'associer une variable pour l'abscisse et une autre pour l'ordonnée. C'est ce que nous faisons dans l'exemple ci-dessous avec les variables ``CAx``
-et ``CAy`` pour les coordonnées du point ``A``. Le programme charge simplement les
+et ``CAy`` pour les coordonnées du point ``A``. Le programme doit vérifier si les coordonnées
+de deux points sont égales. Pour cela, il charge simplement les
 coordonnées ``x`` puis ``y`` des deux points à comparer et met la variable ``eq`` à ``1``
 si les deux points sont égaux et ``0`` sinon.
 
 .. code-block:: nasm
 
-   JMP start
+          JMP start
    ; mis à 1 si égales, 0 sinon
-   eq: DB 0
+   eq:    DB 0
    ; premier point
-   CAx: DB 1 ; coordonnée x
-   CAy: DB 2 ; coordonnée y
+   CAx:   DB 1 ; coordonnée x
+   CAy:   DB 2 ; coordonnée y
    ; second point
-   CBx: DB 1 ; coordonnée x
-   CBy: DB 7 ; coordonnée y
+   CBx:   DB 1 ; coordonnée x
+   CBy:   DB 7 ; coordonnée y
    start: MOV A, [CAx]
-   MOV B, [CBx]
-   CMP A, B
-   JNE diff
-   MOV A, [CAy]
-   MOV B, [CBy]
-   CMP A, B
-   JNE diff
+          MOV B, [CBx]
+          CMP A, B
+          JNE diff
+          MOV A, [CAy]
+          MOV B, [CBy]
+          CMP A, B
+          JNE diff
    egal:
-   MOV [eq], 1
-   JMP fin
+          MOV [eq], 1
+          JMP fin
    diff: 
-   MOV [eq], 0
-   fin: HLT
+          MOV [eq], 0
+   fin:   HLT
 
 
    
 Malheureusement cette solution nous force à définir un très grand nombre de variables. Si on
-analyse un peut comment l'assembleur place les données en mémoire, on se rend compte que
+analyse comment l'assembleur place les données en mémoire, on se rend compte que
 les variables ``CAx`` et ``CAy`` occupent des positions consécutives en mémoire. Il en va
 de même pour les variables ``CBx`` et ``CBy``. Ainsi, la mémoire initialisée par le programme
 ci-dessus peut se visualiser comme dans la table :numref:`table-memxy` où l'adresse ``03``
 est utilisée par la variable ``eq``.
 
+.. todo:: vérifier les valeurs des adresses sur un exemple dans le simulateur et mettre une copie d'écran
 
 .. _table-memxy:
 
@@ -751,7 +757,7 @@ une coordonnée.
 
 
 Ces déclarations définissent deux variables: ``CA`` et ``CB`` qui utilisent chacune
-deux blocs de 16 bits en mémoire. Avec ces étiquettes, nous pouvons adapter notre
+deux blocs consécutifs de 16 bits en mémoire. Avec ces étiquettes, nous pouvons adapter notre
 programme de façon à ce qu'il puisse tester l'égalité des coordonnées ``x`` et
 ``y`` de chaque point. Pour les coordonnées ``x``, c'est facile. Il suffit de réutiliser
 les mêmes instructions que dans le programme précédent en adaptant le nom des
@@ -781,13 +787,14 @@ suivantes :
    JNE diff
 
    
-Dans ce programme, ``CA`` correspond à une adresse en mémoire et ``CA+2`` est donc
+Dans ce programme, ``CA`` correspond à une adresse en mémoire et ``CA+2`` serait
 l'adresse de l'entier 16 bits qui suit celui qui se trouve à l'adresse ``CA`` en mémoire.
-Malheureusement, notre assembleur ne nous permet pas de calculer une adresse
+Malheureusement, notre processeur ne nous permet pas de calculer une adresse
 de cette façon dans l'instruction ``MOV``. Il permet de réaliser ce genre de calcul
 simple (addition ou soustraction) avec une adresse, mais uniquement si celle-ci se
-trouve dans un registre. On peut donc placer l'adresse ``CA`` dans le registre ```C``
-avec l'instruction ``MOV C, CA``. Une fois cette opération réalisée, on peut utiliser
+trouve dans un registre. On doit donc d'abord placer l'adresse ``CA`` dans un registre
+(par exemple le registre ```C`` avec l'instruction ``MOV C, CA``). 
+Une fois cette opération réalisée, on peut utiliser
 l'adresse se trouvant dans le registre ``C``. Ainsi, l'instruction ``MOV A, [C]`` placera
 dans le registre ``A`` le bloc de 16 bits qui se trouve en mémoire à l'adresse qui se
 trouve actuellement dans le registre ``C``. L'instruction ``MOV B, [C+2]`` placera
@@ -816,9 +823,7 @@ Nous pouvons donc écrire les instructions suivantes pour comparer les coordonn�
     - ``MOV A, Adr``
     - ``MOV A, [Adr]``
 
-  La première place dans le registre ``A`` l'adresse qui est son second argument.
-  La seconde place dans le registre ``A`` la valeur qui est actuellement stockée en
-  mémoire à l'adresse ``Adr``.
+   La première place dans le registre ``A`` l'adresse qui est son second argument. La seconde place dans le registre ``A`` la valeur qui est actuellement stockée en mémoire à l'adresse ``Adr``.
 
 
 Nous pouvons maintenant écrire le programme complet pour comparer les
@@ -826,34 +831,36 @@ coordonnées ``x`` et ``y`` de nos deux points.
   
 .. code-block:: nasm
 
-   JMP start
+          JMP start
    ; mis à 1 si égales, 0 sinon
-   eq: DB 0
-   ; premiere paire	
-   CA: DB 1
-   DB 2
-   ; seconde paire
-   CB: DB 1
-   DB 2
-   start: MOV A, CA
-   MOV B, CB
-   MOV C, [A]
-   MOV D, [B]
-   CMP C, D
-   JNE diff
-   MOV C, [A+2]
-   MOV D, [B+2]
-   CMP C, D
-   JNE diff
+   eq:    DB 0
+   ; coordonnées premier point	
+   CA:    DB 1
+          DB 2
+   ; coordonnées second point 
+   CB:    DB 1
+          DB 2
+   start: 
+          MOV A, CA
+          MOV B, CB
+          MOV C, [A]
+          MOV D, [B]
+          CMP C, D
+          JNE diff
+          MOV C, [A+2]
+          MOV D, [B+2]
+          CMP C, D
+          JNE diff
    egal:
-   MOV [eq], 1
-   JMP fin
+          MOV [eq], 1
+          JMP fin
    diff: 
-   MOV [eq], 0
-   fin: HLT
+          MOV [eq], 0
+   fin: 
+          HLT
 
 	  
-Cette solution peut être étendue pour stocker des vecteurs ou des tableaux d'entiers dont la taille est connue. Pour stocker des coordonnées `(x,y,z)`, il nous suffit de réserver trois mots contigus en mémoire. De la même façon, si l'on doit stocker le nombre de jours dans chaque mois de l'année civile, il suffit de réserver un bloc de 12 mots consécutifs en mémoire et d'y stocker les valeurs reprises dans le :numref:`table-jour`.
+Cette solution peut être étendue pour stocker des vecteurs ou des tableaux d'entiers dont la taille est connue. Pour stocker des coordonnées `(x,y,z)`, il nous suffit de réserver trois mots contigus en mémoire. De la même façon, si l'on doit stocker le nombre de jours dans chaque mois de l'année civile, il suffit de réserver un bloc de 12 mots consécutifs en mémoire et d'y stocker les valeurs reprises dans la :numref:`table-jour`.
 
 .. _table-jour:
 
@@ -863,20 +870,21 @@ Cette solution peut être étendue pour stocker des vecteurs ou des tableaux d'e
    adresse valeur
    ------- ------   
    m+0     31   
-   m+1     28
-   m+2     31
-   m+3     30
+   m+2     28
    m+4     31
-   m+5     30
-   m+6     31
-   m+7     31
-   m+8     30
-   m+9     31
+   m+6     30
+   m+8     31
    m+10    30
-   m+11    31
+   m+12    31
+   m+14    31
+   m+16    30
+   m+18    31
+   m+20    30
+   m+22    31
    ======= ======
 
 
+Grâce à ce tableau, on peut facilement calculer le nombre de jours dans une année civile. 
 En python, ce programme aurait pu être écrit de la façon suivante.
 
 .. literalinclude:: python/mois-annee.py
@@ -901,37 +909,42 @@ plus rapide.
 .. code-block:: nasm
    :linenos:
       
-   JMP start
-   ; No
+          JMP start
+   ; variables
    jours: DB 0
-   mois: DB 31
-   DB 28
-   DB 31
-   DB 30
-   DB 31
-   DB 30
-   DB 31
-   DB 31
-   DB 30
-   DB 31
-   DB 30
-   DB 31
-   start: MOV C, 0  ; index dans le tableau
-   boucle: MOV A, C
-   MUL 2
-   ADD A, mois ; adresse en mémoire du Ceme mois 
-   MOV B, [A]
-   ADD B, [jours]
-   MOV [jours], B
-   INC C
-   CMP C,11
-   JA fin
-   JMP boucle
-   fin: HLT
+   mois:  DB 31
+          DB 28
+          DB 31
+          DB 30
+          DB 31
+          DB 30
+          DB 31
+          DB 31
+          DB 30
+          DB 31
+          DB 30
+          DB 31
+   start: 
+          MOV C, 0  ; index dans le tableau
+   boucle: 
+          MOV A, C
+          MUL 2
+          ADD A, mois ; adresse en mémoire du Ceme mois 
+          MOV B, [A]
+          ADD B, [jours]
+          MOV [jours], B
+          INC C
+          CMP C,11
+          JA fin
+          JMP boucle
+   fin: 
+          HLT
 		
 
 
-De façon générale, si un tableau d'entier démarre à l'adresse `A`, alors le `ième` élément de ce tableau se trouve en mémoire à l'adresse :math:`A+2*i`. Cette organisation peut également être utilisée pour stocker des matrices en mémoire. Il suffit simplement de définir une relation entre les indices d'un élément de la matrice et la zone mémoire correspondante. Les deux principales méthodes pour stocker une matrice en mémoire sont `ligne par ligne` et `colonne par colonne`. 
+De façon générale, si un tableau de naturels démarre à l'adresse `A`, alors le `ième` élément de ce tableau se trouve en mémoire à l'adresse :math:`A+2*i`. Cette organisation peut également être utilisée pour stocker des matrices en mémoire. Il suffit simplement de définir une relation entre les indices d'un élément de la matrice et la zone mémoire correspondante. Les deux principales méthodes pour stocker une matrice en mémoire sont `ligne par ligne` et `colonne par colonne`. 
+
+.. todo:: exercice, calculer le minimum ou le maximum d'un tableau
 
 Pour illustrer ces deux conventions, considérons la matrice à deux lignes et trois colonnes de la :numref:`fig-matrice`. 
 
@@ -948,7 +961,7 @@ Pour illustrer ces deux conventions, considérons la matrice à deux lignes et t
       \node (l23) at (1,-0.7) {$6$};
 
 
-La façon la plus classique pour stocker une telle matrice est de le faire `ligne par ligne` comme représenté dans la :numref:`fig-matrice-ll`. Dans cette représentation, si la matrice a `l` lignes et `c` colonnes, alors l'élément `i,j` de la matrice se trouve à l'adresse :math:`A+ i \times c + j` en supposant que les indices des lignes et colonnes commencent à `0`.       
+La façon la plus classique pour stocker une telle matrice est de le faire `ligne par ligne` comme représenté dans la :numref:`fig-matrice-ll`. Dans cette représentation, si la matrice a `l` lignes et `c` colonnes, alors l'élément `i,j` de la matrice se trouve à l'adresse :math:`A+ i \times c + j` en supposant que les indices des lignes et des colonnes commencent à `0`.       
 
 .. _fig-matrice-ll:
 
@@ -981,7 +994,7 @@ La façon la plus classique pour stocker une telle matrice est de le faire `lign
       \draw [->,color=green] (l23.east) |-  (m5.west);
 
       
-Il est aussi possible de stocker cette matrice colonne par colonne comme représenté dans la :numref:`fig-matrice-cc`. Dans cette représentation, si la matrice a `l` lignes et `c` colonnes, alors l'élément `i,j` de la matrice se trouve à l'adresse :math:`A+ j \times l + i` en supposant que les indices des lignes et colonnes commencent à `0`.
+Il est aussi possible de stocker cette matrice colonne par colonne comme représenté dans la :numref:`fig-matrice-cc`. Dans cette représentation, si la matrice a `l` lignes et `c` colonnes, alors l'élément `i,j` de la matrice se trouve à l'adresse :math:`A+ j \times l + i` en supposant que les indices des lignes et des colonnes commencent à `0`.
 
 .. _fig-matrice-cc:
 
@@ -1013,9 +1026,10 @@ Il est aussi possible de stocker cette matrice colonne par colonne comme représ
       \draw [->,color=green] (l22.east) |-  (m3.west);
       \draw [->,color=green] (l23.east) |-  (m5.west);
    
-.. somme des éléments d'un tableau   
    
-.. somme de deux vecteurs
+.. todo:: exercice, ajouter une constante à tous les éléments d'un tableau
+
+.. todo:: exercice somme de deux vecteurs de même taille
 
 
 On est parfois amené à manipuler des tableaux de différentes tailles. Dans ce cas, il est intéressant de réserver un mot en mémoire pour stocker la taille du tableau. Tout tableau utilisant cette représentation contient donc comme premier élément sa taille. Un tableau de `n` entiers occupe donc :math:`n+1` mots en mémoire.
@@ -1030,18 +1044,18 @@ A titre d'exemple, reprenons notre tableau avec le nombre de jours dans chaque m
    adresse valeur
    ------- ------
    m       12
-   m+1     31   
-   m+2     28
-   m+3     31
-   m+4     30
-   m+5     31
-   m+6     30
-   m+7     31
-   m+8     31
-   m+9     30
+   m+2     31   
+   m+4     28
+   m+6     31
+   m+8     30
    m+10    31
-   m+11    30
-   m+12    31
+   m+12    30
+   m+14    31
+   m+16    31
+   m+18    30
+   m+20    31
+   m+22    30
+   m+24    31
    ======= ======
 
 
@@ -1049,53 +1063,56 @@ A titre d'exemple, reprenons notre tableau avec le nombre de jours dans chaque m
    
 .. tableau dont la taille (en mots) est encodée du début, permet de vérifier que tout accès au tableau est correct
 
-Cette représentation a deux avantages principaux. Tout d'abord, il est possible d'écrire un programme générique qui peut parcourir tous les éléments du tableau comme dans l'exemple ci-dessous. 
+Cette représentation a deux avantages principaux. Tout d'abord, il est possible d'écrire un programme générique qui peut parcourir tous les éléments de n'importe quel tableau comme dans l'exemple ci-dessous. 
 
 
 .. code-block:: nasm
 
 
 
-   JMP start
+          JMP start
    jours: DB 0
    mois: 
-   DB 12   ; nombre d'éléments dans le tableau
-   DB 31
-   DB 28
-   DB 31
-   DB 30
-   DB 31
-   DB 30
-   DB 31
-   DB 31
-   DB 30
-   DB 31
-   DB 30
-   DB 31
-   start: MOV C, 1  ; index dans le tableau
-   boucle: MOV A, C
-   MUL 2
-   ADD A, mois ; adresse en mémoire du Ceme mois 
-   MOV B, [A]
-   ADD B, [jours]
-   MOV [jours], B
-   INC C
-   MOV D,[mois]
-   CMP C,D
-   JA fin
-   JMP boucle
-   fin: HLT
+          DB 12   ; nombre d'éléments dans le tableau
+          DB 31
+          DB 28
+          DB 31
+          DB 30
+          DB 31
+          DB 30
+          DB 31
+          DB 31
+          DB 30
+          DB 31
+          DB 30
+          DB 31
+   start: 
+          MOV C, 1  ; index dans le tableau
+   boucle: 
+          MOV A, C
+          MUL 2
+          ADD A, mois ; adresse en mémoire du Ceme mois 
+          MOV B, [A]
+          ADD B, [jours]
+          MOV [jours], B
+          INC C
+          MOV D,[mois]
+          CMP C,D
+          JA fin
+          JMP boucle
+   fin: 
+          HLT
 
-De plus, il est facile dans un programme ou un langage de programmation de vérifier que les accès aux éléments d'un tableau respectent bien les limites de ce tableau.
+De plus, lorsque cette représentation est utilisée dans un langage de programmation, celui-ci peut facilement vérifier que les accès aux éléments d'un tableau respectent bien les limites de ce tableau. C'est le cas avec le langage python. 
 
 .. exemple get ou set avec erreur en cas de non respect des bornes
 
 .. buffer overflow / segmentation fault ?
    
-Utilisation des chaînes de caractères
--------------------------------------
+Les chaînes de caractères
+-------------------------
 
-Notre minuscule assembleur utilise un mot de 16 bits pour représenter chaque caractère. Une chaîne de caractères peut être vue comme un tableau de caractères. Elle sera donc composée de caractères consécutifs qui sont stockés en mémoire. En assembleur, nous pouvons stocker une chaînes de caractères en mémoire en utilisant directement le mot clé ``DB`` comme suit.
+Un programme informatique doit régulièrement utiliser des chaînes de caractères pour afficher des messages à l'utilisateur ou imprimer de l'information. Nous avons déjà vu comment représenter chaque caractère grâce à une table des caractères. Notre minuscule assembleur utilise un mot de 16 bits pour représenter chaque caractère. Une chaîne de caractères peut être vue comme un tableau de caractères. Elle sera composée de caractères consécutifs qui sont stockés en mémoire. En assembleur, nous pouvons stocker une chaîne de caractères en mémoire en utilisant directement le mot clé ``DB`` comme suit.
 
 
 .. code-block:: nasm
@@ -1103,10 +1120,9 @@ Notre minuscule assembleur utilise un mot de 16 bits pour représenter chaque ca
    hello: DB "Hello World!" 
 
 
+Un programme devoir traiter des chaînes de caractères de tailles très différentes. Il existe deux techniques pour stocker ces chaînes de caractères en mémoire. 
 
-
-Un programme peut être amené à traiter des chaînes de caractères de tailles très différentes. Il existe deux techniques pour stocker ces chaînes de caractères
-en mémoire. La première est de stocker la longueur de la chaîne suivie par les caractères qui la composent (:numref:`fig-hello`). Cette solution permet de facilement déterminer la longueur de la chaîne de caractères puisque celle-ci est explicitement stockée en mémoire. En utilisant un mot de 16 bits pour cette longueur, on peut supporter des chaînes contenant au maximum 65535 caractères. C'est largement assez pour le minuscule ordinateur vu l'espace de mémoire dont il dispose.
+La première est de stocker la longueur de la chaîne suivie par les caractères qui la composent (:numref:`fig-hello`). Cette solution permet de facilement déterminer la longueur de la chaîne de caractères puisque celle-ci est explicitement stockée en mémoire. En utilisant un mot de 16 bits pour cette longueur, on peut supporter des chaînes contenant au maximum 65535 caractères. C'est largement assez pour le minuscule ordinateur vu l'espace de mémoire dont il dispose.
 
 .. _fig-hello:
 
@@ -1138,10 +1154,8 @@ en mémoire. La première est de stocker la longueur de la chaîne suivie par le
       \draw [->] (l23.south) |-  (m5.west);
 
 
-      
-.. caractère is in
 
-A titre d'exemple, considérons un petit programme qui permet de déterminer si un caractère est présent dans une chaîne de caractères. En python, ce programme pourrait s'écrire comme suit:
+Afin d'illustrer l'utilisation de cette représentation des chaînes des caractères, considérons un petit programme qui permet de déterminer si un caractère est présent dans une chaîne de caractères. En python, ce programme pourrait s'écrire comme suit:
 
 .. literalinclude:: python/charin.py
    :language: python
@@ -1150,35 +1164,37 @@ A titre d'exemple, considérons un petit programme qui permet de déterminer si 
 		
 La conversion de ce programme en minuscule assembleur est présentée ci-dessous. 
 
-Ce programme a comme entrée la variable ``c`` et une chaîne de caractères qui est stockée en mémoire à partir de l'adresse ``29``.  Le résultat du programme se retrouve dans la variable ``r`` en mémoire.
+Notre programme a comme entrée la variable ``char`` contenant le caractère à rechercher et une chaîne de caractères qui est stockée en mémoire à partir de l'adresse correspondant à l'étiquette ``string`. Le résultat du programme se retrouve dans la variable ``r`` en mémoire.
 
 
 .. code-block:: nasm
 
-   JMP start
+            JMP start
    ; Compte le nombre d'occurrences du caractère char dans la chaine string
-   count: DB 0
-   char:  DB "o"
+   count:   DB 0
+   char:    DB "o"
    string:
-   DB 12 ; longueur de la chaîne
-   DB "Hello World!" ; Chaîne de caractères
+            DB 12 ; longueur de la chaîne
+            DB "Hello World!" ; Chaîne de caractères
    start:
-   MOV C, [char]   ; caractère à rechercher 
-   MOV D, 1        ; index de la position dans la chaîne
+            MOV C, [char]   ; caractère à rechercher 
+            MOV D, 1        ; index de la position dans la chaîne
    boucle: 
-   MOV A, D
-   MUL 2
-   ADD A, string
-   CMP C, [A]
-   JNE suite
-   MOV A, [count]
-   INC A
-   MOV [count], A
-   suite:  INC D            ; incrément indice boucle
-   MOV B, [string]    ; longueur de la chaîne
-   CMP D, B
-   JBE boucle
-   HLT		 
+            MOV A, D
+            MUL 2
+            ADD A, string
+            CMP C, [A]
+            JNE suite
+            MOV A, [count]
+            INC A
+            MOV [count], A
+   suite:   
+            INC D            ; incrément indice boucle
+            MOV B, [string]    ; longueur de la chaîne
+            CMP D, B
+            JBE boucle
+   fin:
+            HLT		 
 
 		
 
@@ -1226,7 +1242,7 @@ En assembleur, une telle chaîne de caractères peut être déclarée comme suit
 
 
 	  
-Avec cette représentation des chaînes de caractères, le programme ne connaît pas a priori la longueur de la chaîne de caractères. Il doit la parcourir pour trouver le marqueur de fin symbolisé par la valeur ``0``. En python, le parcours de cette chaîne peut se faire en utilisant le programme ci-dessous.
+Avec cette représentation des chaînes de caractères, le programme ne connaît pas a priori la longueur de la chaîne de caractères. Il doit la parcourir pour trouver le marqueur de fin symbolisé par la valeur ``0`` (et non le caractère ASCII ``0``). En python, le parcours de cette chaîne peut se faire en utilisant le programme ci-dessous.
       
 .. literalinclude:: python/charin-c.py
    :language: python
@@ -1237,36 +1253,39 @@ En assembleur, ce programme peut s'écrire comme suit.
 
 .. code-block:: nasm
 
-   JMP start
+           JMP start
    ; Compte le nombre d'occurrences du caractère char dans la chaine string
-   count: DB 0
-   char:  DB "o"
+   count:  DB 0
+   char:   DB "o"
    string:
-   DB "Hello World!" ; Chaîne de caractères
-   DB 0              ; fin de chaîne
+           DB "Hello World!" ; Chaîne de caractères
+           DB 0              ; Marqueur de fin de chaîne
    start:
-   MOV C, [char]   ; caractère à rechercher 
-   MOV D, 0        ; index de la position dans la chaîne
-   boucle: MOV A,D
-   MUL 2
-   ADD A, string
-   CMP C, [A]
-   JNE suite
-   MOV B, [count]
-   INC B
-   MOV [count], B
-   suite:  INC D            ; incrément indice boucle
-   MOV B, 0
-   CMP B, [A]         ; fin de chaîne ?
-   JNE boucle
-   HLT		
-
+           MOV C, [char]   ; caractère à rechercher 
+           MOV D, 0        ; index de la position dans la chaîne
+   boucle: 
+           MOV A,D
+           MUL 2
+           ADD A, string
+           CMP C, [A]
+           JNE suite
+           MOV B, [count]
+           INC B
+           MOV [count], B
+   suite:  
+           INC D            ; incrément indice boucle
+           MOV B, 0
+           CMP B, [A]         ; fin de chaîne ?
+           JNE boucle
+   fin:
+           HLT		
 
 
 
 Les listes
 ----------
 
+.. todo:: déplacervers le chapitre 4
 
 En python, les listes jouent un rôle très important. Elles permettent de stocker des
 informations dont le nombre n'est pas fixé a priori et leur taille s'adapte dynamiquement
@@ -1288,11 +1307,11 @@ suit.
 .. code-block:: nasm
 
    alist: DB 4 ; taille initiale (en éléments)
-   DB 0        ; nombre actuel d'éléments
-   DB 0        ; élément à l'indice 0
-   DB 0        ; élément à l'indice 1
-   DB 0        ; élément à l'indice 2
-   DB 0        ; élément à l'indice 3
+          DB 0        ; nombre actuel d'éléments
+          DB 0        ; élément à l'indice 0
+          DB 0        ; élément à l'indice 1
+          DB 0        ; élément à l'indice 2
+          DB 0        ; élément à l'indice 3
 
 
 Si l'on veut ajouter l'entier ``17`` dans ce tableau, il suffit d'incrémenter la zone
@@ -1303,11 +1322,11 @@ correspond maintenant à la déclaration suivante.
 .. code-block:: nasm
 
    alist: DB 4 ; taille initiale (en éléments)
-   DB 1        ; nombre actuel d'éléments
-   DB 17        ; élément à l'indice 0
-   DB 0        ; élément à l'indice 1
-   DB 0        ; élément à l'indice 2
-   DB 0        ; élément à l'indice 3
+          DB 1        ; nombre actuel d'éléments
+          DB 17       ; élément à l'indice 0
+          DB 0        ; élément à l'indice 1
+          DB 0        ; élément à l'indice 2
+          DB 0        ; élément à l'indice 3
    
 
 On peut continuer en ajoutant les entiers ``9``, ``12`` et ``23``. A ce stade, l'``ArrayList``
@@ -1316,11 +1335,11 @@ est pleine.
 .. code-block:: nasm
 
    alist: DB 4 ; taille maximale (en éléments)
-   DB 4        ; nombre actuel d'éléments
-   DB 17        ; élément à l'indice 0
-   DB 9        ; élément à l'indice 1
-   DB 12        ; élément à l'indice 2
-   DB 23        ; élément à l'indice 3
+          DB 4        ; nombre actuel d'éléments
+          DB 17       ; élément à l'indice 0
+          DB 9        ; élément à l'indice 1
+          DB 12       ; élément à l'indice 2
+          DB 23        ; élément à l'indice 3
    
 On peut facilement retirer un entier de la liste. Pour retirer l'entier ``23``, il
 suffit de décrémenter le nombre d'éléments de la liste. Pour retirer l'entier ``9``, c'est
@@ -1331,11 +1350,11 @@ représentée ci-dessous.
 .. code-block:: nasm
 
    alist: DB 4 ; taille maximale (en éléments)
-   DB 3        ; nombre actuel d'éléments
-   DB 17        ; élément à l'indice 0
-   DB 12        ; élément à l'indice 1
-   DB 23        ; élément à l'indice 2
-   DB 23        ; élément à l'indice 3
+          DB 3        ; nombre actuel d'éléments
+          DB 17        ; élément à l'indice 0
+          DB 12        ; élément à l'indice 1
+          DB 23        ; élément à l'indice 2
+          DB 23        ; élément à l'indice 3
 
 Lorsque l'on veut ajouter un élément à une :index:`ArrayList` qui est pleine, il
 faut trouver une nouvelle zone de mémoire qui est libre et a une taille supérieure à celle
