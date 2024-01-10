@@ -6,7 +6,7 @@ Le langage python permet de supporter différents types de structure de données
 les piles, les queues et les listes. Il est intéressant de comprendre comment ces
 différentes structures de données sont stockées en mémoire avant de les implémenter
 en assembleur. Nous avons déjà parlé de la pile qui est utilisée par notre processeur, 
-mais une application peut aussi définir sa propre pile, indépendemment de celle que le 
+mais une application peut aussi définir sa propre pile, indépendamment de celle que le 
 processeur utilise pour supporter les fonctions et procédures.
 
 .. spelling:word-list::
@@ -15,7 +15,9 @@ processeur utilise pour supporter les fonctions et procédures.
    in
    first
    out
-
+   push
+   po
+   
 
 .. todo:: Exercice, faire la même chose, mais avec une queue
 
@@ -437,13 +439,13 @@ représentée dans la figure avec son marqueur de fin.
 
 Nous pouvons maintenant construire une implémentation en assembleur qui
 permet d'ajouter et de retirer un naturel d'une pile. Tout comme l'implémentation
-en python, notre implémentation en assembleur utilise des noeuds qui sont
-composés de deux zones mémoires contigües de 16 bits chacune :
+en python, notre implémentation en assembleur utilise des nœuds qui sont
+composés de deux zones mémoires contiguës de 16 bits chacune :
 
  - ``n_val`` : le naturel stocké sur le pile
  - ``n_ptr`` : un pointeur vers le successeur de l'élément sur la pile ou ``NULL`` (``0``) pour indiquer la fin de pile
 
-Nous utilisons la variable ``p`` pour stocker un pointeur vers l'adresse du noeud
+Nous utilisons la variable ``p`` pour stocker un pointeur vers l'adresse du nœud
 qui se trouve au sommet de la pile (ou ``NULL`` si la pile est vide). Cette variable
 est initialisée à la valeur ``0`` puisque la pile est initialement vide.
 
@@ -453,7 +455,7 @@ au sommet de la pile. Notre fonction ``push`` prend trois arguments :
 
  - la valeur entière à ajouter sur la pile qui est placée dans le registre ``D``
  - l'adresse de la variable contenant l'adresse du sommet de la pile
- - comme la fonction doit créer un nouveau noeud, nous devons aussi lui indiquer l'adresse mémoire de ce nouveau noeud
+ - comme la fonction doit créer un nouveau nœud, nous devons aussi lui indiquer l'adresse mémoire de ce nouveau nœud
 
 
 Cette fonction utilise les registres ``B`` et ``C``. Ils
@@ -462,17 +464,17 @@ de la fonction ``push``, la pile du programme contient donc les informations rep
 :numref:`fig-pile-pendant-push`.
 
 .. _fig-pile-pendant-push:
-.. tikz:: Etat de la pile pendant l'exécution de la fonction push
+.. tikz:: État de la pile pendant l'exécution de la fonction push
 	  
 	  \matrix(m) [matrix of nodes]
 	  {
 	  \texttt{SP+6} & \ldots \\
-	  \texttt{SP+8} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse noeud$}; \\
-	  \texttt{SP+6} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse p$}; \\
+	  \texttt{SP+8} & \node(piletop)[blue,rectangle,draw,text width=60pt]{$adresse noeud$}; \\
+	  \texttt{SP+6} & \node(piletop)[blue,rectangle,draw,text width=60pt]{$adresse p$}; \\
 
-	  \texttt{SP+4}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
-	  \texttt{SP+2}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien B$}; \\
-	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien C$}; \\
+	  \texttt{SP+4}  & \node(pile2)[blue,rectangle,draw,text width=60pt]{$Retour$}; \\
+	  \texttt{SP+2}  & \node(pile2)[blue,rectangle,draw,text width=60pt]{$Ancien B$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=60pt]{$Ancien C$}; \\
 	  \texttt{SP-2} & \ldots \\
 	  };
 	
@@ -484,17 +486,17 @@ de la fonction ``push``, la pile du programme contient donc les informations rep
    ; push
    ; premier argument la valeur à ajouter dans D
    ; [SP+4] deuxième argument, l'adresse du sommet de la pile
-   ; [SP+2] troisième argument, l'adresse du noeud à ajouter
+   ; [SP+2] troisième argument, l'adresse du nœud à ajouter
    push:
       PUSH B
       PUSH C
       MOV B, [SP+8]    ; adresse pointeur de pile, premier sur stack
-      MOV C, [SP+6]    ; adresse (val) du noeud à ajouter
+      MOV C, [SP+6]    ; adresse (val) du nœud à ajouter
       ; ajout de la valeur
-      MOV [C], D  ; sauvegarde dans le nouveau noeud
-      ADD C, 2    ; adresse de l'élément _ptr du noeud
+      MOV [C], D  ; sauvegarde dans le nouveau nœud
+      ADD C, 2    ; adresse de l'élément _ptr du nœud
       MOV B, [B]  ; adresse de l'ancien sommet de la pile
-      MOV [C], B  ; sauvegarde dans l'élément _ptr du nouveau noeud
+      MOV [C], B  ; sauvegarde dans l'élément _ptr du nouveau nœud
       ; mise à jour du pointeur de somme de pile
       MOV C, [SP+6]
       MOV B, [SP+8]
@@ -512,8 +514,8 @@ fin. Au début de la fonction, nous devons d'abord tester si la pile est vide.
 C'est le cas si la variable qui stocke l'adresse du sommet de pile contient
 la valeur ``NULL`` (``0``). Notre fonction récupère ensuite la valeur se
 trouvant au sommet de la pile et met à jour le pointeur de sommet de pile passé
-en argument pour qu'il pointe vers le noeud se trouvant maintenant au sommet. 
-Elle remet à zéro le noeud qui a été effacé.
+en argument pour qu'il pointe vers le nœud se trouvant maintenant au sommet. 
+Elle remet à zéro le nœud qui a été effacé.
 
 .. code-block:: nasm
 
@@ -525,7 +527,7 @@ Elle remet à zéro le noeud qui a été effacé.
       JE fin_pop
       MOV B, [D] ; adresse de l'élément au sommet de la pile
       MOV A, [B] ; valeur à retourner
-      ADD B, 2   ; adresse de l'élément ptr du noeud
+      ADD B, 2   ; adresse de l'élément ptr du nœud
       MOV C, [B]
       MOV [D], C ; nouveau sommet de pile
       MOV [B], 0 ; mise à zéro de l'élément
@@ -540,11 +542,11 @@ Elle remet à zéro le noeud qui a été effacé.
 
 Pour tester ces deux fonctions, nous pouvons construire une petite pile
 en mémoire en utilisant les instructions ``DB`` à bon escient. Pour cela,
-il suffit de se rappeler qu'un noeud occupe deux blocs de 16 bits consécutifs
-en mémoire. L'exemple ci-dessous contient une pile contenant deux noeuds. Celui
+il suffit de se rappeler qu'un nœud occupe deux blocs de 16 bits consécutifs
+en mémoire. L'exemple ci-dessous contient une pile contenant deux nœuds. Celui
 du sommet contient la valeur ``3`` et son pointeur indique comme successeur le
-noeud se trouvant à l'adresse ``n1_val`` qui contient la valeur ``7``. Ce second noeud
-n'a pas de successeur. Les noeuds ``n3``, ``n4`` et ``n5`` sont vides.
+nœud se trouvant à l'adresse ``n1_val`` qui contient la valeur ``7``. Ce second nœud
+n'a pas de successeur. Les nœuds ``n3``, ``n4`` et ``n5`` sont vides.
 
 
 .. code-block:: nasm
@@ -576,7 +578,7 @@ de la variable ``p`` comme argument dans le registre ``D``.
 
 
 L'appel à la fonction assembleur ``push`` est un peu plus compliqué puisqu'il faut
-lui passer l'entier à ajouter, l'adresse du sommet de la pile et l'adresse d'un noeud
+lui passer l'entier à ajouter, l'adresse du sommet de la pile et l'adresse d'un nœud
 vide. L'exemple ci-dessous ajoute la valeur ``42`` sur notre pile. 
 
 
@@ -593,12 +595,12 @@ vide. L'exemple ci-dessous ajoute la valeur ``42`` sur notre pile.
 
 
    En python, lorsque l'on écrit ``new_node = Node(value)``, on réserve une 
-   zone mémoire pour stocker le nouveau noeud. Cela se fait en appelant une fonction
+   zone mémoire pour stocker le nouveau nœud. Cela se fait en appelant une fonction
    de gestion de la mémoire qui sort du cadre de ce cours. C'est pour cette raison
    que notre fonction ``push``, et d'autres exemples que nous verrons ensuite,
    reçoivent l'adresse de la zone mémoire à utiliser. Vous verrez dans d'autres cours
    comment il est possible d'écrire des programmes pour gérer la mémoire. De
-   la même façon, la fonction ``pop`` devrait libérer la mémoire du noeud qu'elle retire
+   la même façon, la fonction ``pop`` devrait libérer la mémoire du nœud qu'elle retire
    de la pile afin que celle-ci soit disponible pour d'autres parties du programme.
 
 	
@@ -634,7 +636,7 @@ La :numref:`fig-entete-liste` représente ces trois blocs de données en mémoir
    };
    
 
-Ce bloc de mémoire peut être initilialisé par la fonction ``init_list`` qui
+Ce bloc de mémoire peut être initialisé par la fonction ``init_list`` qui
 prend comme argument l'adresse du bloc.
 
 .. code-block:: nasm
@@ -648,15 +650,15 @@ prend comme argument l'adresse du bloc.
       RET
 
 
-Un noeud de notre liste contiendra deux éléments:
+Un nœud de notre liste contiendra deux éléments:
 
  - la valeur stockée (``val``)
- - le pointeur vers le noeud successeur (``next``)
+ - le pointeur vers le nœud successeur (``next``)
 
-La :numref:`fig-liste-noeud` représente un noeud de notre liste contenant la valeur
-``17``. Ce noeud est le dernier de la liste puisqu'il n'a pas de successeur.
+La :numref:`fig-liste-nœud` représente un nœud de notre liste contenant la valeur
+``17``. Ce nœud est le dernier de la liste puisqu'il n'a pas de successeur.
 
-.. _fig-liste-noeud:
+.. _fig-liste-nœud:
 .. tikz:: Élément de la liste contenant la valeur 17 et Entête de la liste initialisée
 
    \matrix(m) [matrix of nodes]
@@ -667,7 +669,7 @@ La :numref:`fig-liste-noeud` représente un noeud de notre liste contenant la va
 
 
 Nous pouvons maintenant visualiser comment une telle liste peut être stockée en mémoire.
-La :numref:`fig-liste-1` et la :numref:`fig-liste-2` repéresentent deux organisations
+La :numref:`fig-liste-1` et la :numref:`fig-liste-2` représentent deux organisations
 en mémoire possible d'une liste de deux éléments contenant la valeur ``42`` suivie par la valeur ``17``.
 
    
@@ -742,14 +744,14 @@ Cette fonction prend trois arguments :
 
  - l'adresse de la structure contenant la longueur de la liste et les deux pointeurs vers le début et la fin de la liste (dans le registre ``D``)
  - la valeur à ajouter (sur la pile, ``SP+4``)
- - l'adresse d'un noeud vide (sur la pile, ``SP+2``)  
+ - l'adresse d'un nœud vide (sur la pile, ``SP+2``)  
 
 
-La :numref:`fig-ajout-noeud` présente graphiquement l'ajout d'un noeud dans une
+La :numref:`fig-ajout-nœud` présente graphiquement l'ajout d'un nœud dans une
 telle liste.
 
 
-.. _fig-ajout-noeud:
+.. _fig-ajout-nœud:
 .. tikz:: Ajout du nœud contenant la valeur ``9`` en tête de liste
 
       \matrix(m0) [matrix of nodes, text width=60pt] at (0,2)
@@ -789,20 +791,20 @@ telle liste.
    ; Ajout d'un nouvel élément en tête de liste
    ; D: adresse du descripteur de liste
    ; [SP+4]: valeur à ajouter
-   ; [SP+2]: adresse du noeud vide à utiliser
-   ; retourne dans A l'adresse du noeud ajouté
+   ; [SP+2]: adresse du nœud vide à utiliser
+   ; retourne dans A l'adresse du nœud ajouté
    add_head:
       PUSH B ; sauvegarde
       PUSH C ; sauvegarde
-      MOV A, [SP+6] ; adresse noeud à ajouter
+      MOV A, [SP+6] ; adresse nœud à ajouter
       MOV C, [SP+8] ; valeur à ajouter
-      MOV [A], C ; valeur placée dans le noeud à ajouter
-      MOV B, [D] ; adresse du premier noeud de l'ancienne liste
-      MOV C, [SP+6] ; adresse du noeud à ajouter
-      ADD C, 2  ; C contient l'adresse de l'élément next du nouveau noeud
-      MOV [C], B ; next pointe vers l'ancien premier noeud
-      MOV  C, [SP+6] ; adresse du nouveau noeud
-      MOV [D], C     ; descripteur head pointe vers le nouveau noeud
+      MOV [A], C ; valeur placée dans le nœud à ajouter
+      MOV B, [D] ; adresse du premier nœud de l'ancienne liste
+      MOV C, [SP+6] ; adresse du nœud à ajouter
+      ADD C, 2  ; C contient l'adresse de l'élément next du nouveau nœud
+      MOV [C], B ; next pointe vers l'ancien premier nœud
+      MOV  C, [SP+6] ; adresse du nouveau nœud
+      MOV [D], C     ; descripteur head pointe vers le nouveau nœud
       MOV B, [D+4] ; adresse de len dans le descripteur
       INC B
       MOV [D+4], B ; sauvegarde en mémoire	
@@ -813,10 +815,10 @@ telle liste.
 
 De la même façon, on pourra facilement écrire une fonction ``add_tail`` qui
 ajoute un élément en fin de liste en utilisant le pointeur de fin de liste.
-La :numref:`fig-ajout-noeud-fin` présente graphiquement l'ajout d'un
-noeud en fin de liste.
+La :numref:`fig-ajout-nœud-fin` présente graphiquement l'ajout d'un
+nœud en fin de liste.
 
-.. _fig-ajout-noeud-fin:
+.. _fig-ajout-nœud-fin:
 .. tikz:: Ajout du nœud 77 en fin de liste
 
    \matrix(m0) [matrix of nodes, text width=60pt] at (0,2)
@@ -876,9 +878,9 @@ de ``NULL`` et accumule la somme des éléments dans le registre ``A``.
    suite:
       PUSH B 
       MOV A, 0
-      MOV B, [D] ; adresse du premier noeud
+      MOV B, [D] ; adresse du premier nœud
    boucle:
-      ADD A, [B] ; valeur du premier noeud
+      ADD A, [B] ; valeur du premier nœud
       ADD B, 2 ; adresse du pointeur next
       MOV B, [B] ; pointeur next  
       CMP B, 0

@@ -190,7 +190,7 @@ une partie de la mémoire et d'y faire appel en exécutant un saut inconditionne
              JMP retour
    
 
-Malheureusement, ce n'est pas suffisant. Après la première exécution de la procédure ``compte``, l'exécution doit reprendre à l'adresse ``ligne3`` tandis qu'après la seconde exécution de la même procédure, il faut poursuivre l'exécution du programme principal à partir de l'adresse ``ligne5``. Pour résoudre ce problème, nous devons rendre le code de la procédure plus générique. Notre procédure doit pouvoir retourner à l'adresse qui suit celle à partir de laquelle elle a été appelée. Dans notre assembleur, comme dans la plupart des assembleurs, cela se fait en utilisant deux instructions spéciales: :index:`CALL` pour appeler une procédure et :index:`RET` pour terminer l'exécution d'une procédure *et* retourner à l'adresse qui suit celle de l'appel. Cette adresse est appelée l':index:`adresse de retour`. L'instruction :index:`CALL` la sauvegarde en mémoire et ensuite fait un saut à l'adresse qui est son unique argument. L'exécution d'une procédure se déroule comme suit:
+Malheureusement, ce n'est pas suffisant. Après la première exécution de la procédure ``compte``, l'exécution doit reprendre à l'adresse ``ligne3`` tandis qu'après la seconde exécution de la même procédure, il faut poursuivre l'exécution du programme principal à partir de l'adresse ``ligne5``. Pour résoudre ce problème, nous devons rendre le code de la procédure plus générique. Notre procédure doit pouvoir retourner à l'adresse qui suit celle à partir de laquelle elle a été appelée. Dans notre assembleur, comme dans la plupart des assembleurs, cela se fait en utilisant deux instructions spéciales: :index:`CALL` pour appeler une procédure et :index:`RET` pour terminer l'exécution d'une procédure **et** retourner à l'adresse qui suit celle de l'appel. Cette adresse est appelée l':index:`adresse de retour`. L'instruction :index:`CALL` la sauvegarde en mémoire et ensuite fait un saut à l'adresse qui est son unique argument. L'exécution d'une procédure se déroule comme suit:
 
  1. Sauvegarde de l'adresse de retour en mémoire
  2. Appel de la procédure (via l'instruction ``JMP``)
@@ -325,7 +325,7 @@ La première instructions, ``PUSH 7`` place la valeur ``7`` au sommet de la pile
 
 
 
-La première instruction ``POP`` place la valeur qui esst actuellement au sommet de la pile (c'est-à-dire ``4``) dans le registre ``B`` Elle décrémente ensuite le pointeur de sommet de pile de deux unités. La deuxième instruction ``POP`` stocke la valeur ``3`` dans le registre ``C``. La figure :numref:`fig-stack-ex2` présente l'état de la pile en mémoire à cet instant. 
+La première instruction ``POP`` place la valeur qui est actuellement au sommet de la pile (c'est-à-dire ``4``) dans le registre ``B`` Elle décrémente ensuite le pointeur de sommet de pile de deux unités. La deuxième instruction ``POP`` stocke la valeur ``3`` dans le registre ``C``. La figure :numref:`fig-stack-ex2` présente l'état de la pile en mémoire à cet instant. 
 
       
 .. _fig-stack-ex2:
@@ -465,7 +465,7 @@ Grâce à la pile, il est possible d'écrire des programmes qui contiennent un n
    Les langages de programmation tels que :term:`python` utilisent aussi une pile pour supporter les appels de procédures et de fonctions. C'est à l'interpréteur ou au compilateur de gérer correctement la pile. En général, le langage de programmation réserve une zone mémoire pour stocker la pile du programme. Certains langages de programmation comme :term:`python` ou :term:`Java` vérifient que la pile ne déborde pas lors de l'exécution d'un programme. Le cas échéant, ils lancent une exception qui indique un dépassement de pile (:index:`stack overflow` en anglais) et le programme est arrêté. Pour cela, ils doivent vérifier l'état de la pile avant chaque opération ``push`` ou ``pop``. D'autres langages de programmation comme le :term:`C` ne vérifient pas la taille de la pile à chaque opération. Avec ces langages, il est possible que la pile croisse tellement qu'elle rencontre la zone contenant les instructions ou même les données du programme. Dans ce cas, le programme aura un comportement totalement incohérent. Certains problèmes de sécurité sur des programmes écrits en :term:`C` exploitent ce genre de limitations du langage.
 
    	  
-Nous avons utilisé la pile pour stocker les adresses de retour des procédures ainsi que pour savegarder temporairement les valeurs des registres. Ce n'est pas la seule utilisation de la pille. Elle va également nous permettre de supporter les fonctions auxquelles il faut passer des arguments du programme appelant vers la fonction, mais aussi récupérer des valeurs de retour. Il faut aussi permettre à une fonction d'utiliser de la mémoire pour stocker des données temporaires pendant son exécution et de libérer correctement cette mémoire après.
+Nous avons utilisé la pile pour stocker les adresses de retour des procédures ainsi que pour sauvegarder temporairement les valeurs des registres. Ce n'est pas la seule utilisation de la pille. Elle va également nous permettre de supporter les fonctions auxquelles il faut passer des arguments du programme appelant vers la fonction, mais aussi récupérer des valeurs de retour. Il faut aussi permettre à une fonction d'utiliser de la mémoire pour stocker des données temporaires pendant son exécution et de libérer correctement cette mémoire après.
 
 Revenons à un exemple simple en python pour bien comprendre les différences entre une fonction et une procédure. Notre première fonction, ``f1``, prend un entier en argument et retourne un entier également. Durant son exécution, elle utilise une variable locale, ``y``. La deuxième fonction, ``f2`` prend également un entier en argument et retourne un résultat entier. Le corps de la fonction ``f2`` fait deux appels à la fonction ``f1`` et utilise deux variables locales. Enfin, la fonction ``min`` prend deux arguments entiers et retourne un résultat entier. Elle utilise également une variable locale.
 
@@ -489,17 +489,17 @@ La première solution a l'avantage d'être simple et rapide. Il suffit d'exécut
 
 La seconde solution est plus générale. Nous utilisons déjà la pile pour récupérer l'adresse de retour et on peut facilement envisager de placer des arguments sur la pile avant l'exécution d'une fonction. Il suffit pour cela d'utiliser l'instruction ``PUSH`` pour chaque argument à pousser sur la pile. La fonction pourra récupérer chaque argument en faisant appel à ``POP`` dans l'ordre inverse de celui du programme appelant.
 
-Pour le résultat de la fonction, deux approches sont possibles. La première est d'utiliser la pile pour retourner ce résultat. La seconde est de placer le résultat de la fonction dans un registre du processeur. La première solution a l'avantage de permettre à une fonction de retourner plusieurs résultats, comme en python par exemple. La seconde est utilisée par de très nombreux langages de programmation. C'est celle que nous adoptons dans ce chapitre. Dans le cadre de ce syllabus, nous prenons la convention qu'*une fonction écrite en assembleur retournera un seul mot de 16 bits et que ce résultat sera toujours placé dans le registre ``A``*. 
+Pour le résultat de la fonction, deux approches sont possibles. La première est d'utiliser la pile pour retourner ce résultat. La seconde est de placer le résultat de la fonction dans un registre du processeur. La première solution a l'avantage de permettre à une fonction de retourner plusieurs résultats, comme en python par exemple. La seconde est utilisée par de très nombreux langages de programmation. C'est celle que nous adoptons dans ce chapitre. Dans le cadre de ce syllabus, nous prenons la convention qu'**une fonction écrite en assembleur retournera un seul mot de 16 bits et que ce résultat sera toujours placé dans le registre ``A``**. 
 
 
 Pour que les fonctions et procédures écrites par un ou une informaticienne soient utilisables sans difficultés par d'autres personnes, il est important que le programme appelant et la fonction/procédure utilisent les mêmes conventions d'utilisation de la pile. Dans le cadre de ce syllabus, nous prenons les conventions suivantes pour les fonctions et procédures en assembleur :
 
-  - *le premier argument d'une fonction/procédure est toujours placé dans le registre ``D``.*
-  - *les deuxième, troisième, ... arguments d'une fonction/procédure sont poussés sur la pile par le programme appelant avec la séquence d'instructions ``PUSH arg2``, ``PUSH arg3``, ... avant l'instruction ``CALL``.*
-  - *le résultat ou valeur de retour d'une fonction est toujours placée dans le registre ``A``*
-  - *lors de l'appel à une fonction/procédure, le programme appelant a la garantie que les registres ``B`` et ``C`` auront la même valeur au retour de la fonction/procédure qu'avant l'appel. Cela implique que le programme appelant ne doit pas sauver ces registres sur la pile avant d'appeler une fonction/procédure. Par contre, si la fonction/procédure utilise les registres ``B`` ou ``C``, elle doit préserver leurs valeurs en utilisant la pile.*
-  - *le corps d'une fonction/procédure peut modifier les valeurs des registres ``A`` et ``D`` à sa guise. Cela implique que si le programme appelant veut réutiliser la valeur se trouvant dans le registre ``D`` après un appel de fonction/procédure, il devra la sauver sur la pile avant d'exécuter l'instruction ``CALL``.*
-  - *toute fonction ou procédure qui ajoute une ou des données sur la pile, doit s'assurer qu'à la fin de son exécution la pile retrouve l'état qu'elle avait avant l'appel à la fonction/procédure.* 
+  - **le premier argument d'une fonction/procédure est toujours placé dans le registre ``D``.**
+  - **les deuxième, troisième, ... arguments d'une fonction/procédure sont poussés sur la pile par le programme appelant avec la séquence d'instructions ``PUSH arg2``, ``PUSH arg3``, ... avant l'instruction ``CALL``.**
+  - **le résultat ou valeur de retour d'une fonction est toujours placée dans le registre ``A``**
+  - **lors de l'appel à une fonction/procédure, le programme appelant a la garantie que les registres ``B`` et ``C`` auront la même valeur au retour de la fonction/procédure qu'avant l'appel. Cela implique que le programme appelant ne doit pas sauver ces registres sur la pile avant d'appeler une fonction/procédure. Par contre, si la fonction/procédure utilise les registres ``B`` ou ``C``, elle doit préserver leurs valeurs en utilisant la pile.**
+  - **le corps d'une fonction/procédure peut modifier les valeurs des registres ``A`` et ``D`` à sa guise. Cela implique que si le programme appelant veut réutiliser la valeur se trouvant dans le registre ``D`` après un appel de fonction/procédure, il devra la sauver sur la pile avant d'exécuter l'instruction ``CALL``.**
+  - **toute fonction ou procédure qui ajoute une ou des données sur la pile, doit s'assurer qu'à la fin de son exécution la pile retrouve l'état qu'elle avait avant l'appel à la fonction/procédure.** 
 
 Nous pouvons facilement écrire le code de la fonction ``f1`` en appliquant ces conventions. Elle prend son argument dans le registre ``D``, l'incrémente et stocke le résultat dans le registre ``A``. Comme elle ne modifie pas les registres ``B`` et ``C``, elle ne doit pas les sauver sur la pile.
 
@@ -598,7 +598,7 @@ Lorsque les ordinateurs communiquent sur Internet, ils s'échangent les données
 sous forme de paquets. Chaque paquet est composé d'une entête de quelques dizaines
 d'octets et suivi des données qui sont échangées. L'entête d'un paquet comprend
 différents champs qui dont les valeurs sont fixées par l'émetteur du paquet
-et qui peuvent être modifiées par les noeuds du réseau (appelés routeurs). A titre
+et qui peuvent être modifiées par les nœuds du réseau (appelés routeurs). A titre
 d'exemple, la figure ci-dessous présente le format de l'entête d'un paquet
 IP version 4. Chaque ligne correspond à un mot de 32 bits et l'émetteur d'un tel
 paquet doit pouvoir spécifier précisément les valeurs de certains bits dans les
@@ -636,11 +636,11 @@ fonctions prennent deux arguments :
    position ``0`` tandis que le bit de poids fort est en position ``15``
  - le mot de 16 bits à modifier (qui est placé sur la pile suivant notre convention)
 
-Lors de l'exéction de ces fonctions, la pile contient donc l'adresse de retour précédée du mot de 16 bits à modifier comme représenté dans la :numref:`fig-pile-avant-set`. Après exécution, nos deux fonctions retournent le mot modifié dans le registre ``A``.
+Lors de l'exécution de ces fonctions, la pile contient donc l'adresse de retour précédée du mot de 16 bits à modifier comme représenté dans la :numref:`fig-pile-avant-set`. Après exécution, nos deux fonctions retournent le mot modifié dans le registre ``A``.
 
 
 .. _fig-pile-avant-set:
-.. tikz:: Etat de la pile avant l'exécution des fonctions setbit ou resetbit
+.. tikz:: État de la pile avant l'exécution des fonctions setbit ou resetbit
 	  
 	  \matrix(m) [matrix of nodes]
 	  {
@@ -735,7 +735,7 @@ alors lors de l'exécution de notre fonction ``f``, la pile contient les valeurs
 dans :numref:`fig-pile-pendant-f`.
 
 .. _fig-pile-pendant-f:
-.. tikz:: Etat de la pile durant l'exécution de la fonction f
+.. tikz:: État de la pile durant l'exécution de la fonction f
 	  
 	  \matrix(m) [matrix of nodes]
 	  {
@@ -797,15 +797,15 @@ ensuite la taille du tableau. Au début de l'exécution de la fonction ``ajouter
 la pile contient donc les informations reprises en :numref:`fig-pile-avant-ajouter-entier`.
 
 .. _fig-pile-avant-ajouter-entier:
-.. tikz:: Etat de la pile au début de l'exécution de la fonction ajouter_entier
+.. tikz:: État de la pile au début de l'exécution de la fonction ajouter_entier
 	  
 	  \matrix(m) [matrix of nodes]
 	  {
 	  \texttt{SP+6} & \ldots \\
-	  \texttt{SP+4} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse tableau$}; \\
-	  \texttt{SP+2} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$taille$}; \\
+	  \texttt{SP+4} & \node(piletop)[blue,rectangle,draw,text width=80pt]{$adresse tableau$}; \\
+	  \texttt{SP+2} & \node(piletop)[blue,rectangle,draw,text width=80pt]{$taille$}; \\
 
-	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=80pt]{$Retour$}; \\
 	  \texttt{SP-2} & \ldots \\
 	  };
 
@@ -816,7 +816,7 @@ pile contiendra donc les informations reprises en :numref:`fig-pile-pendant-ajou
 
 	  
 .. _fig-pile-pendant-ajouter-entier:
-.. tikz:: Etat de la pile pendant l'exécution de la fonction ajouter_entier
+.. tikz:: État de la pile pendant l'exécution de la fonction ajouter_entier
 	  
 	  \matrix(m) [matrix of nodes]
 	  {
@@ -890,7 +890,11 @@ On peut éviter ces deux inconvénients en utilisant la pile comme mémoire pour
 .. spelling:word-list::
 
    sumn
-
+   setbit
+   resetbit
+   nième
+   testset
+   testreset
    
 
 La meilleure illustration de l'utilisation de la pile par les fonctions en assembleur est le support des fonctions récursives. En informatique, on parle de :term:`récursion` lorsqu'une fonction s'appelle elle-même. C'est le cas par exemple de la fonction ``sumn`` qui permet de calculer la somme des ``n`` premiers naturels.

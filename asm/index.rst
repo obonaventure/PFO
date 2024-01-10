@@ -10,14 +10,15 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    :maxdepth: 2
    :caption: Table des matières
 
-   00-intro
-   01-info-asm
-   02-if-loop
+
+   
+   01-info-binaire
+   02-asm-base
    03-fct-proc
    04-list
    
-   
-   glossary
+.. disable   00-intro   
+.. disable   glossary
 
 Indices et tables
 =================
