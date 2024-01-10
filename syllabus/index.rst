@@ -12,10 +12,11 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
 
    introduction   
 
-   01-info-asm
-   02-if-loop
-   
-   
+   ASM/01-info-binaire
+   ASM/02-asm-base
+   ASM/03-fct-proc
+   ASM/04-list
+
    1-logique
 
    2-arithmetique

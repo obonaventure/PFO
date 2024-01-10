@@ -18,11 +18,11 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'Principes de Fonctionnement des Ordinateurs'
-copyright = '2020-2022, Olivier Bonaventure'
+copyright = '2020-2024, Olivier Bonaventure'
 author = 'Olivier Bonaventure'
 
 # The full version, including alpha/beta/rc tags
-release = '2022'
+release = '2024'
 
 
 # -- General configuration ---------------------------------------------------
