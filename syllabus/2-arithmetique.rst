@@ -399,9 +399,10 @@ La solution à ce problème est d'utiliser la notation en :index:`complément à
  - `1110` représente le nombre :math:`-8 + 6 \rightarrow -2`
  - `1111` représente le nombre :math:`-8 + 7 \rightarrow -1`
 
-On remarque aisément qu'il n'y a qu'une seule chaîne de bits qui représente la valeur nulle et que celle-ci correspond à la chaîne de bits dans laquelle tous les bits sont à `0`. C'est un avantage important par rapport aux représentations précédentes. Par contre, il existe un nombre négatif qui n'a pas d'opposé dans une représentation utilisant un nombre fixe de bits. C'est inévitable sachant qu'avec `n` bits on ne peut représenter que :math:`2^{n}` nombres distincts.
+On remarque aisément qu'il n'y a qu'une seule chaîne de bits qui représente la valeur nulle et que celle-ci correspond à la chaîne de bits dans laquelle tous les bits sont à `0`. C'est un avantage important par rapport aux représentations précédentes. Par contre, il existe un nombre négatif qui n'a pas d'opposé dans une représentation utilisant un nombre fixe de bits. C'est inévitable sachant qu'avec `n` bits on ne peut représenter que :math:`2^{n}` nombres distincts. Le site web https://integer.exposed/ vous permet de facilement expérimenter avec les représentations binaires des nombres entiers sur 8, 16, 32 ou même 64 bits.
 
 Une propriété intéressante de la notation en complément à deux est que tous les nombres négatifs ont leur bit de poids fort qui vaut `1`. C'est une conséquence de la façon dont ces nombres sont représentés et pas un `bit de signe` explicite comme dans les représentations précédentes.
+
 
 Enfin, l'avantage principal de cette représentation est que l'on va pouvoir assez facilement construire les circuits qui permettent d'effectuer des opérations arithmétiques sur ces nombres. Un premier avantage de la représentation en complément à deux, est qu'il est possible de réutiliser notre additionneur sans aucune modification pour additionner des entiers. Considérons comme premier exemple :math:`(-6)+(-1)`.
 

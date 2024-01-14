@@ -4,7 +4,7 @@
 
 
 Représentation de l'information
-===============================	     
+===============================
 
 
 Le fonctionnement des ordinateurs s'appuie sur quelques principes très simples, mais qui sont utilisés à une très grande échelle. Le premier principe est que toute l'information peut s'encoder sous une forme binaire, c'est-à-dire une suite de bits. Un :index:`bit` est l'unité de représentation de l'information. Un bit peut prendre deux valeurs:
@@ -32,14 +32,14 @@ Pour représenter chaque caractère sous la forme d'une séquence de bits, il su
    ------- ----------------
    0       ``0000``
    1       ``0001``
-   2	   ``0010``
+   2       ``0010``
    3       ``0011``
-   4	   ``0100``
-   5	   ``0101``
-   6	   ``0110``
-   7	   ``0111``
-   8	   ``1000``
-   9	   ``1001``
+   4       ``0100``
+   5       ``0101``
+   6       ``0110``
+   7       ``0111``
+   8       ``1000``
+   9       ``1001``
    ======= ================
 
 .. spelling:word-list::
@@ -50,7 +50,7 @@ Pour représenter chaque caractère sous la forme d'une séquence de bits, il su
    Coded
    Decimal
 
-   
+
 En utilisant cette représentation, on peut représenter n'importe quel nombre naturel comme une séquence de bits. Il suffit pour cela de représenter chaque chiffre par un bloc de quatre bits. Ainsi, le nombre `478` en notation décimale pourra être représenté par la séquence de bits ``0100 0111 1000``. Dans la littérature, cette représentation est dénommé :index:`DCB`, pour Décimal Codé en Binaire ou :index:`BCD` pour Binary Coded Decimal en anglais.
 
 Pour représenter les lettres de l'alphabet en plus des chiffres, il nous faut utiliser plus de bits. On peut facilement voir qu'avec :math:`n` bits on peut construire :math:`2^n` séquences distinctes. Avec 4 bits, on peut donc obtenir 16 séquences distinctes. Il faut 5 bits pour avoir 32 séquences distinctes, 6 bits pour en construire 64, ... Notre alphabet latin comprend 26 lettres. Si on veut pouvoir représenter les lettres majuscules et les chiffres sous forme binaire, nous utiliser au minimum 6 bits. Avec ces six bits, on peut représenter les 26 lettres majuscules, les 26 lettres minuscules et les 10 chiffres. Il ne nous reste ensuite plus que 2 séquences de bits pour représenter tous les autres caractères comme la ponctuation, les symboles mathématiques, ...
@@ -108,11 +108,14 @@ Parmi les tables d'encodage des caractères les plus simples, la plus connue est
    
 La table US-ASCII (:numref:`table-ascii`) définit les représentations binaires suivantes: 
 
- - `01100000` correspond au caractère représentant le chiffre `0`
- - `01101001` correspond au caractère représentant le chiffre `9`
- - `10000011` correspond au caractère représentant la lettre `A` (majuscule)  
- - `01000000` correspond au caractère représentant un espace 
+ - `0110000` correspond au caractère représentant le chiffre `0`
+ - `0111001` correspond au caractère représentant le chiffre `9`
+ - `1000001` correspond au caractère représentant la lettre `A` (majuscule)  
+ - `0100000` correspond au caractère représentant un espace 
 
+Chaque caractère est représenté sous la forme d'une séquence de 7 bits. 
+ 
+ 
 .. spelling:word-list::
 
    Klingon
@@ -146,8 +149,8 @@ Une représentation graphique, fortement agrandie, de ce caractère est présent
 
 
 .. _fig-pixel-1: 
-.. tikz:: Un caractère sous la forme de pixels 
-	  
+.. tikz:: Un caractère sous la forme de pixels
+    
    \def\pixels{
    {0,0,0,0,1,0,0,0}, 
    {0,0,0,1,1,0,0,0}, 
@@ -166,8 +169,8 @@ Une représentation graphique, fortement agrandie, de ce caractère est présent
    }
    }
 
-	  
-	  
+
+  
 .. présenter l'écran ou l'imprimante bitmap et pixel, uniquement en noir et blanc 
 
 .. parler de couleurs primaire et rgb, cela nécessite des nombres également 
@@ -250,8 +253,54 @@ En pratique, outre les notations binaires, deux notations sont couramment utilis
  - l'octal (ou base `8`)
  - l'hexadécimal (ou base `16`)
 
-En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les symboles sont des chiffres de `0` à `9` et les lettres de `A` à `F` sont utilisées pour représenter les valeurs de `0` à 15.
+En octal, les symboles sont des chiffres de `0` à `7`. La table ci-dessous représente
+les correspondances entre les chiffres de `0` à `7` et les séquences de trois bits.
 
+.. table:: Représentation octale
+   :align: center
+
+
+   ======= ================
+   Chiffre Séquence binaire
+   ------- ----------------
+   0       ``000``
+   1       ``001``
+   2       ``010``
+   3       ``011``
+   4       ``100``
+   5       ``101``
+   6       ``110``
+   7       ``111``
+   ======= ================
+
+En hexadécimal, les symboles sont des chiffres de `0` à `9` et les lettres de `A` à `F` sont utilisées pour représenter les valeurs de `0` à `15`. La table ci-dessous
+reprend la correspondances entre les 16 symboles hexadécimaux et les quartets.
+
+
+.. table:: Représentation hexadécimale
+   :align: center
+
+
+   ======= ================
+   Symbole Séquence binaire
+   ------- ----------------
+   0       ``0000``
+   1       ``0001``
+   2       ``0010``
+   3       ``0011``
+   4       ``0100``
+   5       ``0101``
+   6       ``0110``
+   7       ``0111``
+   8       ``1000``
+   9       ``1001``
+   A       ``1010``
+   B       ``1011``
+   C       ``1100``
+   D       ``1101``
+   E       ``1110``
+   F       ``1111``
+   ======= ================
 
 On peut facilement convertir une séquence de bits en sa représentation octale ou hexadécimale. Il suffit pour cela de découper la séquence en blocs de 3 bits pour la représentation octale et en blocs de quatre bits pour la représentation hexadécimale. A titre d'exemple, la séquence  de douze bits ``001010011101`` peut être convertie comme suit:
 
@@ -259,6 +308,18 @@ On peut facilement convertir une séquence de bits en sa représentation octale 
  
  - en notation hexadécimale, il suffit de la découper en trois blocs de quatre bits chacun, ``0010 1001 1101``. Le premier quartet correspond à ``2``, le deuxième à ``9`` et le troisième à ``D``. Le séquence complète correspond donc à ``29D``.
 
+De la même façon, les informaticiens doivent pouvoir facilement lire des séquences de
+bits en notation octale mais surtout hexadécimale. Pour transformer une séquence
+en notation hexadécimale en une séquence binaire, il suffit de remplacer
+chaque symbole hexadécimal par le quartet correspondant. Voici quelques exemples
+simples :
+
+ - ``1234`` est la séquence binaire ``0001 0010 0011 0100``
+ - ``0101`` est la séquence binaire ``0000 0001 0000 0001``
+ - ``BEBE`` est la séquence binaire ``1011 1110 1011 1110``
+ - ``CAFE`` est la séquence binaire ``1100 1010 1111 1110``  
+
+   
 
 .. note::
 

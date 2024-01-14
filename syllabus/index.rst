@@ -22,7 +22,7 @@ Notes du cours LSINC1102 : Principes de fonctionnement des ordinateurs
    2-arithmetique
       
    3-memoire
-
+   4-asm   
 
    5-cpu
    

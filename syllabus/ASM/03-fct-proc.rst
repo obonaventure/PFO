@@ -199,7 +199,61 @@ Malheureusement, ce n'est pas suffisant. Après la première exécution de la pr
  5. Saut à l'adresse de retour pour poursuivre l'exécution du programme appelant
 
 
-Les deux premières opérations sont exécutées par l'instruction :index:`CALL`. Les deux dernières sont exécutées par l'instruction :index:`RET`. En assembleur, notre code devient donc :
+Les deux premières opérations sont exécutées par l'instruction :index:`CALL`. Les deux dernières sont exécutées par l'instruction :index:`RET`.
+
+Il est intéressant de voir comment le simulateur exécute l'insruction ``CALL``. Pour cela, considérons le
+minuscule programme ci-dessous: 
+
+.. code-block:: nasm
+
+        JMP start
+	fonction:
+	    RET
+	start: 
+	    CALL fonction
+
+
+La :numref:`fig-avant-call-1` présente l'état de la mémoire avant l'exécution
+de l'instruction ``CALL``. La :numref:`fig-avant-call-2` montre que la pile est
+vide à ce moment. Le registre ``SP`` contient l'adresse ``0x39C`` comme sommet 
+de pile/
+		
+.. _fig-avant-call-1:
+
+.. figure:: /images/ex-call-1.png
+
+   Etat de la mémoire avant l'exécution de l'instruction CALL
+  
+
+.. _fig-avant-call-2:
+
+.. figure:: /images/ex-call-2.png
+
+   Etat de la pile avant l'exécution de l'instruction CALL   
+   
+L'instruction ``CALL`` se trouve à l'adresse ``0x06``. En mémoire, cette instruction
+occupe deux blocs de 16 bits. L'instruction suivante se trouve donc à l'adresse
+``0x0A``. La :numref:`fig-apres-call-1` présente l'état de la mémoire après l'exécution
+de l'instruction ``CALL``. On remarque que le sommet de la pile se trouve maintenant
+à l'adresse ``0x39A``. La :numref:`fig-apres-call-2` montre que la pile contient
+bien l'adresse de retour (``0x0A``).
+   
+.. _fig-apres-call-1:
+
+.. figure:: /images/ex-apres-call-1.png
+
+   Etat de la mémoire après l'exécution de l'instruction CALL
+  
+
+.. _fig-apres-call-2:
+
+.. figure:: /images/ex-apres-call-2.png
+
+   Etat de la pile après l'exécution de l'instruction CALL   
+   
+   
+   
+Grâce à l'instruction ``CALL``, notre programme devient donc :
 
 
 .. code-block:: console
@@ -384,7 +438,7 @@ La pile est utilisée par l'instruction ``CALL`` pour stocker l'adresse de retou
               MOV [compteur], A
               RET
 
-Ce programme est équivalent au code python suivant qui lors de son exécution place la valeur ``124` dans la variable ``x``.
+Ce programme est équivalent au code python suivant qui lors de son exécution place la valeur ``124`` dans la variable ``x``.
 
 .. code-block:: python
 
@@ -821,11 +875,11 @@ pile contiendra donc les informations reprises en :numref:`fig-pile-pendant-ajou
 	  \matrix(m) [matrix of nodes]
 	  {
 	  \texttt{SP+10} & \ldots \\
-	  \texttt{SP+8} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$adresse tableau$}; \\
-	  \texttt{SP+6} & \node(piletop)[blue,rectangle,draw,text width=40pt]{$taille$}; \\
-	  \texttt{SP+4}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Retour$}; \\
-	  \texttt{SP+2}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien B$}; \\
-	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=40pt]{$Ancien C$}; \\
+	  \texttt{SP+8} & \node(piletop)[blue,rectangle,draw,text width=80pt]{$adresse tableau$}; \\
+	  \texttt{SP+6} & \node(piletop)[blue,rectangle,draw,text width=80pt]{$taille$}; \\
+	  \texttt{SP+4}  & \node(pile2)[blue,rectangle,draw,text width=80pt]{$Retour$}; \\
+	  \texttt{SP+2}  & \node(pile2)[blue,rectangle,draw,text width=80pt]{$Ancien B$}; \\
+	  \texttt{SP}  & \node(pile2)[blue,rectangle,draw,text width=80pt]{$Ancien C$}; \\
 	  \texttt{SP-2} & \ldots \\
 	  };  	     
 
@@ -904,11 +958,11 @@ La meilleure illustration de l'utilisation de la pile par les fonctions en assem
 .. literalinclude:: python/sumn.py
 
 
-En assembleur, cette fonction peut s'appeler en plaçant simplement la valeur de ``n`` dans le registre ``D`` en utilisant le code ci-dessous.
+En assembleur, cette fonction peut s'appeler en plaçant simplement la valeur de la variable ``n`` dans le registre ``D`` en utilisant le code ci-dessous.
 
 .. code-block:: nasm
 
-   MOV D, n 
+   MOV D, [n] 
    CALL sumn
    ; résultat dans le registre A
 

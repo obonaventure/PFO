@@ -35,6 +35,35 @@ Dans ce syllabus, nous nous concentrons sur un langage d'assemblage simple qui n
 
 .. todo:: brève description du simulateur et de son fonctionnement
 
+Notre simulateur
+----------------
+
+
+Dans le cadre de ce syllabus, nous utilisons le [simulateur de microprocesseur](https://github.com/Schweigi/assembler-simulator) dévelopé intialement par [Marco Schweighauser](https://github.com/Schweigi) et amélioré par [Nikita Tyunyayev](https://github.com/ntyunyayev). Ce simulateur est accessible en ligne depuis n'importe quel navigateur web via http://asm.info.ucl.ac.be . La :numref:`fig-simu` présente l'interface graphique de notre simulateur..
+
+
+.. _fig-simu:
+
+.. figure:: /images/asm-sim.png
+
+   Capture d'écran du simulateur de processeur
+
+
+Notre simulateur comprend plusieurs boutons en haut de l'écran:
+
+ - ``Run`` pour exécuter l'ensemble du programme pas à pas
+ - ``Step`` pour éxécuter l'instruction suivante et s'arrêter
+ - ``Reset`` pour revenir au début de l'exécution du programme
+ - ``Download Code`` pour télécharger sur votre ordinateur le programme chargé sur le simulateur
+ - ``Choisir le fichier`` pour sélectionner un fichier sur votre ordinateur
+ - ``Load file`` pour charger le fichier sélectionné depuis votre ordinateur vers le simulateur
+
+
+La grande boîte baptisée ``Code`` comprend le code en assembleur à exécuter. La boîte baptisée ``Output`` est un écran simplifié que vous pourrez utiliser pour afficher quelques caractères. La boîte ``CPU & Memory`` contient d'abord les valeurs des données stockées dans les registres et les drapeaux du processeur. La partie dénommée ``RAM`` représente le contenu de la mémoire. Les informations se trouvant dans les registres et la mémoire sont représentées en notation hexadécimale.   
+   
+
+
+	  
 
 Un assembleur simple
 --------------------
@@ -495,7 +524,8 @@ qui seront utilisées par nos programmes.
 
 Le langage d'assemblage nous permet de précharger en mémoire :index:`RAM`
 des constantes qui pourront ensuite être utilisées dans notre programme.
-Le mot clé :index:`DB` permet de stocker en mémoire une constante.
+Le mot clé :index:`DB` permet de stocker en mémoire le mot de 16 bits qui
+suit le mot-clé. 
 
 A titre d'exemple, le code ci-dessous stocke le bloc de 16 bits ``0b00000000 0000011`` à
 l'adresse ``0`` en mémoire et le bloc ``0b00000000 00000111`` à l'adresse ``2``.
@@ -504,8 +534,24 @@ l'adresse ``0`` en mémoire et le bloc ``0b00000000 00000111`` à l'adresse ``2`
 
    DB 3
    DB 7
+   
+   
+.. note:: DB n'est pas une instruction
 
+   Le mot clé ``DB`` n'est pas une instruction du langage d'assemblage, c'est une directive 
+   qui indique à l'assembleur de simplement placer en mémoire la valeur qui suit le mot-clé
+   ``DB``. Cette valeur peut être une valeur décimale, une valeur binaire ou une valeur
+   en notation hexadécimale. La :numref:`fig-ex-db` illustre l'utilisation de ce mot-clé ``DB``. 
+   Il est intéressant de regarder le contenu de la mémoire RAM et de le mettre en parallèle avec
+   les mots-clés ``DB``. 
 
+   
+	.. _fig-ex-db:
+
+	.. figure:: /images/ex-db.png
+
+        Exemple d'utilisation du mot-clé DB   
+   
 En pratique, le mot clé ``DB`` sera rarement utilisé de cette façon.
 Dans un programme, on utilisera ce mot clé pour définir des constantes
 ou alors pour fixer la valeur initiale de certaines variables. Dans ces
@@ -518,6 +564,35 @@ programme et elles sont automatiquement traduites par l'assembleur en
 l'adresse correspondante. Pour définir une étiquette, il suffit
 d'écrire sur une ligne une chaîne de caractères suivie par le caractère
 ``:`` et ensuite l'instruction en assembleur (souvent ``DB``). 
+
+Afin d'illustrer l'utilisation de ces étiquettes, considérons la liste
+de mots-clés ``DB`` ci-dessous.
+
+.. code-block:: nasm
+
+   zero:      DB 0x0000
+   lln:       DB 1348
+   charleroi: DB 6000
+
+
+Cette suite de mots-clés nous permet d'initialiser en mémoire trois constantes
+et d'associer une étiquette à chacune de ces constantes. La première ligne
+place la valeur ``0x0000`` en mémoire. Cette valeur se trouve à l'adresse
+``0`` et l'assembleur associe l'étiquette `zero` à cette adresse.
+La deuxième ligne place la valeur ``1348`` en mémoire à l'adresse `2` et 
+associe l'étiquette `lln` à cette adresse. Enfin, la troisième ligne 
+place la valeur ``6000`` en mémoire à l'adresse suivante (`4`) et associe
+l'étiquette `charleroi` à cette adresse. La :numref:`fig-ex-db-label` présente
+comment le simulateur affiche ces différentes étiquettes et les valeurs
+associées.
+
+.. _fig-ex-db-label:
+
+.. figure:: /images/ex-db-label.png
+
+   Exemple d'utilisation du mot-clé DB   
+
+
 
 Les instructions de l'assembleur telles que ``MOV`` peuvent
 utiliser des étiquettes de deux façons différentes. Tout d'abord,
@@ -550,15 +625,73 @@ Ensuite, l'instruction ``ADD`` place la valeur ``10`` dans le registre
    x: DB 3
    y: DB 7
 
-   
-   
+     
 
 Lorsque le programme ci-dessus est transformé en langage machine et
 stocké en mémoire, l'instruction :index:`HLT` se trouve à l'adresse
-``18```. L'étiquette `x` correspond à l'adresse ``19`` et `y` à
-l'adresse ``20``.
+``0x12``. L'étiquette `x` correspond à l'adresse ``0x14`` et `y` à
+l'adresse ``0x16`` comme illustré dans la :numref:`fig-mem-deb`.
 
 
+.. _fig-mem-db:
+
+.. figure:: /images/mem-db.png
+
+   Adresses mémoires des étiquettes x et y
+
+
+A ce stade, il est utile d'analyser un peu plus en détails la façon dont les
+instructions sont encodées en mémoire. Pour le processeur, une instruction en
+assembleur est aussi encodée sous la forme d'une séquence de bits. C'est
+ce que nous voyons dans la mémoire RAM présentée dans la :numref:`fig-mem-deb`.
+Analysons cette mémoire bloc de 16 bits par bloc de 16 bits. Le premier bloc,
+``0x00 02`` correspond au :index:`code opératoire` (ou :index:`opcode` en anglais)
+de l'instruction qui permet de déplacer une information se trouvant en mémoire
+vers un registre. Cette instruction prend deux arguments :
+
+ - un registre
+ - une adresse
+
+Le bloc de 16 bits à l'adresse ``0x02`` qui a comme valeur ``0x00 00`` correspond
+au registre ``A``. Le bloc de 16 bits à l'adresse ``0x04`` contient lui la
+valeur ``0x00 14`` qui est l'adresse de l'étiquette `x`. Ces 6 premiers octets
+(`0x00 02 00 00 00 14``) sont la représentation binaire de l'instruction
+``MOV A, [14]``. Les six octets qui suivent (``0x00 02 00 01 00 16``) correspondent
+eux à l'instruction ``MOV B, [16]``. Le code opératoire de l'instruction ``ADD``
+est ``0x00 0A`` et les 6 octets ``0x00 0A 00 01`` représentent bien l'instruction
+``ADD A, B``. L'instruction ``HLT`` a comme code opératoire le bloc de 16 bits
+``0x00 00``. Le simulateur définit un code opératoire pour chaque variante d'une
+instruction. En voici quelques unes à titre d'illustration :
+
+ - ``HLT`` a comme code opératoire ``0x00 00``
+ - ``MOV`` a comme code opératoire ``0x00 01`` lorsque ses deux arguments sont des registres
+ - ``MOV`` a comme code opératoire ``0x00 06`` lorsque son premier argument est un registre et le seconde une constante
+ - ``ADD`` a comme code opératoire ``0x00 0A`` lorsque ses deux arguments sont des registres
+
+- ``SUB`` a comme code opératoire ``0x00 0D`` lorsque ses deux arguments sont des registres  
+ - ``INC`` a comme code opératoire ``0x00 12`` et est suivi d'un identifiant de registre
+ - ``DEC`` a comme code opératoire ``0x00 13`` et est suivi d'un identifiant de registre
+ - ``MUL`` a comme code opératoire ``0x00 3C`` et est suivi identifiant de registre
+
+Connaissant cette représentation des instructions en assembleur sous
+la forme de séquence de bits, il est possible (mais pas recommandé) d'écrire
+un programme assembleur en utilisant uniquement les commandes ``DB`` pour initialiser
+la mémoire. Pouvez-vous prévoir ce que fait le "programme" présenté ci-dessous ?
+
+
+.. code-block:: nasm
+
+
+   DB 0x0012
+   DB 0x0001
+   DB 0x0001
+   DB 0x0003
+   DB 0x0001
+   DB 0
+
+
+.. INC B suivi de MOV D, B et HLT, met les registres D et B à 1 puis HLT
+   
 Nous pouvons maintenant lister tous les arguments possibles de
 l'instruction :index:`MOV`:
 
@@ -577,8 +710,10 @@ l'instruction :index:`MOV`:
    ``adr`` une adresse en mémoire ou une étiquette) : place la valeur
    se trouvant dans le registre ``reg`` en mémoire à l'adresse ``adr``
    
-Les instructions ``ADD`` et ``SUB`` prennent les mêmes arguments que l'instruction
-``MOV``. Les instructions ``INC`` et ``DEC`` ne prennent qu'un registre comme
+Les instructions ``ADD`` et ``SUB`` prennent les mêmes arguments que les quatre
+premiers types d'instruction
+``MOV`` (le résultat de ``ADD`` et ``SUB`` se trouve toujours dans un registre).
+Les instructions ``INC`` et ``DEC`` ne prennent qu'un registre comme
 argument.
 
 Les instructions ``MUL`` et ``DIV`` supportent elles trois types d'arguments:
@@ -629,7 +764,7 @@ résultat de l'addition à l'adresse de la variable ``z``.
    HLT
    ;  Variables et données du programme
    x: DB 3
-   y: DB 5	 
+   y: DB 5
    z: DB 0
    
 
@@ -659,7 +794,7 @@ de réaliser la soustraction.
 
    MOV A, [y]     ; place la valeur de la variable y dans A
    MUL A          ; multiplie le contenu de A par lui-même
-   MOV B, A   	  ; sauvegarde du résultat dans	le registre B
+   MOV B, A       ; sauvegarde du résultat dans	le registre B
    MOV A, [x]     ; place la valeur de la variable x dans A
    MUL A          ; multiplie le contenu de A par lui-même
    SUB A, B       ; soustraction des deux carrés
@@ -669,13 +804,13 @@ de réaliser la soustraction.
    MOV B, [x]     ; place la valeur de la variable x dans B
    ADD B, [y]     ; calcul de x+y
    MUL B
-   MOV [z2], A 	  ; sauvegarde du résultat du calcul dans la variable z2
+   MOV [z2], A    ; sauvegarde du résultat du calcul dans la variable z2
    HLT
    ;  Variables et données du programme
    x: DB 9
    y: DB 2
    z1: DB 0
-   z2: DB 0		
+   z2: DB 0
 
 
 En exécutant ce programme dans le simulateur, on peut facilement vérifier
@@ -904,7 +1039,7 @@ Lors de son exécution, l'instruction de comparaison ne modifie pas
 la valeur contenue dans le registre qui est son premier argument. Elle stocke
 son résultat dans un :index:`drapeau` (:index:`flag` en anglais). Ce drapeau occupe 1 bit dans le
 processeur (le bit ``Z``). Il est mis à la valeur `vrai` par l'instruction ``CMP`` si
-la comparaison a réussi et à `faux` sinon. Dans l'exemple ci-dessous,
+les valeurs des deux arguments sont identiques et à `faux` sinon. Dans l'exemple ci-dessous,
 le drapeau ``Z`` est mis à la valeur `faux` après exécution de la première instruction
 ``CMP``. Ce drapeau passe à la valeur `vrai` après exécution de la seconde
 instruction ``CMP``.
@@ -936,7 +1071,7 @@ ci-dessous, le drapeau ``C`` sera mis à `vrai` à la seconde instruction ``INC`
 le résultat (``65536```) doit être stocké sur 17 bits et non 16.
 
 .. code-block:: nasm
-		
+
    MOV A, 65534
    INC A          ; C mis à faux
    INC A          ; C mis à vrai
@@ -950,7 +1085,7 @@ son exécution) comme dans l'exemple ci-dessous.
 
    MOV A, 40000
    MUL A         ; dépassement de capacité C est mis à vrai
-		
+
 
 Le compteur de programme et les instructions de saut
 ----------------------------------------------------
@@ -1052,16 +1187,16 @@ Ce programme peut être de façon plus lisible comme suit.
 
 .. code-block:: nasm
 
-   JMP start		 
+          JMP start
    ;  Variables et données du programme
-   x: DB 3
-   y: DB 5	 
-   z: DB 0
+   x:     DB 3
+   y:     DB 5
+   z:     DB 0
    start: MOV A, [y]     ; place la valeur de la variable y dans A
-   MUL 2          ; multiplie le contenu de A par 2
-   ADD A, [x]     ; ajoute au contenu de A la valeur de la variable x
-   MOV [z], A     ; sauvegarde du résultat du calcul dans la variable z
-   HLT
+          MUL 2          ; multiplie le contenu de A par 2
+          ADD A, [x]     ; ajoute au contenu de A la valeur de la variable x
+          MOV [z], A     ; sauvegarde du résultat du calcul dans la variable z
+          HLT
    
 
 
@@ -1085,10 +1220,10 @@ s'écrire comme suit.
 .. code-block:: nasm
 
           MOV A, 123
-	      MOV B, 123
-	      CMP A, B
-	      JE equal
-	      MOV C, 0
+          MOV B, 123
+          CMP A, B
+          JE equal
+          MOV C, 0
    equal: MOV C, 1
           HLT
 
@@ -1107,11 +1242,11 @@ de l'instruction ``MOV C,0`` comme ci-dessous.
 .. code-block:: nasm
 
            MOV A, 123
-	       MOV B, 123
-	       CMP A, B
-	       JE equal
+           MOV B, 123
+           CMP A, B
+           JE equal
    ne:     MOV C, 0
-	       JMP suite:
+           JMP suite:
    equal:  MOV C, 1
    suite:  HLT
    
@@ -1132,8 +1267,8 @@ précédées de l'instruction ``CMP`` comme dans l'exemple ci-dessous.
 .. code-block:: nasm
 
             MOV A, 1
-	        DEC A
-	        JZ zero
+            DEC A
+            JZ zero
    nz:      MOV C, 1
             JMP suite:
    zero:    MOV C, 0
@@ -1173,10 +1308,10 @@ entre deux variables et place le résultat dans le registre ``C``.
             CMP A, [y]
             JBE petit
             MOV C, A
-	        SUB C, [y]
-	        JMP fin
+            SUB C, [y]
+            JMP fin
    petit:   MOV C, [y]
-	        SUB C, A
+            SUB C, A
    fin:     HLT
 
    
@@ -1194,11 +1329,11 @@ de multiplication a provoqué un dépassement de capacité.
 .. code-block:: nasm
 
              MOV A, 1000
-	         MOV B, 123
-	         MUL B
-	         JNC correct
+             MOV B, 123
+             MUL B
+             JNC correct
    ; dépassement de capacité
-	         HLT
+             HLT
    correct:  MOV B, D
    ; suite du programme
 
@@ -1254,11 +1389,11 @@ variable ``max``.
    y:       DB 9
    max:     DB 0
    start:   MOV A, [x]
-	        MOV B, [y]
-	        CMP A, B
-	        JA xmax
-	        MOV [max], B
-	        JMP fin
+            MOV B, [y]
+            CMP A, B
+            JA xmax
+            MOV [max], B
+            JMP fin
    xmax:    MOV [max], A
    fin:     HLT
 
@@ -1353,8 +1488,8 @@ de saut inconditionnel ``JMP``.
    ; programme
    start:   MOV A, [x]
             INC A
-	        MOV [x], A
-	        JMP start
+            MOV [x], A
+            JMP start
 
 Parfois, on écrit par inadvertance une boucle infinie en python 
 car la condition d'arrêt de la boucle n'est jamais réalisée, 
@@ -1989,6 +2124,13 @@ Cette représentation a deux avantages principaux. Tout d'abord, il est possible
 
 De plus, lorsque cette représentation est utilisée dans un langage de programmation, celui-ci peut facilement vérifier que les accès aux éléments d'un tableau respectent bien les limites de ce tableau. C'est le cas avec le langage python. 
 
+
+.. note:: Convention de représentation des tableaux
+
+
+   Dans le cadre de ce syllabus, nous prendrons comme convention de représenter un tableau de `n` entiers comme `n` entiers consécutifs en mémoire mais sans indication explicite de la longueur dans le tableau lui-même. C'est la convention utilisée notamment par le langage C. Elle a l'avantage d'éviter de devoir toujours réserver un espace mémoire pour stocker la longueur du tableau alors que dans certains cas celle longueur est connue par le programme. C'était le cas notamment dans nos exemples avec les coordonnées. Dans les autres cas, la taille du tableau devra être stockée dans une autre variable qui sera elle aussi accessible au programme.
+
+
 .. exemple get ou set avec erreur en cas de non respect des bornes
 
 .. buffer overflow / segmentation fault ?
@@ -2078,7 +2220,7 @@ Notre programme a comme entrée la variable ``char`` contenant le caractère à 
             CMP D, B
             JBE boucle
    fin:
-            HLT		 
+            HLT
 
 		
 
@@ -2164,7 +2306,10 @@ En assembleur, ce programme peut s'écrire comme suit.
    fin:
            HLT		
 
+.. note::  Convention de représentation des chaînes de caractères
 
+
+   Dans le cadre de ce syllabus, nous prendrons comme convention de toujours représenter les chaînes de caractères avec la valeur  ``0x00 00`` comme marqueur de fin de chaîne de caractères. C'est la convention qui est utilisée notamment par le langage C. 
 
 
 
