@@ -706,7 +706,7 @@ l'instruction :index:`MOV`:
  - ``MOV reg, [adr]`` (``reg`` est un identifiant de registre et
    ``adr`` une adresse en mémoire ou une étiquette) : place dans ``reg``
    la valeur se trouvant en mémoire à l'adresse ``adr``
- - ``MOV [adr], reg`` (``reg`` est un identifiant de registre et
+ - ``MOV adr, reg`` (``reg`` est un identifiant de registre et
    ``adr`` une adresse en mémoire ou une étiquette) : place la valeur
    se trouvant dans le registre ``reg`` en mémoire à l'adresse ``adr``
    
@@ -760,7 +760,7 @@ résultat de l'addition à l'adresse de la variable ``z``.
    MOV A, [y]     ; place la valeur de la variable y dans A
    MUL 2          ; multiplie le contenu de A par 2
    ADD A, [x]     ; ajoute au contenu de A la valeur de la variable x
-   MOV [z], A     ; sauvegarde du résultat du calcul dans la variable z
+   MOV z, A       ; sauvegarde du résultat du calcul dans la variable z
    HLT
    ;  Variables et données du programme
    x: DB 3
@@ -798,13 +798,13 @@ de réaliser la soustraction.
    MOV A, [x]     ; place la valeur de la variable x dans A
    MUL A          ; multiplie le contenu de A par lui-même
    SUB A, B       ; soustraction des deux carrés
-   MOV [z1], A    ; sauvegarde du résultat du calcul dans la variable z1
+   MOV z1, A      ; sauvegarde du résultat du calcul dans la variable z1
    MOV A, [x]     ; place la valeur de la variable x dans A
    SUB A, [y]     ; calcul de x-y
    MOV B, [x]     ; place la valeur de la variable x dans B
    ADD B, [y]     ; calcul de x+y
    MUL B
-   MOV [z2], A    ; sauvegarde du résultat du calcul dans la variable z2
+   MOV z2, A      ; sauvegarde du résultat du calcul dans la variable z2
    HLT
    ;  Variables et données du programme
    x: DB 9
@@ -1195,7 +1195,7 @@ Ce programme peut être de façon plus lisible comme suit.
    start: MOV A, [y]     ; place la valeur de la variable y dans A
           MUL 2          ; multiplie le contenu de A par 2
           ADD A, [x]     ; ajoute au contenu de A la valeur de la variable x
-          MOV [z], A     ; sauvegarde du résultat du calcul dans la variable z
+          MOV z, A       ; sauvegarde du résultat du calcul dans la variable z
           HLT
    
 
@@ -1392,9 +1392,9 @@ variable ``max``.
             MOV B, [y]
             CMP A, B
             JA xmax
-            MOV [max], B
+            MOV max, B
             JMP fin
-   xmax:    MOV [max], A
+   xmax:    MOV max, A
    fin:     HLT
 
 
@@ -1488,7 +1488,7 @@ de saut inconditionnel ``JMP``.
    ; programme
    start:   MOV A, [x]
             INC A
-            MOV [x], A
+            MOV x, A
             JMP start
 
 Parfois, on écrit par inadvertance une boucle infinie en python 
@@ -1513,7 +1513,7 @@ Ce programme python peut être traduit par les instructions suivantes en assembl
             CMP A, 0
             JZ fin
             INC A
-            MOV [x], A
+            MOV x, A
             JMP start
    fin:     HLT
 
@@ -1538,7 +1538,7 @@ la valeur de la variable ``x`` uniquement en fin de boucle comme présenté ci-d
             JZ fin
             INC A
             JMP boucle
-   fin:     MOV [x], A
+   fin:     MOV x, A
             HLT
 
 Cette nouvelle version du programme incrémente la valeur du registre ``A`` à chaque
@@ -1622,10 +1622,10 @@ registre et calculer ``x+x``. Enfin, on utilise une instruction de saut incondit
             CMP A, 10
             JAE fin
             INC A
-            MOV [n], A
+            MOV n, A
             MOV B, [x]
             ADD B, B
-            MOV [x], B
+            MOV x, B
             JMP boucle
    fin:     HLT
 
@@ -1651,8 +1651,8 @@ sauver les valeurs stockées dans les registres en mémoire en sortie de boucle.
             INC A
             ADD B, B
             JMP boucle
-   finb:    MOV [n], A   ; sauvegarde variable n
-            MOV [x], B   ; sauvegarde variable x 
+   finb:    MOV n, A   ; sauvegarde variable n
+            MOV x, B   ; sauvegarde variable x 
    fin:     HLT
 
 
@@ -1727,10 +1727,10 @@ si les deux points sont égaux et ``0`` sinon.
           CMP A, B
           JNE diff
    egal:
-          MOV [eq], 1
+          MOV eq, 1
           JMP fin
    diff: 
-          MOV [eq], 0
+          MOV eq, 0
    fin:   HLT
 
 
@@ -1871,10 +1871,10 @@ coordonnées ``x`` et ``y`` de nos deux points.
           CMP C, D
           JNE diff
    egal:
-          MOV [eq], 1
+          MOV eq, 1
           JMP fin
    diff: 
-          MOV [eq], 0
+          MOV eq, 0
    fin: 
           HLT
 
@@ -1951,7 +1951,7 @@ plus rapide.
           ADD A, mois ; adresse en mémoire du Ceme mois 
           MOV B, [A]
           ADD B, [jours]
-          MOV [jours], B
+          MOV jours, B
           INC C
           CMP C,11
           JA fin
@@ -2113,7 +2113,7 @@ Cette représentation a deux avantages principaux. Tout d'abord, il est possible
           ADD A, mois ; adresse en mémoire du Ceme mois 
           MOV B, [A]
           ADD B, [jours]
-          MOV [jours], B
+          MOV jours, B
           INC C
           MOV D,[mois]
           CMP C,D
@@ -2213,7 +2213,7 @@ Notre programme a comme entrée la variable ``char`` contenant le caractère à 
             JNE suite
             MOV A, [count]
             INC A
-            MOV [count], A
+            MOV count, A
    suite:   
             INC D            ; incrément indice boucle
             MOV B, [string]    ; longueur de la chaîne
@@ -2297,7 +2297,7 @@ En assembleur, ce programme peut s'écrire comme suit.
            JNE suite
            MOV B, [count]
            INC B
-           MOV [count], B
+           MOV count, B
    suite:  
            INC D            ; incrément indice boucle
            MOV B, 0

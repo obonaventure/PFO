@@ -91,11 +91,11 @@ qui correspondent aux différentes assignations de cette variable.
    x:        DB 0
    compteur: DB 0
    start:
-             MOV [x], 1  ; ligne 1
+             MOV x, 1  ; ligne 1
              ; à compléter
-	         MOV [x], 2  ; ligne 3
+	     MOV x, 2  ; ligne 3
              ; à compléter
-	         MOV [x], 3  ; ligne 5
+	     MOV x, 3  ; ligne 5
 
    
    
@@ -124,7 +124,7 @@ Il nous faut maintenant pouvoir faire appel à la procédure ``compte()`` après
 
    MOV A, [compteur]
    INC A
-   MOV [compteur], A
+   MOV compteur, A
 
 L'exemple ci-dessus utilise le registre ``A``, mais il aurait pu aussi être écrit avec n'importe lequel des trois autres registres.
    
@@ -147,19 +147,19 @@ s'exécuter rapidement. Elle revient à copier-coller le code de la procédure d
    compteur: DB 0
    start:
              ; ligne 1
-	         MOV [x], 1
-			 ; copie du code de la procédure
-	         MOV A, [compteur]
-	         INC A
-	         MOV [compteur], A
+	     MOV x, 1
+	     ; copie du code de la procédure
+	     MOV A, [compteur]
+	     INC A
+	     MOV compteur, A
              ; ligne 3
-             MOV [x], 2
-			 ; copie du code de la procédure
-	         MOV A, [compteur]
-	         INC A
-	         MOV [compteur], A
+             MOV x, 2
+	     ; copie du code de la procédure
+	     MOV A, [compteur]
+	     INC A
+	     MOV compteur, A
              ; ligne 5
-	         MOV [x], 3
+	     MOV x, 3
 
 
 
@@ -178,15 +178,15 @@ une partie de la mémoire et d'y faire appel en exécutant un saut inconditionne
              ; ligne 1
              JMP COMPTE
    ligne3:   ; ligne 3
-             MOV [x], 2
+             MOV x, 2
              JMP COMPTE
    ligne5:   ; ligne 5
-             MOV [x], 3
+             MOV x, 3
    
    COMPTE:
              MOV A, [compteur]
              INC A
-             MOV [compteur], A
+             MOV compteur, A
              JMP retour
    
 
@@ -265,15 +265,15 @@ Grâce à l'instruction ``CALL``, notre programme devient donc :
    start:
               CALL COMPTE
    ligne3:                ; ligne 3
-              MOV [x], 2
+              MOV x, 2
               CALL COMPTE
    ligne5:                ; ligne 5
-              MOV [x], 3
+              MOV x, 3
    
    COMPTE:
               MOV A, [compteur]
               INC A
-              MOV [compteur], A
+              MOV compteur, A
               RET
     
 
@@ -354,7 +354,7 @@ observons l'exécution du code assembleur ci-dessous:
    :linenos:		
 		
    PUSH 7
-   MOV [122], 3
+   MOV 122, 3
    PUSH [122]
    MOV A, 4
    PUSH A
@@ -430,12 +430,12 @@ La pile est utilisée par l'instruction ``CALL`` pour stocker l'adresse de retou
    start:     MOV A, 123
               CALL COMPTE
               ADD A, [compteur]
-              MOV [x], A
+              MOV x, A
               HLT
    COMPTE:
               MOV A, [compteur]
               INC A
-              MOV [compteur], A
+              MOV compteur, A
               RET
 
 Ce programme est équivalent au code python suivant qui lors de son exécution place la valeur ``124`` dans la variable ``x``.
@@ -463,22 +463,22 @@ On peut résoudre ce problème de deux façons en utilisant la pile. La premièr
    x:         DB 0
    compteur:  DB 0
    start:     MOV A, 123
-	          PUSH A
-	          PUSH B
-	          PUSH C
-	          PUSH D
+	      PUSH A
+	      PUSH B
+	      PUSH C
+	      PUSH D
               CALL COMPTE
-	          POP D
-	          POP C
-	          POP B
-	          POP A
+	      POP D
+	      POP C
+	      POP B
+	      POP A
               ADD A, [compteur]
-              MOV [x], A
+              MOV x, A
               HLT
    COMPTE:
               MOV A, [compteur]
               INC A
-              MOV [compteur], A
+              MOV compteur, A
               RET
 	      
 Lorsque l'on exécute ce programme, la variable ``x`` contient bien la valeur ``124`` comme en python. Notez l'ordre dans lequel les valeurs des registres sont stockées (``A`` puis ``B`` puis ``C`` puis ``D``) et ensuite récupérées sur la pile (``D`` puis ``C`` puis ``B`` puis ``A``). L'ordre dans lequel on pousse les valeurs sur la pile importe peut, pour autant qu'elles soient récupérées dans l'ordre exactement inverse. 
@@ -493,13 +493,13 @@ Cette approche fonctionne, mais elle implique parfois des instructions inutiles.
    start:     MOV A, 123
               CALL COMPTE
               ADD A, [compteur]
-              MOV [x], A
+              MOV x, A
               HLT
    COMPTE:
               PUSH A ; sauvegarde du contenu du registre A qui va être modifié
-	          MOV A, [compteur]
+	      MOV A, [compteur]
               INC A
-              MOV [compteur], A
+              MOV compteur, A
       	      POP A  ; récupération du contenu du registre A
               RET
 
@@ -621,7 +621,7 @@ Pour accéder au second argument, il n'est pas intéressant d'utiliser une instr
 
 
    min:
-        MOV A,[SP+2] ; second argument copié dans A
+            MOV A,[SP+2] ; second argument copié dans A
 	    CMP A,D
 	    JBE finmin
 	    MOV A,D
@@ -982,12 +982,12 @@ Le code de la fonction ``sumn`` en assembleur comprend deux parties principales 
 	   POP B    ; récupération
 	   RET
    recursif:
-       MOV B, D ; on aura besoin de n après
+           MOV B, D ; on aura besoin de n après
 	   DEC D
 	   CALL sumn ; appel récursif
    rec2:   
-       ADD A, B  ; résultat dans A
-	   POP B
+           ADD A, B  ; résultat dans A
+ 	   POP B
 	   RET 	 
 
 		    
