@@ -1,4 +1,4 @@
-x1gLes structures de données
+Les structures de données
 =========================
 
 
@@ -894,3 +894,5 @@ On peut bien entendu construire d'autres opérations sur de telles structures
 chaînées. Plusieurs exemples vous serons présentés durant les travaux pratiques.
    
       
+
+

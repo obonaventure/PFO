@@ -140,7 +140,7 @@ Une première approche pour inclure notre procédure dans le programme en minusc
 langages de programmation pour de très petites fonctions qui doivent
 s'exécuter rapidement. Elle revient à copier-coller le code de la procédure dans le programme.
 
-.. code-block:: console
+.. code-block:: nasm
 
              JMP start
    x:        DB 0
@@ -169,7 +169,7 @@ Il est nécessaire de pouvoir isoler les instructions de la procédure dans
 une partie de la mémoire et d'y faire appel en exécutant un saut inconditionnel. Une première approche pourrait être la suivante. La code de la procédure ``compte`` est placé après l'étiquette ``COMPTE`` et on fait appel à la procédure en utilisant un saut inconditionnel vers cette adresse. 
 
 
-.. code-block:: console
+.. code-block:: nasm
 
              JMP start
    x:        DB 0
@@ -201,7 +201,7 @@ Malheureusement, ce n'est pas suffisant. Après la première exécution de la pr
 
 Les deux premières opérations sont exécutées par l'instruction :index:`CALL`. Les deux dernières sont exécutées par l'instruction :index:`RET`.
 
-Il est intéressant de voir comment le simulateur exécute l'insruction ``CALL``. Pour cela, considérons le
+Il est intéressant de voir comment le simulateur exécute l'instruction ``CALL``. Pour cela, considérons le
 minuscule programme ci-dessous: 
 
 .. code-block:: nasm
@@ -256,7 +256,7 @@ bien l'adresse de retour (``0x0A``).
 Grâce à l'instruction ``CALL``, notre programme devient donc :
 
 
-.. code-block:: console
+.. code-block:: nasm
    
               JMP start
    x:         DB 0
@@ -543,7 +543,7 @@ La première solution a l'avantage d'être simple et rapide. Il suffit d'exécut
 
 La seconde solution est plus générale. Nous utilisons déjà la pile pour récupérer l'adresse de retour et on peut facilement envisager de placer des arguments sur la pile avant l'exécution d'une fonction. Il suffit pour cela d'utiliser l'instruction ``PUSH`` pour chaque argument à pousser sur la pile. La fonction pourra récupérer chaque argument en faisant appel à ``POP`` dans l'ordre inverse de celui du programme appelant.
 
-Pour le résultat de la fonction, deux approches sont possibles. La première est d'utiliser la pile pour retourner ce résultat. La seconde est de placer le résultat de la fonction dans un registre du processeur. La première solution a l'avantage de permettre à une fonction de retourner plusieurs résultats, comme en python par exemple. La seconde est utilisée par de très nombreux langages de programmation. C'est celle que nous adoptons dans ce chapitre. Dans le cadre de ce syllabus, nous prenons la convention qu'**une fonction écrite en assembleur retournera un seul mot de 16 bits et que ce résultat sera toujours placé dans le registre ``A``**. 
+Pour le résultat de la fonction, deux approches sont possibles. La première est d'utiliser la pile pour retourner ce résultat. La seconde est de placer le résultat de la fonction dans un registre du processeur. La première solution a l'avantage de permettre à une fonction de retourner plusieurs résultats, comme en python par exemple. La seconde est utilisée par de très nombreux langages de programmation. C'est celle que nous adoptons dans ce chapitre. Dans le cadre de ce syllabus, nous prenons la convention **qu'une fonction écrite en assembleur retournera un seul mot de 16 bits et que ce résultat sera toujours placé dans le registre ``A``**. 
 
 
 Pour que les fonctions et procédures écrites par un ou une informaticienne soient utilisables sans difficultés par d'autres personnes, il est important que le programme appelant et la fonction/procédure utilisent les mêmes conventions d'utilisation de la pile. Dans le cadre de ce syllabus, nous prenons les conventions suivantes pour les fonctions et procédures en assembleur :
@@ -582,7 +582,7 @@ Analysons d'abord comment la fonction doit être appelée depuis un programme. S
  - en utilisant une instruction ``POP`` qui copie la valeur se trouvant au sommet de la pile et incrémente 
  - en incrémentant simplement le pointeur de sommet de pile (``SP``) de deux unités
 
-La seconde solution a l'avantage de ne pas modifier de valeur de registre. C'est celle que nous utilisons dans cet exemple.
+La seconde solution a l'avantage de ne pas modifier de valeur de registre. C'est celle que nous utilisons dans cet exemple. Nous supposons que ``arg1`` et ``arg2`` sont des nombres naturels pour lesquels nous cherchons le minimum.
    
 
 .. code-block:: nasm
@@ -595,6 +595,21 @@ La seconde solution a l'avantage de ne pas modifier de valeur de registre. C'est
    ADD SP, 2      ; libération de l'argument placé sur la pile
 		
 
+Si nous souhaitons passer comme arguments à la fonction ``min`` des valeurs de variables,
+alors nous devons modifier notre code comme présenté ci-dessous.
+
+   
+.. code-block:: nasm
+   
+
+   ; appel à la fonction min
+   MOV D, [adr1]  ; adresse de la première variable 
+   PUSH [arg2]	  ; adresse de la seconde variable
+   CALL min
+   ADD SP, 2      ; libération de l'argument placé sur la pile
+
+
+   
 
 Nous pouvons maintenant écrire la fonction qui calcule le minimum entre les valeurs de ses deux arguments. Le premier argument se trouve dans le registre ``D``. Il est donc immédiatement disponible. Le second argument lui est sur la pile. Il y a été placé *avant* l'appel à la fonction via l'instruction ``CALL min``. La figure :numref:`fig-stack-min` présente l'état de la pile à ce moment. 
 
@@ -651,7 +666,7 @@ En assembleur, on stocke parfois l'information sous la forme d'une séquence de 
 Lorsque les ordinateurs communiquent sur Internet, ils s'échangent les données
 sous forme de paquets. Chaque paquet est composé d'une entête de quelques dizaines
 d'octets et suivi des données qui sont échangées. L'entête d'un paquet comprend
-différents champs qui dont les valeurs sont fixées par l'émetteur du paquet
+différents champs dont les valeurs sont fixées par l'émetteur du paquet
 et qui peuvent être modifiées par les nœuds du réseau (appelés routeurs). A titre
 d'exemple, la figure ci-dessous présente le format de l'entête d'un paquet
 IP version 4. Chaque ligne correspond à un mot de 32 bits et l'émetteur d'un tel
@@ -727,7 +742,7 @@ En assemblant ces différentes instructions, on obtient le code ci-dessous.
       PUSH B ; préservation de la valeur de B
       MOV B, 1
       SHL B, D
-      MOV A, [SP+6]
+      MOV A, [SP+4]
       OR A, B
       POP B  ; récupération de la valeur de B
       RET
@@ -750,7 +765,7 @@ n'est rien d'autre que ``NOT(0000000000010000)```. Le code de notre fonction
       MOV B, 1
       SHL B, D
       NOT B
-      MOV A, [SP+6]
+      MOV A, [SP+4]
       AND A, B
       POP B
       RET
@@ -758,12 +773,18 @@ n'est rien d'autre que ``NOT(0000000000010000)```. Le code de notre fonction
 
 A titre d'exemple, le code ci-dessous teste les fonctions ``testbit`` et ``resetbit``.	  
 	  
-	  
+.. code-block:: nasm
+
+   ; exemple d'appel à la fonction set		
    testset:
       MOV D, 3
       PUSH 2
       CALL setbit
-	  
+      HLT
+
+.. code-block:: nasm
+
+   ; exemple d'appel à la fonction reset				
    testreset:	  
       MOV D, 3
       PUSH 14
@@ -831,7 +852,7 @@ On peut vérifier le bon fonctionnement de cette fonction en exécutant le code 
    ; A contient 3*4+1
    ; ne pas oublier de libérer la pile après
    ADD SP, 4
-
+   HLT
 
 
 Comme autre exemple d'utilisation de la pile, considérons une fonction qui
@@ -1104,17 +1125,4 @@ En utilisant la même approche, on peut construire une implémentation en assemb
 
 
 
-
-.. note::
-
-   Pour aller au delà
-
-
-   L'explication des fonctions récursives marque la fin de notre exploration des principes de fonctionnement des ordinateurs. Même si nous avons couvert différents aspects du fonctionnement des ordinateurs modernes, nous sommes loin d'en avoir fait le tour. Vous aurez d'autres occasions de compléter votre formation dans ce domaine passionnant dans la suite de vos études.
-
-   En deuxième année du bachelier, vous apprendrez à exploiter les processeurs multi-coeurs en utilisant notamment le langage :term:`Java` dans le cours `Informatique 2 <https://uclouvain.be/cours-2020-LEPL1402>`_. Vous apprendrez aussi à programmer en langage :term:`C` dans le cours `Projet 3 <https://uclouvain.be/cours-2020-LEPL1503>`_. De nos jours, le langage :term:`C` est le langage de programmation qui remplace l'assembleur dans la plupart des cas où il est nécessaire de contrôler finement le matériel. Le cours de `Calculabilité, logique et complexité <https://uclouvain.be/cours-2020-LINFO1123>`_ vous permettra d'apprendre les bases théoriques de l'informatique et notamment un modèle théorique du fonctionnement des ordinateurs qui est la `machine de Turing`. Le cours de `Paradigmes de programmation et concurrence <https://uclouvain.be/cours-2020-LINFO1104>`_ vous permettra de mieux comprendre comment fonctionnent les langages de programmation.
-
-   En troisième année du bachelier, le cours de `Systèmes informatiques <https://uclouvain.be/cours-2020-LINFO1252>`_ vous permettra de comprendre comment fonctionne un :term:`système d'exploitation`. Vous aurez à nouveau l'occasion d'écrire des programmes en langage C et en assembleur mais sur des processeurs réels cette fois. Le cours de `Réseaux informatiques <https://uclouvain.be/cours-2020-LINFO1341>`_ vous permettra de comprendre comment les ordinateurs connectés à Internet peuvent s'échanger de l'information.
-
-   En Master, le cours `Architecture and performance of computer systems <https://uclouvain.be/cours-2020-LINGI2241>`_ vous permettra de comprendre plus en profondeur les interactions entre le matériel et le logiciel et les facteurs qui influencent les performances d'un ordinateur. D'autres cours à option sont accessibles dans ce domaine comme `Design and Architecture of digital electronic systems <https://uclouvain.be/en-cours-2020-LELEC2531>`_ ou `Design of Embedded and real-time systems <https://uclouvain.be/cours-2020-LINGI2315>`_.
 

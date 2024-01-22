@@ -38,8 +38,14 @@ Dans ce syllabus, nous nous concentrons sur un langage d'assemblage simple qui n
 Notre simulateur
 ----------------
 
+.. spelling:word-list::
 
-Dans le cadre de ce syllabus, nous utilisons le [simulateur de microprocesseur](https://github.com/Schweigi/assembler-simulator) dévelopé intialement par [Marco Schweighauser](https://github.com/Schweigi) et amélioré par [Nikita Tyunyayev](https://github.com/ntyunyayev). Ce simulateur est accessible en ligne depuis n'importe quel navigateur web via http://asm.info.ucl.ac.be . La :numref:`fig-simu` présente l'interface graphique de notre simulateur..
+   Nikita
+   Marco
+   Schweighauser
+   Tyunyayev
+
+Dans le cadre de ce syllabus, nous utilisons le [simulateur de microprocesseur](https://github.com/Schweigi/assembler-simulator) développé initialement par [Marco Schweighauser](https://github.com/Schweigi) et amélioré par [Nikita Tyunyayev](https://github.com/ntyunyayev). Ce simulateur est accessible en ligne depuis n'importe quel navigateur web via http://asm.info.ucl.ac.be . La :numref:`fig-simu` présente l'interface graphique de notre simulateur..
 
 
 .. _fig-simu:
@@ -52,7 +58,7 @@ Dans le cadre de ce syllabus, nous utilisons le [simulateur de microprocesseur](
 Notre simulateur comprend plusieurs boutons en haut de l'écran:
 
  - ``Run`` pour exécuter l'ensemble du programme pas à pas
- - ``Step`` pour éxécuter l'instruction suivante et s'arrêter
+ - ``Step`` pour exécuter l'instruction suivante et s'arrêter
  - ``Reset`` pour revenir au début de l'exécution du programme
  - ``Download Code`` pour télécharger sur votre ordinateur le programme chargé sur le simulateur
  - ``Choisir le fichier`` pour sélectionner un fichier sur votre ordinateur
@@ -546,11 +552,12 @@ l'adresse ``0`` en mémoire et le bloc ``0b00000000 00000111`` à l'adresse ``2`
    les mots-clés ``DB``. 
 
    
-	.. _fig-ex-db:
+.. _fig-ex-db:
+.. figure:: /images/ex-db.png
 
-	.. figure:: /images/ex-db.png
+   Exemple d'utilisation du mot-clé DB
 
-        Exemple d'utilisation du mot-clé DB   
+	
    
 En pratique, le mot clé ``DB`` sera rarement utilisé de cette façon.
 Dans un programme, on utilisera ce mot clé pour définir des constantes
@@ -587,7 +594,6 @@ comment le simulateur affiche ces différentes étiquettes et les valeurs
 associées.
 
 .. _fig-ex-db-label:
-
 .. figure:: /images/ex-db-label.png
 
    Exemple d'utilisation du mot-clé DB   
@@ -630,7 +636,7 @@ Ensuite, l'instruction ``ADD`` place la valeur ``10`` dans le registre
 Lorsque le programme ci-dessus est transformé en langage machine et
 stocké en mémoire, l'instruction :index:`HLT` se trouve à l'adresse
 ``0x12``. L'étiquette `x` correspond à l'adresse ``0x14`` et `y` à
-l'adresse ``0x16`` comme illustré dans la :numref:`fig-mem-deb`.
+l'adresse ``0x16`` comme illustré dans la :numref:`fig-mem-db`.
 
 
 .. _fig-mem-db:
@@ -643,9 +649,9 @@ l'adresse ``0x16`` comme illustré dans la :numref:`fig-mem-deb`.
 A ce stade, il est utile d'analyser un peu plus en détails la façon dont les
 instructions sont encodées en mémoire. Pour le processeur, une instruction en
 assembleur est aussi encodée sous la forme d'une séquence de bits. C'est
-ce que nous voyons dans la mémoire RAM présentée dans la :numref:`fig-mem-deb`.
+ce que nous voyons dans la mémoire RAM présentée dans la :numref:`fig-mem-db`.
 Analysons cette mémoire bloc de 16 bits par bloc de 16 bits. Le premier bloc,
-``0x00 02`` correspond au :index:`code opératoire` (ou :index:`opcode` en anglais)
+la notation ``0x00 02`` correspond au :index:`code opératoire` (ou :index:`opcode` en anglais)
 de l'instruction qui permet de déplacer une information se trouvant en mémoire
 vers un registre. Cette instruction prend deux arguments :
 
@@ -658,7 +664,7 @@ valeur ``0x00 14`` qui est l'adresse de l'étiquette `x`. Ces 6 premiers octets
 (`0x00 02 00 00 00 14``) sont la représentation binaire de l'instruction
 ``MOV A, [14]``. Les six octets qui suivent (``0x00 02 00 01 00 16``) correspondent
 eux à l'instruction ``MOV B, [16]``. Le code opératoire de l'instruction ``ADD``
-est ``0x00 0A`` et les 6 octets ``0x00 0A 00 01`` représentent bien l'instruction
+est ``0x00 0A`` et les 6 octets ``0x00 0A 00 00 00 01`` représentent bien l'instruction
 ``ADD A, B``. L'instruction ``HLT`` a comme code opératoire le bloc de 16 bits
 ``0x00 00``. Le simulateur définit un code opératoire pour chaque variante d'une
 instruction. En voici quelques unes à titre d'illustration :
@@ -667,8 +673,7 @@ instruction. En voici quelques unes à titre d'illustration :
  - ``MOV`` a comme code opératoire ``0x00 01`` lorsque ses deux arguments sont des registres
  - ``MOV`` a comme code opératoire ``0x00 06`` lorsque son premier argument est un registre et le seconde une constante
  - ``ADD`` a comme code opératoire ``0x00 0A`` lorsque ses deux arguments sont des registres
-
-- ``SUB`` a comme code opératoire ``0x00 0D`` lorsque ses deux arguments sont des registres  
+ - ``SUB`` a comme code opératoire ``0x00 0D`` lorsque ses deux arguments sont des registres  
  - ``INC`` a comme code opératoire ``0x00 12`` et est suivi d'un identifiant de registre
  - ``DEC`` a comme code opératoire ``0x00 13`` et est suivi d'un identifiant de registre
  - ``MUL`` a comme code opératoire ``0x00 3C`` et est suivi identifiant de registre
@@ -981,7 +986,7 @@ Ces opérations logiques existent sous trois formes en fonction de leurs argumen
 
  - ``OR reg1, reg2``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans les registres ``reg1`` et ``reg2``
  - ``OR reg1, [adr]``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans le registre ``reg1`` et en mémoire à l'adresse ``adr``
- - ``OR reg1, c``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans le registre ``reg1`` et la constance ``c``
+ - ``OR reg1, c``: place dans le registre ``reg1`` le résultat de l'opération ``OR`` appliquée aux valeurs stockées dans le registre ``reg1`` et la constante ``c``
 
  
 Ces instructions permettent d'utiliser ces opérations logiques sur des blocs de 16 bits. En pratique, elles s'avèrent aussi très utile lorsque l'on souhaite fixer des valeurs à certains bits en particulier. Considérons par exemple le bloc de 16 bits :math:`b_{15}b_{14}b_{13}b_{12}b_{11}b_{10}b_{9}b_{8}b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}` qui est actuellement stocké dans le registre ``A``.
@@ -1124,7 +1129,7 @@ la suite d'instructions de la section précédente.
 Au démarrage de l'ordinateur, le :index:`PC` est initialisé à l'adresse
 de la première instruction à exécuter (``0`` dans notre processeur simple, mais
 ce n'est pas toujours le cas). Durant l'exécution de l'instruction
-``MOV A,2``, le :index:``PC`` contient l'adresse de l'étiquette ``i1``. A
+``MOV A,2``, le :index:`PC` contient l'adresse de l'étiquette ``i1``. A
 la fin de l'exécution de cette instruction, le :index:`PC` est modifié pour
 contenir l'adresse de l'instruction qui suit, c'est-à-dire ``i2``. Cette
 mise à jour du compteur de programme s'effectue lors de l'exécution de toutes les
@@ -1612,7 +1617,6 @@ registre et calculer ``x+x``. Enfin, on utilise une instruction de saut incondit
 ``JMP`` pour revenir au début de la boucle et réévaluer la condition ``n<10``.
      
 .. code-block:: nasm
-   :linenos:
 		
             JMP boucle
    ; variables 
