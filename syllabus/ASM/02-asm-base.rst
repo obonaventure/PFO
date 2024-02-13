@@ -45,7 +45,8 @@ Notre simulateur
    Schweighauser
    Tyunyayev
 
-Dans le cadre de ce syllabus, nous utilisons le [simulateur de microprocesseur](https://github.com/Schweigi/assembler-simulator) développé initialement par [Marco Schweighauser](https://github.com/Schweigi) et amélioré par [Nikita Tyunyayev](https://github.com/ntyunyayev). Ce simulateur est accessible en ligne depuis n'importe quel navigateur web via http://asm.info.ucl.ac.be . La :numref:`fig-simu` présente l'interface graphique de notre simulateur..
+   
+Dans le cadre de ce syllabus, nous utilisons `simulateur de microprocesseur <https://github.com/Schweigi/assembler-simulator>`_ développé initialement par `Marco Schweighauser <https://github.com/Schweigi>`_ et amélioré par `Nikita Tyunyayev <https://github.com/ntyunyayev>`_. Cette première partie du syllabus vous permettre de comprendre les principes de base de la programmation d'un microprocesseur simple en assembleur. Ce simulateur est accessible en ligne depuis n'importe quel navigateur web via http://asm.info.ucl.ac.be . La :numref:`fig-simu` présente l'interface graphique de notre simulateur.
 
 
 .. _fig-simu:
@@ -1674,7 +1675,7 @@ sont équivalentes.
 .. code-block:: python
 
    x=2
-   while (x<=7):
+   while (x<7):
      print(x)
      x=x+1
      
@@ -1689,7 +1690,7 @@ De la même façon, les deux boucles ci-dessous sont également équivalentes.
 .. code-block:: python
 
    x=10
-   while (x>=5):
+   while (x>5):
      print(x)
      x=x-2
 
