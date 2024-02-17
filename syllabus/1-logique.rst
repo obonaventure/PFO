@@ -707,7 +707,7 @@ Ces deux mots-clés sont utilisés au début de la description d'un circuit. Cha
 .. code-block:: console
 
    IN a,b,c;  // Trois entrées appelés a, b et c
-   OUT out1, out2; // Deux entrées baptisées out1 et out2
+   OUT out1, out2; // Deux sorties baptisées out1 et out2
 
    
 Après avoir spécifié les entrées/sorties, il faut indiquer les différentes fonctions qui sont utilisées par le circuit. Le mot-clé `PARTS:` marque le début de la définition des fonctions logiques. L'exemple ci-dessous présente un squelette de circuit en HDL.
@@ -772,7 +772,7 @@ Un autre exemple est de construire un circuit qui implémente la fonction `AND` 
 .. code-block:: console
 
    /*
-    * Une circuit AND à trois entrées
+    * Un circuit AND à trois entrées
     */  
    CHIP And3 {
        IN a,b,c;   // Les trois entrées
@@ -790,7 +790,7 @@ Un exemple plus complexe est de construire une implémentation de la fonction `X
 .. code-block:: console
              
    /*
-    * Une circuit XOR à deux entrées
+    * Un circuit XOR à deux entrées
     */  
    CHIP Xor {
        IN a,b;  
@@ -823,7 +823,7 @@ Les fichiers `HDL` contiennent la description du circuit électronique. Ils sero
    eval,          // on exécute le simulateur
    output;        // on sauvegarde le résultat
 
-   set in 1,      // pour ce test, on fixe la valeur de in à 0
+   set in 1,      // pour ce test, on fixe la valeur de in à 1
    eval,          // on exécute le simulateur
    output;        // on sauvegarde le résultat
 
@@ -1070,10 +1070,10 @@ Parmi les tables d'encodage des caractères les plus simples, la plus connue est
    
 La table US-ASCII (:numref:`table-ascii`) définit les représentations binaires suivantes:
 
- - `01100000` correspond au caractère représentant le chiffre `0`
- - `01101001` correspond au caractère représentant le chiffre `9`
- - `10000011` correspond au caractère représentant la lettre `A` (majuscule)  
- - `01000000` correspond au caractère représentant un espace
+ - `00110000` correspond au caractère représentant le chiffre `0`
+ - `00111001` correspond au caractère représentant le chiffre `9`
+ - `01000001` correspond au caractère représentant la lettre `A` (majuscule)  
+ - `00100000` correspond au caractère représentant un espace
 
 Cette table avait l'inconvénient majeur de ne contenir que les représentations des caractères non-accentués de l'alphabet latin. Elle permet d'écrire du texte en anglais et dans d'autres langues européennes qui utilisent peu d'accents, mais ne permet évidemment pas de représenter tous les caractères des langues écrites sur notre planète. Au fil des années, ce problème a été résolu avec d'autres tables de correspondance dont celles qui sont adaptées aux accents utilisés par les langues européennes. Aujourd'hui, l'encodage standard des caractères se fait en utilisant le format `Unicode <https://home.unicode.org>`_. Une description détaillée d'Unicode sort du cadre de ce cours d'introduction, mais sachez qu'en mars 2020, la version 13.0 d'Unicode permettait de représenter 143859 caractères différents correspondant à 154 formes d'écritures. Unicode permet de représenter quasiment toutes les langues écrites connues sur notre planète. Des chercheurs ont même proposé un format Unicode permettant de supporter le Klingon, c'est-à-dire la langue écrite inventée pour la série de films Star Trek.
 
