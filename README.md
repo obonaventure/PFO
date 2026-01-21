@@ -10,12 +10,11 @@ Les notes sont écrites en [restructured text](http://docutils.sourceforge.net/r
 
 Le syllabus sera mis régulièrement à jour et les étudiants sont encouragés à soumettre [soumettre des issues](https://github.com/obonaventure/PFO/issues) ou mieux proposer des améliorations sous la forme de [pull requests](https://github.com/obonaventure/PFO/pulls)
 
-##Créer des issues
+## Créer des issues
 
-Sur GitHub, une issue est la façond de documenter un problème dans un programme qui devrait être résolu pour les développeurs. En général, on essaye de documenter ce problème de la façon la plus précise possible. Dans le cas du syllabus, le problème sera une figure incorrecte, une mauvaise explication ou des informations qui manque. 
+Sur GitHub, une issue est la façon de documenter un problème dans un programme qui devrait être résolu pour les développeurs. En général, on essaye de documenter ce problème de la façon la plus précise possible. Dans le cas du syllabus, le problème sera une figure incorrecte, une mauvaise explication ou des informations qui manque. 
 
-Pour créer une issue sur GitHub, connectez-vous sur GitHub et choisissez un
-nom d'utilisateur et un mot de passe.
+Pour créer une issue sur GitHub, connectez-vous sur GitHub et choisissez un nom d'utilisateur et un mot de passe.
 
 Lors de votre premier accès à [https://github.com/obonaventure/PFO](https://github.com/obonaventure/PFO), GitHub vous recommande de lire le tutoriel accessible depuis [https://guides.github.com/activities/hello-world/](https://guides.github.com/activities/hello-world/), c'est une excellente idée.
 
