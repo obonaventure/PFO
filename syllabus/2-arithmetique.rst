@@ -92,7 +92,7 @@ En pratique, outre les notations binaires, deux notations sont couramment utilis
  - l'octal (ou base `8`)
  - l'hexadécimal (ou base `16`)
 
-En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les symboles sont des chiffres de `0` à `9` et les lettres de `A` à `F` sont utilisées pour représenter les valeurs de `0` à 15.
+En octal, les symboles sont des chiffres de `0` à `7`. En hexadécimal, les symboles sont des chiffres de `0` à `9` et les lettres de `A` à `F` sont utilisées pour représenter les valeurs de `10` à 15.
 
 .. note::
 
@@ -373,7 +373,7 @@ Nous aurions pu aussi choisir d'utiliser le bit de poids faible pour indiquer le
  - `101 1` représente le nombre `-5`
  - `110 0` représente le nombre `+6`
  - `110 1` représente le nombre `-6`
- - `111 0` représente le nombre `-7`
+ - `111 0` représente le nombre `+7`
  - `111 1` représente le nombre `-7` 
 
 Ces deux conventions permettent de représenter les entiers de `-7` à `+7`. Malheureusement, ces deux représentations ont deux inconvénients majeurs. Premièrement, elles utilisent deux nombres binaires différents pour représenter la valeur nulle. De plus, il est difficile de construire des circuits électroniques qui permettent de facilement manipuler de telles représentations des nombres entiers.
@@ -714,7 +714,7 @@ Pour retourner `x` comme sortie, il faut mettre `zy` à `1`. On calcule donc le 
 
 Pour retourner `y` comme sortie, il faut mettre `zx` à `1`. On calcule donc le résultat de :math:`0+y`.
 
-Pour calculer `NOT(x)`, il y a deux approches possibles. La première est de mettre `zy` à `1` et `nx` à `1`. La seconde est de mettre uniquement `zy` et `nx` à `1`. Dans le premier cas, on calcule :math:`x+0` et on inverse le résultat. Dans le second cas, on calcule :math:`NOT(x)+0`. On peut raisonner de façon similaire pour le calcul de `NOT(y)`.
+Pour calculer `NOT(x)`, il y a deux approches possibles. La première est de mettre `zy` à `1`,  `f` à `1` et `no` à `1`. La seconde est de mettre `zy`, `nx` et `f` à `1`. Dans le premier cas, on calcule :math:`x+0` et on inverse le résultat. Dans le second cas, on calcule :math:`NOT(x)+0`. On peut raisonner de façon similaire pour le calcul de `NOT(y)`.
 
 Pour calculer `-x`, le livre suggère de mettre quatre signaux à `1`: `zy`, `ny`, `f` et `no`. Cela revient à calculer l'opération :math:`NOT(ADD(x,11..11))`. Regardons avec des nombres encodés sur trois bits le résultat de cette opération.
 
